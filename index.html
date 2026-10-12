@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OS LESADOS — HTML Único</title>
+  <style>
+    :root {
+      --primary: #ff006e;
+      --secondary: #8338ec;
+      --dark: #0f0f1a;
+      --darker: #05050a;
+      --success: #00c853;
+      --warning: #ffab00;
+      --danger: #ff1744;
+      --canon: #ffd700;
+      --border: #2a2a4a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--dark);
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1700px;
+      margin: 0 auto;
+      background: var(--darker);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      padding: 18px 20px;
+      border-bottom: 3px solid var(--canon);
+      text-align: center;
+    }
+    .header h1 { color: #fff; font-size: 1.8em; letter-spacing: 1.5px; text-transform: uppercase; }
+    .header p { color: rgba(255,255,255,.9); margin-top: 6px; font-size: .95em; }
+    .layout { display: grid; grid-template-columns: 360px 1fr; min-height: 85vh; }
+    .sidebar { background: #151525; border-right: 1px solid var(--border); padding: 18px; overflow-y: auto; max-height: 85vh; }
+    .content { padding: 22px; overflow-y: auto; max-height: 85vh; }
+    .title { color: var(--warning); font-size: .95em; text-transform: uppercase; font-weight: 800; margin: 18px 0 10px; border-bottom: 1px solid var(--secondary); padding-bottom: 6px; }
+    .field { margin-bottom: 12px; }
+    .field label { display: block; margin-bottom: 6px; color: #a0a0c0; font-size: .82em; font-weight: 700; }
+    .field input, .field textarea, .field select {
+      width: 100%; background: #0f0f1a; border: 1px solid var(--border); color: #fff; border-radius: 6px; padding: 10px; font-family: inherit; font-size: .9em;
+    }
+    .field textarea { min-height: 90px; resize: vertical; }
+    .btn {
+      width: 100%; border: none; border-radius: 6px; padding: 12px; font-weight: 800; text-transform: uppercase; cursor: pointer; color: #fff;
+      background: linear-gradient(90deg, var(--primary), var(--secondary)); margin-bottom: 8px;
+    }
+    .btn:hover { opacity: .92; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-sm { padding: 9px 10px; font-size: .82em; }
+    .btn-warning { background: var(--warning); color: #000; }
+    .btn-success { background: var(--success); color: #000; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-secondary { background: #2d2b55; border: 1px solid var(--secondary); color: #d7c7ff; }
+    .box { background: #1a1a30; border: 1px solid var(--secondary); border-radius: 8px; padding: 14px; margin-bottom: 16px; }
+    .hint { color: #888; font-size: .78em; line-height: 1.35; margin-top: 6px; }
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 18px; }
+    .tab { padding: 10px 16px; border: 1px solid var(--border); background: #151525; color: #a0a0c0; border-radius: 6px 6px 0 0; cursor: pointer; font-weight: 700; font-size: .88em; }
+    .tab.active { background: var(--secondary); color: #fff; border-color: var(--secondary); }
+    .pane { display: none; }
+    .pane.active { display: block; }
+    .empty { text-align: center; padding: 60px 20px; color: #666; }
+    .empty h3 { color: var(--warning); margin-bottom: 8px; }
+    .status, .api-status, .audit { padding: 10px; border-radius: 6px; margin-top: 10px; font-size: .85em; line-height: 1.4; }
+    .status.info, .api-status.testing, .audit.warning { background: #1a1a30; border: 1px solid var(--warning); color: #ffe08a; }
+    .status.success, .api-status.success, .audit.success { background: #051a0a; border: 1px solid var(--success); color: #7dffb0; }
+    .status.error, .api-status.error, .audit.error, .audit.critical { background: #1a0505; border: 1px solid var(--danger); color: #ff9aa8; }
+    .script {
+      background: #fdfdf5; color: #111; font-family: "Courier New", monospace; font-size: 12.5px; line-height: 1.55;
+      padding: 45px 55px; border-radius: 8px; max-width: 900px; margin: 0 auto; box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    }
+    .script-head { text-align: center; border-bottom: 2px solid #999; padding-bottom: 16px; margin-bottom: 28px; }
+    .script-head h2 { text-transform: uppercase; text-decoration: underline; margin-bottom: 6px; }
+    .act { text-align: center; font-weight: 800; text-transform: uppercase; margin: 28px 0 16px; padding: 8px 0; border-top: 2px solid #999; border-bottom: 2px solid #999; letter-spacing: 2px; }
+    .slug { font-weight: 800; text-transform: uppercase; margin: 22px 0 10px; }
+    .camera { font-style: italic; color: #333; background: #ececdc; padding: 7px 10px; border-radius: 4px; margin: 8px 0; font-size: .92em; }
+    .take { display: inline-block; background: #000; color: #00ff88; padding: 4px 9px; border-radius: 3px; font-size: .85em; font-weight: 800; margin: 10px 0 6px; }
+    .action { margin: 8px 0 12px; }
+    .char { text-align: center; text-transform: uppercase; font-weight: 800; margin: 14px 0 2px; }
+    .paren { text-align: center; font-style: italic; margin-bottom: 2px; }
+    .dialogue { text-align: center; margin: 0 0 12px; padding: 0 110px; }
+    .reversal { text-align: center; font-style: italic; color: #8a0000; background: #fff3f3; border: 1px solid #ffcfcf; padding: 6px; border-radius: 4px; margin: 10px 0; font-size: .9em; }
+    .reframe { font-style: italic; color: #666; background: #f1f1e5; border-left: 3px solid #999; padding: 6px 10px; margin: 8px 0; font-size: .88em; }
+    .cut { text-align: right; font-weight: 800; text-transform: uppercase; margin: 16px 0; }
+    .end { text-align: center; font-weight: 800; margin-top: 34px; letter-spacing: 2px; }
+    .summary { background: #1a1a30; border: 2px solid var(--canon); border-radius: 8px; padding: 18px; margin-bottom: 18px; }
+    .summary h3 { color: var(--canon); margin-bottom: 12px; }
+    .grid-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-bottom: 12px; }
+    .card-mini { background: #0f0f1a; border-radius: 6px; padding: 12px; }
+    .label { color: var(--warning); font-size: .76em; font-weight: 800; text-transform: uppercase; margin-bottom: 4px; }
+    .value { color: #e0e0e0; font-size: .92em; line-height: 1.35; }
+    .synopsis { background: #0f0f1a; border-left: 3px solid var(--canon); border-radius: 6px; padding: 14px; }
+    .pipeline { display: grid; grid-template-columns: 240px 1fr; gap: 18px; }
+    .nav { background: #151525; border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .season { background: #1a1a30; border: 1px solid var(--border); border-radius: 6px; padding: 12px; }
+    .season-title { color: var(--canon); font-weight: 800; margin-bottom: 8px; }
+    .ep-list { display: flex; flex-direction: column; gap: 6px; }
+    .ep-item { background: #0f0f1a; padding: 8px 10px; border-radius: 4px; font-size: .85em; cursor: pointer; }
+    .ep-item.active { background: var(--secondary); color: #fff; }
+    .gen { background: #151525; border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 18px; }
+    .gen h3 { color: var(--warning); margin-bottom: 10px; }
+    .prompt { width: 100%; min-height: 120px; background: #0f0f1a; border: 1px solid var(--border); color: #fff; border-radius: 6px; padding: 12px; font-family: "Courier New", monospace; font-size: .84em; resize: vertical; margin-bottom: 12px; }
+    .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+    .buttons .btn { flex: 1; min-width: 150px; margin-bottom: 0; }
+    .preview { width: 100%; aspect-ratio: 16 / 9; background: #000; border: 2px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .preview img { width: 100%; height: 100%; object-fit: contain; }
+    .preview .ph { color: #555; font-size: .9em; }
+    .scenes { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+    .scene { background: #151525; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer; }
+    .scene:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .scene.selected { border-color: var(--canon); box-shadow: 0 0 14px rgba(255,215,0,.25); }
+    .scene-img { width: 100%; aspect-ratio: 16 / 9; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .scene-img img { width: 100%; height: 100%; object-fit: cover; }
+    .scene-img .none { color: #555; font-size: .8em; }
+    .scene-info { padding: 10px; }
+    .scene-title { color: var(--canon); font-weight: 800; font-size: .88em; margin-bottom: 4px; }
+    .scene-desc { color: #a0a0c0; font-size: .73em; line-height: 1.3; }
+    .badge { background: var(--danger); color: #fff; padding: 2px 6px; border-radius: 3px; font-size: .68em; font-weight: 800; margin-left: 5px; }
+    .badge-ok { background: var(--success); color: #000; padding: 2px 6px; border-radius: 3px; font-size: .68em; font-weight: 800; margin-left: 5px; }
+    .meta { color: #888; font-size: .68em; margin-top: 6px; line-height: 1.25; }
+    .bible { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+    .char-card { background: #151525; border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .char-card h3 { color: var(--canon); margin-bottom: 8px; font-size: 1em; }
+    .char-card p { font-size: .86em; line-height: 1.45; margin: 6px 0; color: #c0c0e0; }
+    .char-card strong { color: var(--warning); }
+    .loading { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 6px; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 1024px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { max-height: none; border-right: none; border-bottom: 1px solid var(--border); }
+      .pipeline { grid-template-columns: 1fr; }
+      .script { padding: 28px 18px; }
+      .dialogue { padding: 0 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>OS LESADOS</h1>
+      <p>HTML único · Guião + Pipeline + Canon · Backend Nano Banana opcional</p>
+    </div>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="box">
+          <div class="title" style="margin-top:0;border:0;padding:0;">Sugestão</div>
+          <div id="suggestionText" style="font-style:italic;min-height:48px;line-height:1.4;font-size:.9em;">Clica para gerar ideia.</div>
+          <button class="btn btn-sm btn-secondary" id="suggestBtn">Gerar ideia</button>
+        </div>
+
+        <div class="title">Episódio</div>
+        <div class="field">
+          <label>Nome do episódio</label>
+          <input id="episodeName" placeholder="Ex: O Grande Plano 1" />
+        </div>
+        <div class="field">
+          <label>Premissa</label>
+          <textarea id="premise" placeholder="Escreve a premissa..."></textarea>
+        </div>
+        <button class="btn" id="generateBtn">Gerar guião</button>
+        <div id="status"></div>
+        <div id="audit"></div>
+
+        <div class="title">Backend</div>
+        <div class="field">
+          <label>URL do backend</label>
+          <input id="backendUrl" value="/api" />
+          <div class="hint">Para imagens reais, serve pelo backend e abre http://localhost:8787. Não uses file://.</div>
+        </div>
+        <div class="field">
+          <label>Modelo</label>
+          <select id="modelSelect">
+            <option value="gemini-nano-banana-2.1">Nano Banana 2.1</option>
+            <option value="gemini-3-pro-image">Nano Banana Pro</option>
+          </select>
+        </div>
+        <button class="btn btn-sm btn-warning" id="testBtn">Testar backend</button>
+        <button class="btn btn-sm btn-secondary" id="contextBtn">Ver contexto</button>
+        <div id="apiStatus"></div>
+        <div id="contextStatus"></div>
+
+        <button class="btn btn-sm btn-danger" id="resetBtn" style="margin-top:18px;">Reset total</button>
+      </aside>
+
+      <main class="content">
+        <div class="tabs">
+          <button class="tab active" data-tab="script">Guião</button>
+          <button class="tab" data-tab="pipeline">Pipeline</button>
+          <button class="tab" data-tab="canon">Canon</button>
+        </div>
+
+        <section id="script" class="pane active">
+          <div id="scriptContent" class="empty"><h3>Guião</h3><p>Gera um episódio.</p></div>
+        </section>
+
+        <section id="pipeline" class="pane">
+          <div id="pipelineContent" class="empty"><h3>Pipeline</h3><p>Gera um episódio.</p></div>
+        </section>
+
+        <section id="canon" class="pane">
+          <div id="canonContent"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const VERSION = "os-lesados-html-unico-v1";
+
+    const characters = [
+      { id: "teresa", name: "Teresa Guilhermina I de Portugal", visual: "Voluptuous middle-aged woman with blonde champagne wavy bob, pearl earrings, radiant theatrical smile. Ivory blazer with gold trim, brooch, white blouse, pearls. Loud warm daytime-TV presence, chin high." },
+      { id: "claudio", name: "Cláudio Prantos", visual: "Middle-aged man with short graying hair, gray stubble, heavy eyebrows, intense stare. Dark blue buttoned shirt. Tense calm that snaps into shout and back to serene smile." },
+      { id: "capitao", name: "Capitão Gancho", visual: "Dark combed hair, heavy eyebrows, deep-set solemn eyes, steel hook left hand. Dark suit, white shirt, dark tie. Motionless gravity." },
+      { id: "abelha", name: "Abelha Maia", visual: "Short brown hair, bee antennae headband, translucent wings, yellow-and-black striped body. Affectionate oracular presence." },
+      { id: "coxa", name: "Coxa", visual: "Charismatic daytime TV host, coral three-piece suit, orange tie, lapel mic. Warm ready smile, relaxed confidence." },
+      { id: "mario", name: "Mário Galático", visual: "Middle-aged Portuguese man, dark hair with silver at temples, broad shoulders, confident posture. Navy blue suit, white shirt open at collar, gold lapel pin with rocket and anchor crossed. Expansive gestures, visionary intensity." },
+      { id: "patribunal", name: "Patribunal", visual: "Authority figure, double-cut black suit, black tie, solemn composure, formal posture." },
+      { id: "perpetua", name: "Perpétua", visual: "Middle-aged woman, faded pink coat, scissors always in hand, perfect curls on own head, knowing eyes, discreet backstage presence." }
+    ];
+
+    const charById = Object.fromEntries(characters.map(c => [c.id, c]));
+
+    const suggestions = [
+      "Mário Galático impõe iates no direto das 20h e o Capitão Gancho tenta conter o caos.",
+      "Teresa Guilhermina I exige o trono dos reality-shows, mas o Capitão Gancho responde com uma decisão seca.",
+      "Coxa e Cláudio ficam presos no camarim durante uma falha técnica.",
+      "Abelha Maia lê as cartas em direto e anuncia uma queda nas audiências.",
+      "Perpétua tenta pedir um passeio de barco, mas confunde o pedido com um reality show."
+    ];
+
+    let state = {
+      version: VERSION,
+      seasons: [],
+      currentSeason: null,
+      currentEpisode: null,
+      currentScene: null
+    };
+
+    function $(id) { return document.getElementById(id); }
+    function esc(v) { return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+    function sanitize(t) {
+      let s = String(t || "");
+      s = s.replace(/\bGoucha\b/gi, "Coxa");
+      s = s.replace(/\bMoniz\b/gi, "Capitão Gancho");
+      s = s.replace(/\bCristina Ferreira\b/gi, "Teresa Guilhermina I de Portugal");
+      s = s.replace(/\bJoão Patribunal\b/gi, "Patribunal");
+      s = s.replace(/\bDois às 10\b/gi, "Central");
+      s = s.replace(/\s*—\s*/g, ", ");
+      s = s.replace(/--/g, ", ");
+      s = s.replace(/\s{2,}/g, " ");
+      return s.trim();
+    }
+    function fmt(sec) { const m = Math.floor(sec / 60), s = sec % 60; return `${m}:${String(s).padStart(2,"0")}`; }
+    function status(msg, type="info") { $("status").innerHTML = `<div class="status ${type}">${esc(msg)}</div>`; setTimeout(() => { if ($("status")) $("status").innerHTML = ""; }, 7000); }
+    function apiStatus(msg, type="testing") { $("apiStatus").innerHTML = `<div class="api-status ${type}">${msg}</div>`; }
+    function save() { try { localStorage.setItem("osLesados_html", JSON.stringify(state)); } catch(e) { status("Não foi possível guardar. Armazenamento cheio?", "error"); } }
+    function load() {
+      try {
+        const raw = localStorage.getItem("osLesados_html");
+        if (raw) state = Object.assign(state, JSON.parse(raw));
+      } catch(e) {}
+      normalize();
+    }
+    function normalize() {
+      if (!Array.isArray(state.seasons)) state.seasons = [];
+      state.seasons.forEach(s => {
+        if (!Array.isArray(s.episodes)) s.episodes = [];
+        s.episodes.forEach(ep => {
+          if (!Array.isArray(ep.scenes)) ep.scenes = [];
+          ep.number = Number(ep.number || 1);
+          ep.name = sanitize(ep.name || "O Grande Plano");
+          ep.premise = sanitize(ep.premise || "");
+          ep.scenes.forEach(sc => {
+            sc.location = sanitize(sc.location || "Estúdio Central");
+            sc.action = sanitize(sc.action || "");
+            sc.characters = Array.isArray(sc.characters) ? sc.characters.filter(id => charById[id]) : [];
+            sc.alertMel = sc.characters.includes("abelha");
+            sc.prompt = sc.prompt || buildPrompt(sc);
+            sc.imageUrl = sc.imageUrl || null;
+            sc.model = sc.model || null;
+            sc.variant = Number(sc.variant || 0);
+            sc.approved = Boolean(sc.approved);
+            sc.referenceCount = Number(sc.referenceCount || 0);
+          });
+          ep.audit = audit(ep);
+        });
+      });
+    }
+    function switchTab(tab) {
+      document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
+      document.querySelectorAll(".pane").forEach(p => p.classList.toggle("active", p.id === tab));
+      if (tab === "script") renderScript();
+      if (tab === "pipeline") renderPipeline();
+      if (tab === "canon") renderCanon();
+    }
+    function suggestion() {
+      const idea = suggestions[Math.floor(Math.random() * suggestions.length)];
+      $("suggestionText").textContent = idea;
+      $("premise").value = idea;
+      status("Sugestão gerada.", "success");
+    }
+    function buildPrompt(scene) {
+      const visuals = (scene.characters || []).map(id => charById[id]?.visual).filter(Boolean).join(" ");
+      const continuity = scene.reframeOf ? `VISUAL CONTINUITY: same location, lighting, costumes and character positions as take ${scene.reframeOf}. Only camera framing changes. ` : "";
+      const mel = scene.alertMel ? "MANDATORY GRAPHIC OVERLAY: a red sensationalist lower-third at the bottom of the frame with exact text ALERTA MEL. Do not rename it. Do not make it a physical object. Characters do not look at it unless explicitly requested. " : "";
+      return `${continuity}2D satirical animation, thick black outlines, vibrant colors, professional TV cartoon, Looney Tunes slapstick energy, 16:9, high detail. Shot: ${scene.shot}. Camera movement: ${scene.camera}. Location: ${sanitize(scene.location)}. Characters: ${visuals || "environment detail only, no people"}. Action: ${sanitize(scene.action)}. ${mel}Negative: no real people, no logos, no extra text, no changed costumes, no new props, no dialogue bubbles.`;
+    }
+    function buildScenes(premise) {
+      const p = sanitize(premise || "O caos instala-se na estação.");
+      let t = 0;
+      const tc = d => { const a = t; t += d; return `${fmt(a)} - ${fmt(t)}`; };
+      const scenes = [
+        { id:"1a", title:"Cena 1a", type:"MASTER SHOT", location:"Estúdio Central", duration:6, shot:"WIDE SHOT", camera:"STATIC", characters:["coxa","claudio"], action:"Plano geral do estúdio. Coxa ajusta papéis com sorriso profissional. Cláudio está ao lado, composto, mas o colarinho parece apertado.", dialogue:{char:"coxa",paren:"(sorriso de antena)",line:"Estamos a trinta segundos do direto. Tudo sob controlo, Cláudio?"}, reversal:null, reframeOf:null },
+        { id:"1b", title:"Cena 1b", type:"REFRAME", location:"Estúdio Central", duration:5, shot:"MEDIUM CLOSE-UP", camera:"SLOW ZOOM IN", characters:["claudio"], action:"MESMA CENA DO 1a. A câmara aproxima-se de Cláudio. O sorriso mantém-se, mas a testa brilha de suor.", dialogue:{char:"claudio",paren:"(sorriso forçado, tenso)",line:"Sob controlo absoluto. Apenas... um pouco de calor."}, reversal:null, reframeOf:"1a" },
+        { id:"1c", title:"Cena 1c", type:"INSERT", location:"Estúdio Central", duration:4, shot:"INSERT SHOT", camera:"STATIC", characters:["claudio"], action:"MESMA CENA DO 1a. INSERT: a mão de Cláudio carrega no comando do ar condicionado. Corte para Coxa, que levanta uma sobrancelha.", dialogue:null, reversal:"O telefone da realização toca. Ninguém atende.", reframeOf:"1a" },
+        { id:"2a", title:"Cena 2a", type:"MASTER SHOT", location:"Estúdio Central", duration:7, shot:"WIDE SHOT", camera:"WHIP PAN", characters:["mario","coxa","claudio"], action:`WHIP PAN para a porta. Mário Galático entra em grande e impõe a premissa: ${p}`, dialogue:{char:"mario",paren:"(voz profunda, expansiva)",line:"Do Douro ao Espaço! Este império também fala comigo."}, reversal:null, reframeOf:null },
+        { id:"2b", title:"Cena 2b", type:"REFRAME", location:"Estúdio Central", duration:6, shot:"MEDIUM SHOT", camera:"DOLLY IN", characters:["mario"], action:"MESMA CENA DO 2a. Mário avança para o centro do plateau, gesto largo, confiança de quem já decidiu.", dialogue:{char:"mario",paren:"(a apontar)",line:"Eu é que mando nisto, pá! Os números do rio não mentem."}, reversal:null, reframeOf:"2a" },
+        { id:"2c", title:"Cena 2c", type:"REACTION", location:"Estúdio Central", duration:5, shot:"CLOSE-UP", camera:"STATIC", characters:["claudio"], action:"MESMA CENA DO 2a. CLOSE-UP de Cláudio. A compostura estala por um segundo.", dialogue:null, reversal:"Mário mostra um plano já escrito. Não veio propor. Veio impor.", reframeOf:"2a" },
+        { id:"3a", title:"Cena 3a", type:"MASTER SHOT", location:"Corredor de Bastidores", duration:6, shot:"WIDE SHOT", camera:"TRACKING", characters:["abelha","claudio"], action:"TRACKING SHOT. Abelha Maia segue Cláudio pelo corredor, microfone na mão, energia de direto.", dialogue:{char:"abelha",paren:"(ritmo rápido)",line:"BOMBAAAA! Exclusivo em direto: o patrão quer iates no noticiário."}, reversal:null, reframeOf:null },
+        { id:"3b", title:"Cena 3b", type:"REFRAME", location:"Corredor de Bastidores", duration:5, shot:"OVER-SHOULDER", camera:"STATIC", characters:["abelha","claudio"], action:"MESMA CENA DO 3a. Por cima do ombro de Cláudio, Abelha fala para a câmara com charme urgente.", dialogue:{char:"abelha",paren:"(a olhar para a câmara)",line:"Eu vi nas cartas que há uma grande mudança no ar."}, reversal:null, reframeOf:"3a" },
+        { id:"4a", title:"Cena 4a", type:"MASTER SHOT", location:"Sala de Controlo", duration:6, shot:"MEDIUM SHOT", camera:"STATIC", characters:["capitao"], action:"Capitão Gancho observa monitores. O gancho repousa imóvel. Os gráficos descem.", dialogue:{char:"capitao",paren:"(olhar imóvel)",line:"Está decidido."}, reversal:null, reframeOf:null },
+        { id:"4b", title:"Cena 4b", type:"INSERT", location:"Sala de Controlo", duration:5, shot:"INSERT SHOT", camera:"STATIC", characters:[], action:"MESMA CENA DO 4a. INSERT: monitores mostram audiências em queda. Um aviso vermelho pisca.", dialogue:null, reversal:"No ecrã: NO AR EM DOIS MINUTOS.", reframeOf:"4a" },
+        { id:"5a", title:"Cena 5a", type:"MASTER SHOT", location:"Corredor de Bastidores", duration:6, shot:"MEDIUM CLOSE-UP", camera:"STATIC", characters:["perpetua"], action:"Perpétua sussurra ao telefone, escondida atrás de um cenário. Olha em redor com ar de quem sabe demais.", dialogue:{char:"perpetua",paren:"(sussurrando)",line:"Ai filha, eu ouvi isto... mas não fui eu que disse, tá?"}, reversal:null, reframeOf:null },
+        { id:"5b", title:"Cena 5b", type:"REFRAME", location:"Corredor de Bastidores", duration:5, shot:"MEDIUM SHOT", camera:"STATIC", characters:["perpetua","patribunal"], action:"MESMA CENA DO 5a. Patribunal aparece no corredor. Perpétua encolhe-se, mas não larga o telefone.", dialogue:{char:"patribunal",paren:"(neutro, formal)",line:"Prossiga. Consta nos autos."}, reversal:null, reframeOf:"5a" },
+        { id:"6a", title:"Cena 6a", type:"MASTER SHOT", location:"Estúdio Central", duration:7, shot:"WIDE SHOT", camera:"DOLLY IN", characters:["teresa","coxa","claudio"], action:"Teresa Guilhermina I entra como aparição real. O plateau pára.", dialogue:{char:"teresa",paren:"(pose régia)",line:"Eu sou a rainha dos reality-shows! E exijo o meu lugar."}, reversal:null, reframeOf:null },
+        { id:"6b", title:"Cena 6b", type:"REFRAME", location:"Estúdio Central", duration:5, shot:"CLOSE-UP", camera:"STATIC", characters:["teresa"], action:"MESMA CENA DO 6a. CLOSE-UP de Teresa. Queixo erguido, sorriso de quem já ganhou a cena.", dialogue:null, reversal:"IRIS OUT sobre o rosto de Teresa. Fim.", reframeOf:"6a" }
+      ];
+      scenes.forEach(s => {
+        s.timecode = tc(s.duration);
+        s.characters = s.characters.filter(id => charById[id]);
+        s.alertMel = s.characters.includes("abelha");
+        if (s.dialogue) { s.dialogue.line = sanitize(s.dialogue.line); s.dialogue.paren = sanitize(s.dialogue.paren); }
+        if (s.reversal) s.reversal = sanitize(s.reversal);
+        s.prompt = buildPrompt(s);
+        s.imageUrl = null;
+        s.model = null;
+        s.variant = 0;
+        s.approved = false;
+        s.referenceCount = 0;
+      });
+      return scenes;
+    }
+    function audit(ep) {
+      const issues = [];
+      const banned = ["goucha", "moniz", "cristina ferreira", "joão patribunal"];
+      const text = [ep.name, ep.premise, ...ep.scenes.flatMap(s => [s.location, s.action, s.reversal || "", s.prompt || "", s.dialogue?.line || ""])].join(" ").toLowerCase();
+      banned.forEach(b => { if (text.includes(b)) issues.push({ type:"critical", msg:`Nome real proibido detetado: ${b}.` }); });
+      ep.scenes.forEach(s => {
+        if (Number(s.duration) > 8) issues.push({ type:"error", msg:`Take ${s.id} excede 8 segundos.` });
+        if (s.alertMel && !/ALERTA MEL/.test(s.prompt || "")) issues.push({ type:"critical", msg:`Take ${s.id} tem Abelha Maia sem ALERTA MEL no prompt.` });
+        if (s.reframeOf) {
+          const ref = ep.scenes.find(x => x.id === s.reframeOf);
+          if (!ref) issues.push({ type:"error", msg:`Take ${s.id} referencia reframe inexistente ${s.reframeOf}.` });
+          else if (ref.location !== s.location) issues.push({ type:"error", msg:`Take ${s.id} é reframe mas mudou de localização.` });
+        }
+      });
+      if (!issues.length) issues.push({ type:"success", msg:"Auditoria OK." });
+      return issues;
+    }
+    function renderAudit(issues) {
+      const bad = issues.some(i => i.type === "error" || i.type === "critical");
+      $("audit").innerHTML = `<div class="audit ${bad ? "error" : "success"}"><strong>${bad ? "Auditoria com ocorrências" : "Auditoria OK"}</strong><br>${issues.map(i => esc(i.msg)).join("<br>")}</div>`;
+    }
+    function currentEpisode() {
+      const season = state.seasons.find(s => s.id === state.currentSeason) || state.seasons[0];
+      if (!season) return null;
+      return season.episodes.find(e => e.id === state.currentEpisode) || season.episodes[0] || null;
+    }
+    function generateEpisode() {
+      const name = $("episodeName").value.trim();
+      const premise = $("premise").value.trim();
+      if (!name) return status("Escreve o nome do episódio.", "error");
+      if (!premise) return status("Escreve uma premissa.", "error");
+      const btn = $("generateBtn");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span> A gerar...';
+      setTimeout(() => {
+        try {
+          const number = (state.seasons[0]?.episodes.length || 0) + 1;
+          const episode = {
+            id: `e${number}-${Date.now()}`,
+            number,
+            name: sanitize(name),
+            premise: sanitize(premise),
+            season: 1,
+            scenes: buildScenes(premise)
+          };
+          episode.audit = audit(episode);
+          if (!state.seasons.length) state.seasons.push({ id: "s1", name: "Season 1", episodes: [] });
+          state.seasons[0].episodes.push(episode);
+          state.currentSeason = "s1";
+          state.currentEpisode = episode.id;
+          state.currentScene = episode.scenes[0]?.id || null;
+          save();
+          renderAudit(episode.audit);
+          renderScript();
+          renderPipeline();
+          switchTab("script");
+          $("episodeName").value = "";
+          $("premise").value = "";
+          status(`Episódio ${number} gerado.`, "success");
+        } catch(e) {
+          status("Erro: " + e.message, "error");
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = "Gerar guião";
+        }
+      }, 500);
+    }
+    function renderScript() {
+      const ep = currentEpisode();
+      if (!ep) return $("scriptContent").innerHTML = '<div class="empty"><h3>Guião</h3><p>Gera um episódio.</p></div>';
+      let html = `<div class="script"><div class="script-head"><h2>OS LESADOS</h2><p>"${esc(ep.name)}"</p><p>Season 1 · Episódio ${ep.number} · ${ep.scenes.length} takes</p></div>`;
+      ep.scenes.forEach((s, i) => {
+        if (s.id === "1a") html += '<div class="act">ATO I — SETUP</div>';
+        if (s.id === "2a") html += '<div class="act">INCIDENTE INCITANTE</div>';
+        if (s.id === "3a") html += '<div class="act">ATO II — ESCALADA</div>';
+        if (s.id === "5a") html += '<div class="act">SUBLOT / BASTIDORES</div>';
+        if (s.id === "6a") html += '<div class="act">RESOLUÇÃO</div>';
+        html += `<div class="slug">INT. ${esc(s.location).toUpperCase()} - DIA [${esc(s.timecode)}]</div>`;
+        if (s.reframeOf) html += `<div class="reframe">[REFRAME do take ${esc(s.reframeOf)} — mesma localização, só muda enquadramento]</div>`;
+        html += `<div class="camera">🎥 ${esc(s.shot)} · ${esc(s.camera)}</div>`;
+        html += `<div class="take">▶ TAKE ${esc(s.id)} · ${s.duration}s · ${esc(s.type)}${s.alertMel ? " · ALERTA MEL" : ""}</div>`;
+        html += `<div class="action">${esc(s.action)}</div>`;
+        if (s.dialogue) {
+          html += `<div class="char">${esc(charById[s.dialogue.char]?.name || s.dialogue.char)}</div>`;
+          if (s.dialogue.paren) html += `<div class="paren">${esc(s.dialogue.paren)}</div>`;
+          html += `<div class="dialogue">${esc(s.dialogue.line)}</div>`;
+        }
+        if (s.reversal) html += `<div class="reversal">⚡ REVERSAL: ${esc(s.reversal)}</div>`;
+        if (i < ep.scenes.length - 1) html += '<div class="cut">CUT TO:</div>';
+      });
+      html += '<div class="end">— FIM DO EPISÓDIO —</div></div>';
+      $("scriptContent").innerHTML = html;
+    }
+    function renderPipeline() {
+      const ep = currentEpisode();
+      if (!ep) return $("pipelineContent").innerHTML = '<div class="empty"><h3>Pipeline</h3><p>Gera um episódio.</p></div>';
+      const season = state.seasons.find(s => s.id === state.currentSeason) || state.seasons[0];
+      if (!state.currentScene) state.currentScene = ep.scenes[0]?.id || null;
+      const scene = ep.scenes.find(s => s.id === state.currentScene) || ep.scenes[0];
+      const total = ep.scenes.reduce((a,s)=>a+Number(s.duration||0),0);
+      const chars = [...new Set(ep.scenes.flatMap(s=>s.characters||[]))].map(id=>charById[id]?.name).filter(Boolean).join(", ");
+      const locs = [...new Set(ep.scenes.map(s=>s.location))].join(", ");
+      let html = `
+        <div class="summary">
+          <h3>📖 ${esc(ep.name)}</h3>
+          <div class="grid-summary">
+            <div class="card-mini"><div class="label">Episódio</div><div class="value">${ep.number}</div></div>
+            <div class="card-mini"><div class="label">Duração</div><div class="value">${fmt(total)}</div></div>
+            <div class="card-mini"><div class="label">Takes</div><div class="value">${ep.scenes.length}</div></div>
+            <div class="card-mini"><div class="label">Personagens</div><div class="value">${esc(chars)}</div></div>
+            <div class="card-mini"><div class="label">Locais</div><div class="value">${esc(locs)}</div></div>
+          </div>
+          <div class="synopsis"><div class="label">Sinopse</div><div class="value">${esc(ep.premise)}</div></div>
+        </div>
+        <div class="pipeline">
+          <div class="nav"><div class="season"><div class="season-title">${esc(season.name)}</div><div class="ep-list">
+      `;
+      season.episodes.forEach(e => {
+        html += `<div class="ep-item ${e.id === ep.id ? "active" : ""}" data-ep="${esc(e.id)}">Ep. ${e.number}: ${esc(e.name)}</div>`;
+      });
+      html += `</div></div></div><div>
+        <div class="gen">
+          <h3>🎨 ${scene ? esc(scene.title) : "Seleciona um take"} ${scene?.approved ? '<span class="badge-ok">APROVADA</span>' : ""}</h3>
+          ${scene ? `<div class="meta">Modelo: ${esc(scene.model || "sem geração")} · Variante: v${scene.variant || 0} · Refs: ${scene.referenceCount || 0}</div>` : ""}
+          <textarea class="prompt" id="promptInput">${scene ? esc(scene.prompt || "") : ""}</textarea>
+          <div class="buttons">
+            <button class="btn" id="generateImageBtn" ${scene ? "" : "disabled"}>Gerar imagem</button>
+            <button class="btn btn-warning" id="regenerateBtn" ${scene ? "" : "disabled"}>Regenerar</button>
+            ${scene?.imageUrl ? `<button class="btn btn-success" id="approveBtn">${scene.approved ? "Aprovada" : "Aprovar"}</button>` : ""}
+          </div>
+          <div class="preview">${scene?.imageUrl ? `<img src="${esc(scene.imageUrl)}" alt="imagem">` : '<div class="ph">A imagem aparece aqui</div>'}</div>
+        </div>
+        <h3 style="color:var(--warning);margin-bottom:12px;">📋 Takes (${ep.scenes.length})</h3>
+        <div class="scenes">
+      `;
+      ep.scenes.forEach(s => {
+        html += `
+          <div class="scene ${s.id === state.currentScene ? "selected" : ""}" data-scene="${esc(s.id)}">
+            <div class="scene-img">${s.imageUrl ? `<img src="${esc(s.imageUrl)}" alt="${esc(s.title)}">` : '<div class="none">Sem imagem</div>'}</div>
+            <div class="scene-info">
+              <div class="scene-title">${esc(s.title)}${s.alertMel ? '<span class="badge">MEL</span>' : ""}${s.approved ? '<span class="badge-ok">OK</span>' : ""}</div>
+              <div class="scene-desc">${esc((s.action || "").slice(0, 90))}...</div>
+              <div class="meta">${esc(s.model || "sem modelo")} · v${s.variant || 0}</div>
+            </div>
+          </div>
+        `;
+      });
+      html += "</div></div></div>";
+      $("pipelineContent").innerHTML = html;
+
+      $("pipelineContent").querySelectorAll(".ep-item").forEach(el => el.addEventListener("click", () => {
+        state.currentEpisode = el.dataset.ep;
+        state.currentScene = null;
+        save();
+        renderPipeline();
+        renderScript();
+      }));
+      $("pipelineContent").querySelectorAll(".scene").forEach(el => el.addEventListener("click", () => {
+        state.currentScene = el.dataset.scene;
+        save();
+        renderPipeline();
+      }));
+      const pi = $("promptInput");
+      if (pi && scene) pi.addEventListener("input", () => { scene.prompt = pi.value; save(); });
+      $("generateImageBtn")?.addEventListener("click", generateImage);
+      $("regenerateBtn")?.addEventListener("click", () => { if (confirm("Regenerar?")) generateImage(); });
+      $("approveBtn")?.addEventListener("click", approveImage);
+    }
+    function renderCanon() {
+      let html = '<div class="bible">';
+      characters.forEach(c => {
+        html += `
+          <div class="char-card">
+            <h3>${esc(c.name)} ${c.id === "abelha" ? '<span class="badge">ALERTA MEL</span>' : ""}</h3>
+            <p><strong>ID:</strong> ${esc(c.id)}</p>
+            <p><strong>Visual:</strong> ${esc(c.visual)}</p>
+          </div>
+        `;
+      });
+      html += "</div>";
+      $("canonContent").innerHTML = html;
+    }
+    function approveImage() {
+      const ep = currentEpisode();
+      const scene = ep?.scenes.find(s => s.id === state.currentScene);
+      if (!scene?.imageUrl) return status("Sem imagem para aprovar.", "error");
+      scene.approved = true;
+      save();
+      renderPipeline();
+      status("Imagem aprovada.", "success");
+    }
+    function backendUrl() { return ($("backendUrl").value || "/api").replace(/\/$/, ""); }
+    function model() { return $("modelSelect").value || "gemini-nano-banana-2.1"; }
+    async function safeJson(res) { try { return await res.json(); } catch { return { ok:false, error: await res.text() || `HTTP ${res.status}` }; } }
+    function collectRefs(ep, scene) {
+      const refs = [];
+      if (scene.reframeOf) {
+        const base = ep.scenes.find(s => s.id === scene.reframeOf);
+        if (base?.imageUrl) {
+          const m = base.imageUrl.match(/^data:([^;]+);base64,(.+)$/);
+          if (m) refs.push({ label:`continuity:${base.id}`, mimeType:m[1], base64:m[2] });
+        }
+      }
+      return refs;
+    }
+    async function testBackend() {
+      if (location.protocol === "file:") return apiStatus("❌ Abre via http://localhost:8787, não file://.", "error");
+      const btn = $("testBtn");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span> A testar...';
+      apiStatus("A verificar backend...", "testing");
+      try {
+        const h = await fetch(`${backendUrl()}/health`, { headers: { Accept: "application/json" } });
+        const health = await safeJson(h);
+        if (!h.ok || health.ok === false) throw new Error(health.error || `HTTP ${h.status}`);
+        if (!health.keyConfigured) return apiStatus("⚠️ Backend ativo, mas GEMINI_API_KEY não configurada no .env.", "testing");
+        apiStatus("Backend ativo. A fazer geração real de teste...", "testing");
+        const t = await fetch(`${backendUrl()}/test`, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ model: model() }) });
+        const test = await safeJson(t);
+        if (!t.ok || test.ok === false) throw new Error(test.error || `HTTP ${t.status}`);
+        apiStatus(`✅ OK. Modelo: ${esc(test.model)} · Bytes: ${Number(test.bytes).toLocaleString("pt-PT")}`, "success");
+      } catch(e) {
+        apiStatus("❌ " + esc(e.message), "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = "Testar backend";
+      }
+    }
+    async function checkContext() {
+      if (location.protocol === "file:") return $("contextStatus").innerHTML = '<div class="api-status error">Abre via backend.</div>';
+      $("contextStatus").innerHTML = '<div class="api-status testing">A ler contexto...</div>';
+      try {
+        const res = await fetch(`${backendUrl()}/context/status`, { headers: { Accept: "application/json" } });
+        const data = await safeJson(res);
+        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
+        const chars = Object.entries(data.characters || {}).map(([k,v]) => `${k}: ${v ? "✅" : "❌"}`).join("<br>");
+        const bgs = Object.entries(data.backgrounds || {}).map(([k,v]) => `${esc(k)}: ${v ? "✅" : "❌"}`).join("<br>");
+        $("contextStatus").innerHTML = `<div class="api-status success"><strong>Personagens</strong><br>${chars}<br><br><strong>Backgrounds</strong><br>${bgs}</div>`;
+      } catch(e) {
+        $("contextStatus").innerHTML = `<div class="api-status error">❌ ${esc(e.message)}</div>`;
+      }
+    }
+    async function generateImage() {
+      if (location.protocol === "file:") return status("Para imagens, abre via http://localhost:8787.", "error");
+      const ep = currentEpisode();
+      if (!ep) return status("Gera um episódio primeiro.", "error");
+      const scene = ep.scenes.find(s => s.id === state.currentScene);
+      if (!scene) return status("Seleciona um take.", "error");
+      const prompt = ($("promptInput")?.value || scene.prompt || "").trim();
+      if (!prompt) return status("Prompt vazio.", "error");
+      if (scene.approved && !confirm("Esta imagem está aprovada. Substituir?")) return;
+      const btn = $("generateImageBtn");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span> A gerar...';
+      try {
+        const refs = collectRefs(ep, scene);
+        const res = await fetch(`${backendUrl()}/generate-image`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt,
+            model: model(),
+            references: refs,
+            sceneContext: { characters: scene.characters || [], location: scene.location || "" }
+          })
+        });
+        const data = await safeJson(res);
+        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
+        if (!data.base64) throw new Error("Backend não devolveu imagem.");
+        scene.imageUrl = `data:${data.mimeType || "image/png"};base64,${data.base64}`;
+        scene.prompt = prompt;
+        scene.model = data.model || model();
+        scene.variant = Number(scene.variant || 0) + 1;
+        scene.approved = false;
+        scene.referenceCount = Number(data.referenceCount || refs.length || 0);
+        save();
+        renderPipeline();
+        status(`Imagem gerada com ${scene.model}.`, "success");
+        if (Array.isArray(data.warnings) && data.warnings.length) status(data.warnings.join(" | "), "info");
+      } catch(e) {
+        status("Erro: " + e.message, "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = "Gerar imagem";
+      }
+    }
+    function resetAll() {
+      if (!confirm("Apagar tudo?")) return;
+      localStorage.removeItem("osLesados_html");
+      state = { version: VERSION, seasons: [], currentSeason: null, currentEpisode: null, currentScene: null };
+      $("scriptContent").innerHTML = '<div class="empty"><h3>Guião</h3><p>Gera um episódio.</p></div>';
+      $("pipelineContent").innerHTML = '<div class="empty"><h3>Pipeline</h3><p>Gera um episódio.</p></div>';
+      $("audit").innerHTML = "";
+      $("apiStatus").innerHTML = "";
+      $("contextStatus").innerHTML = "";
+      status("Tudo apagado.", "success");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      load();
+      renderCanon();
+      suggestion();
+      $("suggestBtn").addEventListener("click", suggestion);
+      $("generateBtn").addEventListener("click", generateEpisode);
+      $("testBtn").addEventListener("click", testBackend);
+      $("contextBtn").addEventListener("click", checkContext);
+      $("resetBtn").addEventListener("click", resetAll);
+      document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => switchTab(t.dataset.tab)));
+      if (state.seasons.length && state.currentEpisode) {
+        const ep = currentEpisode();
+        if (ep) {
+          renderAudit(ep.audit);
+          renderScript();
+          renderPipeline();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
