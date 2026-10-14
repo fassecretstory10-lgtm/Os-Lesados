@@ -49,8 +49,9 @@ function loadApp({ search = "", protocol = "http:" } = {}, presetStore = null) {
   const fn = new Function(...names, `${m[1]}; return {
     detectCast, normalizeAIStory, storyToScenes, auditStory, audit, currentEpisode,
     sanitize, normalize, buildTagScene, pickColdOpen, validateImported,
+    classifyFormat, estimateDuration, FORMATS, EP_MAX_SECONDS,
     get state() { return state; }, setState(v) { state = v; },
-    charById, VERSION
+    charById, VERSION, EPISODE_SCHEMA
   };`);
   const api = fn(...names.map((k) => sandbox[k]));
   api.__ready?.();
@@ -143,6 +144,25 @@ test("sanitize idempotente e sem nomes reais", () => {
   assert.equal(api.sanitize(once), once);
 });
 
+test("Fase 3: classifyFormat explica + estimateDuration por conteúdo + teto", () => {
+  const { api } = loadApp();
+  const f1 = api.classifyFormat("O Capitão veta a grelha em reunião de emergência", ["capitao"]);
+  assert.equal(f1.id, "confronto");
+  assert.ok(f1.why.includes("vet"));
+  const f2 = api.classifyFormat("Um dia normal sem marcadores óbvios aqui", ["coxa"]);
+  assert.equal(f2.id, "situacao");
+  const scenes = [
+    { location: "Estúdio Central", action: "Age com calma total", dialogue: { char: "coxa", line: "Olá a todos bem vindos ao direto de hoje" } },
+    { location: "Estúdio Central", action: "Reage", dialogue: null },
+    { location: "Corredor de Bastidores", action: "Corre", dialogue: { char: "coxa", line: "Espera" } },
+  ];
+  const est = api.estimateDuration(scenes);
+  assert.ok(est.seconds > 0 && est.breakdown.dialogue > 0 && est.breakdown.action > 0);
+  assert.equal(est.over, false);
+  const long = api.estimateDuration(new Array(40).fill(scenes[0]));
+  assert.equal(long.over, true);
+  assert.equal(long.ceiling, api.EP_MAX_SECONDS);
+});
 test("Fase 2: takes levam sv + clipApproved; migração preenche sem reescrever", () => {
   const { api, store } = loadApp();
   const story = {

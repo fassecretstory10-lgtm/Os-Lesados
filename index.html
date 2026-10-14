@@ -515,6 +515,8 @@
           ep.premise = sanitize(ep.premise || "");
           if (!ep.narration || !ep.narration.open) ep.narration = buildNarration(ep.name);
           if (!ep.hook && ep.number) ep.hook = pickSeasonHook(ep.number);
+          if (!ep.format) ep.format = classifyFormat(ep.premise || "", (ep.story?.stars || []));
+          if (!ep.runtime) ep.runtime = estimateDuration(ep.scenes || []);
           ep.scenes.forEach(sc => {
             sc.location = sanitize(sc.location || "Estúdio Central");
             sc.action = sanitize(sc.action || "");
@@ -822,6 +824,47 @@
       const uniq = [...new Set(words)].sort((a, b) => b.length - a.length);
       return uniq.slice(0, n || 3);
     }
+    // Fase 3: formato classificado a partir da premissa (nunca um esqueleto único).
+    const EP_MAX_SECONDS = 120; // teto configurável; futuro: 300 sem reconstruir nada
+    const FORMATS = [
+      { id: "gala", label: "Gala / festa", keys: ["gala", "festa", "expuls", "nomea", "prémio", "premio", "concurso"] },
+      { id: "investigacao", label: "Investigação / mal-entendido", keys: ["descobrir", "mistério", "misterio", "telefone", "seguir", "pista", "segredo", "investigar"] },
+      { id: "confronto", label: "Confronto", keys: ["discuss", "briga", "vet", "demit", "grito", "berro", "confronto", "luta"] },
+      { id: "plano-falhado", label: "Plano que corre mal", keys: ["plano", "falha", "engano", "confus", "troca", "esconder", "fugir"] },
+      { id: "bastidores", label: "Bastidores", keys: ["camarim", "maquilhagem", "ensaio", "bastidor", "corredor"] },
+      { id: "situacao", label: "Situação cómica", keys: [] }
+    ];
+    function classifyFormat(premise, castIds) {
+      const low = String(premise || "").toLowerCase();
+      for (const f of FORMATS) {
+        const hit = f.keys.find(k => low.includes(k));
+        if (hit) return { id: f.id, label: f.label, why: `palavra-chave "${hit}" na premissa` };
+      }
+      return { id: "situacao", label: "Situação cómica", why: "sem marcadores; formato neutro" };
+    }
+    // Runtime estimado a partir do conteúdo (falas+ações+pausas), nunca nº fixo.
+    const DIALOGUE_WPS = 2.4, ACTION_BASE_S = 2.0, ACTION_PER_WORD_S = 0.25, PAUSE_PER_TAKE_S = 0.5;
+    function estimateDuration(scenes, ceiling) {
+      const cap = Number(ceiling) || EP_MAX_SECONDS;
+      let seconds = 0;
+      const parts = { dialogue: 0, action: 0, pauses: 0 };
+      let prevLoc = null;
+      for (const s of scenes || []) {
+        if (s.dialogue?.line) {
+          const w = String(s.dialogue.line).trim().split(/\s+/).filter(Boolean).length;
+          const d = w / DIALOGUE_WPS;
+          parts.dialogue += d; seconds += d;
+        }
+        const aw = String(s.action || "").trim().split(/\s+/).filter(Boolean).length;
+        const ad = ACTION_BASE_S + aw * ACTION_PER_WORD_S;
+        parts.action += ad; seconds += ad;
+        parts.pauses += PAUSE_PER_TAKE_S; seconds += PAUSE_PER_TAKE_S;
+        if (prevLoc !== null && s.location !== prevLoc) { seconds += 1.0; parts.pauses += 1.0; }
+        prevLoc = s.location;
+      }
+      seconds = Math.round(seconds);
+      return { seconds, over: seconds > cap, ceiling: cap, breakdown: parts };
+    }
     function buildStoryLocal(premise, stars) {
       const P = sanitize(premise || "O caos instala-se na estação.");
       const cast0 = (stars && stars.length ? [...stars] : ["coxa", "claudio"]).filter(id => charById[id]);
@@ -1046,6 +1089,9 @@
           issues.push({ type: "warning", msg: `Take ${s.id}: prompt visual sem o cenário.` });
         }
       });
+      if (ep.runtime?.over) {
+        issues.push({ type: "warning", msg: `Duração estimada ~${ep.runtime.seconds}s excede o teto de ${ep.runtime.ceiling}s — apertar sem cortar setup, escalada ou payoff.` });
+      }
       if (!issues.length) issues.push({ type: "success", msg: "Auditoria narrativa OK (checks determinísticos)." });
       return issues;
     }
@@ -1150,6 +1196,8 @@
         ep.story = normalizeAIStory(data.story, ep.premise, castIds);
         ep.storyVersion = (ep.storyVersion || 1) + 1;
         ep.scenes = storyToScenes(ep.story, ep.storyVersion);
+        ep.format = classifyFormat(ep.premise, castIds);
+        ep.runtime = estimateDuration(ep.scenes);
         state.currentScene = ep.scenes[0]?.id || null;
         save();
         ep.audit = [...auditStory(ep), ...audit(ep)];
@@ -1275,10 +1323,12 @@
           season: state.seasons.indexOf(season) + 1,
           schemaVersion: EPISODE_SCHEMA, storyVersion: 1,
           story, scenes: storyToScenes(story, 1),
+          format: classifyFormat(cleanPremise, castIds),
           narration: buildNarration(cleanName),
           tagScene: buildTagScene(castIds, cleanPremise),
           coldOpen: pickColdOpen(premise, number)
         };
+        episode.runtime = estimateDuration(episode.scenes);
         episode.audit = [...auditStory(episode), ...audit(episode)];
         season.episodes.push(episode);
         state.currentSeason = season.id;
@@ -1349,7 +1399,7 @@
     function renderScript() {
       const ep = currentEpisode();
       if (!ep) return $("scriptContent").innerHTML = '<div class="empty"><h3>Guião</h3><p>Gera um episódio.</p></div>';
-      let html = `<div class="script"><div class="script-head"><h2>OS LESADOS</h2><p>"${esc(ep.name)}"</p><p>Season 1 · Episódio ${ep.number} · ${ep.scenes.length} takes</p>${ep.hook ? `<p style="color:var(--canon);font-size:.85em;">🧵 Fio de temporada: ${esc(ep.hook)}</p>` : ""}</div>`;
+      let html = `<div class="script"><div class="script-head"><h2>OS LESADOS</h2><p>"${esc(ep.name)}"</p><p>Season 1 · Episódio ${ep.number} · ${ep.scenes.length} takes${ep.format ? ` · ${esc(ep.format.label)}` : ""}${ep.runtime ? ` · ~${ep.runtime.seconds}s estimados` : ""}</p>${ep.hook ? `<p style="color:var(--canon);font-size:.85em;">🧵 Fio de temporada: ${esc(ep.hook)}</p>` : ""}</div>`;
       if (ep.narration?.open) html += `<div class="narr"><strong>ABELHA MAIA (V.O.) — ABERTURA:</strong> ${esc(ep.narration.open)}</div>`;
       if (ep.coldOpen) html += `<div class="slug">EXT. ${esc(ep.coldOpen.location).toUpperCase()} - DIA [0:00 - 0:0${esc(String(ep.coldOpen.duration))}]</div><div class="camera">🎥 WIDE SHOT · ${esc(ep.coldOpen.camera)}</div><div class="take">▶ COLD OPEN · ${esc(String(ep.coldOpen.duration))}s · ESTABLISHING</div><div class="action">${esc(ep.coldOpen.action)}</div>`;
       ep.scenes.forEach((s, i) => {
