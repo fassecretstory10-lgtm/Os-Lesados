@@ -1,0 +1,7 @@
+# Deps do agente de analise de estilo via YouTube.
+# Instalar com: pip install -r tools/requirements-style.txt
+# Nota: opencv-python pode exigir ffmpeg do sistema para abrir alguns formatos.
+yt-dlp>=2024.1.0
+opencv-python>=4.9.0
+google-genai>=1.0.0
+numpy>=1.26.0

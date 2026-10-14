@@ -1,0 +1,229 @@
+{
+ "id": "wr-mv7fwvk4",
+ "topic": "realities e daytime TVI",
+ "version": 1,
+ "createdAt": "2026-10-14T01:37:33.892Z",
+ "updatedAt": "2026-10-14T01:46:13.928Z",
+ "status": "error",
+ "stage": "analyze",
+ "stopped": false,
+ "agents": {
+  "investigador": {
+   "state": "concluído",
+   "detail": "6 fontes"
+  },
+  "analista": {
+   "state": "concluído",
+   "detail": "6 combinações"
+  },
+  "argumentista": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  },
+  "improvisador": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  },
+  "critico": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  },
+  "showrunner": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  }
+ },
+ "messages": [
+  {
+   "from": "showrunner",
+   "to": [
+    "investigador"
+   ],
+   "task": "briefing",
+   "at": "2026-10-14T01:37:33.903Z",
+   "state": "ok",
+   "content": "Investiga: realities e daytime TVI. TVI, realities, daytime, polémicas recentes."
+  },
+  {
+   "from": "investigador",
+   "to": [
+    "analista"
+   ],
+   "task": "dossiê",
+   "at": "2026-10-14T01:37:35.840Z",
+   "state": "ok",
+   "content": "6 fontes (4 falhas)."
+  },
+  {
+   "from": "analista",
+   "to": [
+    "argumentista",
+    "improvisador"
+   ],
+   "task": "combinações",
+   "at": "2026-10-14T01:37:55.655Z",
+   "state": "ok",
+   "content": "6 combinações personagem×facto."
+  }
+ ],
+ "sources": [
+  {
+   "title": "Senhora do Destino",
+   "url": "https://pt.wikipedia.org/wiki/Senhora_do_Destino",
+   "snippet": "Senhora do Destino é uma telenovela brasileira produzida e exibida pela TV Globo de 28 de junho de 2004 a 11 de março de 2005, em 221 capítulos. Substituiu Celebridade e foi substituída por América, sendo a 65ª \"novela das oito\" a ser transmitida pela emissora.\nCriada e escrita por Aguinaldo Silva, ",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "daytime"
+  },
+  {
+   "title": "Alma Gêmea",
+   "url": "https://pt.wikipedia.org/wiki/Alma_G%C3%AAmea",
+   "snippet": "Alma Gêmea é uma telenovela brasileira produzida e exibida pela TV Globo de 20 de junho de 2005 a 10 de março de 2006, em 227 capítulos. Substituiu Como uma Onda e sendo substituída por Sinhá Moça, foi a 66ª \"novela das seis\" exibida pela emissora. \nTeve a autoria de Walcyr Carrasco, com colaboração",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "daytime"
+  },
+  {
+   "title": "Secret Story - Casa dos Segredos",
+   "url": "https://pt.wikipedia.org/wiki/Secret_Story_-_Casa_dos_Segredos",
+   "snippet": "Secret Story - Casa dos Segredos é um reality show da TVI baseado no original francês Secret Story. A primeira edição do programa televisivo estreou no dia 3 de outubro de 2010.",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "daytime"
+  },
+  {
+   "title": "SIC Notícias",
+   "url": "https://pt.wikipedia.org/wiki/SIC_Not%C3%ADcias",
+   "snippet": "A SIC Notícias é um canal de televisão português que transmite programação jornalística. Criado em 8 de janeiro de 2001, foi o primeiro canal português de informação. \nO canal está disponível mediante assinatura, nas quatro plataformas portuguesas, e gratuitamente, através do site e da aplicação da ",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "concorrência"
+  },
+  {
+   "title": "Joana Amaral Dias",
+   "url": "https://pt.wikipedia.org/wiki/Joana_Amaral_Dias",
+   "snippet": "Joana Beatriz Nunes Vicente Amaral Dias Terrinca (Luanda, 13 de maio de 1973) é uma psicóloga clínica e comentadora de assuntos políticos e sociais portuguesa. \nPossui licenciatura e mestrado pré-Bolonha pela Universidade de Coimbra. Foi bolseira da FCT e concluiu o doutoramento em 2025 na mesma Uni",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "concorrência"
+  },
+  {
+   "title": "CMTV",
+   "url": "https://pt.wikipedia.org/wiki/CMTV",
+   "snippet": "A CMTV (Correio da Manhã TV) é um canal de TV fechado português, associado ao diário Correio da Manhã. É um canal generalista com um forte cunho informativo, neste caso de caráter sensacionalista, dando especial atenção à atualidade relativa a assuntos criminais, acidentes, tragédias pessoais, casos",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "concorrência"
+  }
+ ],
+ "sourceErrors": [
+  "ddg[realities e daytime TVI]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[TVI Secret Story Big Brother momento insólito direto]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[Dois às 10 Cristina Ferreira Cláudio Ramos momento viral]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[CMTV manhãs polémica direto]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio)."
+ ],
+ "combos": [
+  {
+   "id": "c1",
+   "chars": [
+    "teresa",
+    "tininha"
+   ],
+   "fact": "Secret Story - Casa dos Segredos é um reality show da TVI baseado no original francês Secret Story. A primeira edição do programa televisivo estreou no dia 3 de ",
+   "conflict": "Teresa, a destronada rainha dos reality shows, vê o sucesso de Secret Story como uma afronta pessoal e uma oportunidade para tentar reaver o seu trono, confrontando Tininha que está no poder e quer evitar o confronto direto.",
+   "engine": "A megalomania de Teresa em querer dominar um formato já estabelecido por Tininha, gerando um conflito de egos e tentativas de sabotagem indireta, enquanto Tininha tenta humilhar Teresa sem sujar as mãos.",
+   "sourceUrls": [
+    "https://pt.wikipedia.org/wiki/Secret_Story_-_Casa_dos_Segredos"
+   ]
+  },
+  {
+   "id": "c2",
+   "chars": [
+    "abelha",
+    "claudio"
+   ],
+   "fact": "A SIC Notícias é um canal de televisão português que transmite programação jornalística. Criado em 8 de janeiro de 2001, foi o primeiro canal português de infor ",
+   "conflict": "Abelha Maia tenta transformar a história da SIC Notícias num 'exclusivo bombástico' com um mockumentary sensacionalista sobre a sua 'origem secreta', enquanto Cláudio Prantos luta para manter um mínimo de rigor jornalístico e controlo sobre o direto caótico.",
+   "engine": "O choque entre o jornalismo sério que Cláudio tenta impor e a abordagem exageradamente sensacionalista e trivial de Abelha Maia, que quer ser a primeira a 'revelar' o óbvio de forma dramática.",
+   "sourceUrls": [
+    "https://pt.wikipedia.org/wiki/SIC_Not%C3%ADcias"
+   ]
+  },
+  {
+   "id": "c3",
+   "chars": [
+    "mario",
+    "patribunal"
+   ],
+   "fact": "Joana Beatriz Nunes Vicente Amaral Dias Terrinca (Luanda, 13 de maio de 1973) é uma psicóloga clínica e comentadora de assuntos políticos e sociais portuguesa.  ",
+   "conflict": "Mário Galático, no seu megalomaníaco desejo de 'resolver tudo com escala', decide contratar Joana Amaral Dias para um projeto de 'análise psíquica da nação' de proporções cósmicas. Patribunal, figura de autoridade, vê nesta iniciativa um ultraje à solenidade e tenta travar o delírio de Mário com base em protocolos e registos.",
+   "engine": "A grandiosidade e a falta de limites de Mário chocam com a rigidez institucional e a necessidade de ordem de Patribunal, resultando num debate absurdo sobre a 'escala' da verdade e da psicologia.",
+   "sourceUrls": [
+    "https://pt.wikipedia.org/wiki/Joana_Amaral_Dias"
+   ]
+  },
+  {
+   "id": "c4",
+   "chars": [
+    "coxa",
+    "perpetua"
+   ],
+   "fact": "A CMTV (Correio da Manhã TV) é um canal de TV fechado português, associado ao diário Correio da Manhã. É um canal generalista com um forte cunho informativo, ne ",
+   "conflict": "Coxa, enquanto tenta manter o seu programa de daytime 'apresentável' e 'proteger os colegas', vê-se a braços com Perpétua, que, nos bastidores, não para de soltar 'factos' inconvenientes e segredos sobre o tom sensacionalista da CMTV ou a vida privada dos envolvidos, ameaçando a imagem cuidadosamente construída do programa em direto.",
+   "engine": "O sorriso fácil e a tentativa de Coxa de manter as aparências entram em conflito com a verdade crua e sem filtros de Perpétua, gerando momentos de pânico silencioso e desespero por parte do apresentador.",
+   "sourceUrls": [
+    "https://pt.wikipedia.org/wiki/CMTV"
+   ]
+  },
+  {
+   "id": "c5",
+   "chars": [
+    "capitao",
+    "tininha"
+   ],
+   "fact": "Senhora do Destino é uma telenovela brasileira produzida e exibida pela TV Globo de 28 de junho de 2004 a 11 de março de 2005, em 221 capítulos. Substituiu Cele ",
+   "conflict": "Tininha, buscando ser 'indispensável' e 'humilhar Guilhermina sem sujar as mãos', tenta adquirir os direitos de 'Senhora do Destino' para um remake ambicioso que Capitão Gancho vê como uma ameaça à grelha atual e à estabilidade da operação, gerando um confronto sobre prioridades e controlo.",
+   "engine": "A ambição disfarçada de Tininha em usar um sucesso de ficção para cimentar o seu poder e espezinhar a rival, versus a obsessão de Capitão Gancho pela ordem e a manutenção da grelha, criando uma batalha de vontades nos bastidores da programação.",
+   "sourceUrls": [
+    "https://pt.wikipedia.org/wiki/Senhora_do_Destino"
+   ]
+  },
+  {
+   "id": "c6",
+   "chars": [
+    "mario",
+    "claudio"
+   ],
+   "fact": "Alma Gêmea é uma telenovela brasileira produzida e exibida pela TV Globo de 20 de junho de 2005 a 10 de março de 2006, em 227 capítulos. Substituiu Como uma Ond ",
+   "conflict": "Mário Galático, inspirado pelo conceito de 'alma gémea', decide lançar um reality show intergaláctico de encontro de almas, 'Almas Galácticas', com uma escala e excentricidade desmedidas, forçando Cláudio Prantos, que quer ser levado a sério como profissional, a tentar dirigir o projeto mais absurdo da sua carreira, sob a ameaça constante de ser ofuscado pela visão do patrão.",
+   "engine": "O choque entre a megalomania e a falta de noção de Mário Galático e o desejo de profissionalismo e seriedade de Cláudio Prantos, que é obrigado a dar forma a um conceito ridículo com o qual não se identifica, gerando um humor de exaustão e desespero.",
+   "sourceUrls": [
+    "https://pt.wikipedia.org/wiki/Alma_G%C3%AAmea"
+   ]
+  }
+ ],
+ "proposals": [],
+ "twists": [],
+ "critiques": [],
+ "ranking": [],
+ "shortlist": [],
+ "errors": [
+  "analyze: Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit.",
+  "retomada pelo utilizador",
+  "analyze: Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+ ],
+ "stats": {
+  "aiCalls": 3,
+  "startedAt": 1791941853899
+ },
+ "completedStages": [
+  "research",
+  "analyze"
+ ]
+}

@@ -1,0 +1,235 @@
+{
+ "id": "wr-mv8j42qv",
+ "topic": "audiências, galas e expulsões de realities",
+ "version": 1,
+ "createdAt": "2026-10-14T19:54:54.823Z",
+ "updatedAt": "2026-10-14T19:55:10.980Z",
+ "status": "error",
+ "stage": "research",
+ "stopped": false,
+ "agents": {
+  "investigador": {
+   "state": "concluído",
+   "detail": "15 fontes"
+  },
+  "analista": {
+   "state": "erro",
+   "detail": "Texto indisponível em todos os providers. openai: Quota OpenAI esgotada (429/insufficient_quota). Carrega créditos em https://platform.openai.com/settings/organ"
+  },
+  "argumentista": {
+   "state": "erro",
+   "detail": "Texto indisponível em todos os providers. openai: Quota OpenAI esgotada (429/insufficient_quota). Carrega créditos em https://platform.openai.com/settings/organ"
+  },
+  "improvisador": {
+   "state": "erro",
+   "detail": "Texto indisponível em todos os providers. openai: Quota OpenAI esgotada (429/insufficient_quota). Carrega créditos em https://platform.openai.com/settings/organ"
+  },
+  "critico": {
+   "state": "erro",
+   "detail": "Texto indisponível em todos os providers. openai: Quota OpenAI esgotada (429/insufficient_quota). Carrega créditos em https://platform.openai.com/settings/organ"
+  },
+  "showrunner": {
+   "state": "erro",
+   "detail": "Texto indisponível em todos os providers. openai: Quota OpenAI esgotada (429/insufficient_quota). Carrega créditos em https://platform.openai.com/settings/organ"
+  }
+ },
+ "messages": [
+  {
+   "from": "showrunner",
+   "to": [
+    "investigador"
+   ],
+   "task": "briefing",
+   "at": "2026-10-14T19:54:54.831Z",
+   "state": "ok",
+   "content": "Investiga: audiências, galas e expulsões de realities. TVI, realities, daytime, polémicas recentes."
+  },
+  {
+   "from": "investigador",
+   "to": [
+    "analista"
+   ],
+   "task": "dossiê",
+   "at": "2026-10-14T19:55:04.195Z",
+   "state": "ok",
+   "content": "15 fontes (7 falhas)."
+  }
+ ],
+ "sources": [
+  {
+   "title": "Danilo Gentili",
+   "url": "https://pt.wikipedia.org/wiki/Danilo_Gentili",
+   "snippet": "Danilo Gentili Júnior (Santo André, 27 de setembro de 1979) é um comediante, apresentador, escritor, cartunista, repórter, publicitário e empresário brasileiro. Gentili é reconhecido como um dos precursores e idealizadores do movimento do stand-up comedy no Brasil. Nos palcos, foi membro do Clube da",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "tópico",
+   "kind": "facto"
+  },
+  {
+   "title": "Lista de participantes do Big Brother Brasil",
+   "url": "https://pt.wikipedia.org/wiki/Lista_de_participantes_do_Big_Brother_Brasil",
+   "snippet": "A lista dos participantes de todas as edições do Big Brother Brasil (BBB) reúne todos os indivíduos que participaram do programa, um reality show transmitido pela TV Globo, entre sua primeira edição, em 2002, até a mais recente edição, em 2026. O programa é transmitido sobre diferentes nomes em mais",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "tópico",
+   "kind": "facto"
+  },
+  {
+   "title": "The Real World",
+   "url": "https://pt.wikipedia.org/wiki/The_Real_World",
+   "snippet": "The Real World (conhecido como Real World entre 2014 e 2019) é um programa de reality show estadunidense produzido pela MTV e pela Bunim/Murray Productions, exibido pela MTV de 1992 a 2017 e pelo Facebook Watch em 2019. Originalmente, foi produzido por Mary-Ellis Bunim e Jonathan Murray. Exibido pel",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "tópico",
+   "kind": "facto"
+  },
+  {
+   "title": "Guerra de Canudos",
+   "url": "https://pt.wikipedia.org/wiki/Guerra_de_Canudos",
+   "snippet": "Guerra de Canudos ou Campanha de Canudos foi um conflito armado ocorrido no final do século XIX entre, por um lado, as tropas regulares do estado da Bahia primeiro, e da república do Brasil depois, e por outro lado, um grupo de cerca de 30 000 colonos estabelecidos em comunidade autônoma num povoado",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "sites TVI",
+   "kind": "facto"
+  },
+  {
+   "title": "Che Guevara",
+   "url": "https://pt.wikipedia.org/wiki/Che_Guevara",
+   "snippet": "Ernesto Guevara de la Serna, mais conhecido como Che Guevara (Rosário, 14 de maio de 1928 – La Higuera, 9 de outubro de 1967), foi um revolucionário marxista, médico, escritor, guerrilheiro, diplomata e teórico militar argentino. Uma figura importante da Revolução Cubana, seu rosto estilizado tornou",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "sites TVI",
+   "kind": "facto"
+  },
+  {
+   "title": "Isaltino Morais",
+   "url": "https://pt.wikipedia.org/wiki/Isaltino_Morais",
+   "snippet": "Isaltino Afonso Morais (Mirandela, São Salvador, 29 de dezembro de 1949) é um jurista e político português, atual presidente da Câmara Municipal de Oeiras. Foi ministro das Cidades, Ordenamento do Território e Ambiente da República Portuguesa e é uma das figuras mais conhecidas da política autárquic",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "sites TVI",
+   "kind": "facto"
+  },
+  {
+   "title": "Secret Story - Casa dos Segredos",
+   "url": "https://pt.wikipedia.org/wiki/Secret_Story_-_Casa_dos_Segredos",
+   "snippet": "Secret Story - Casa dos Segredos é um reality show da TVI baseado no original francês Secret Story. A primeira edição do programa televisivo estreou no dia 3 de outubro de 2010.",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "sites TVI",
+   "kind": "facto"
+  },
+  {
+   "title": "Secret Story - Casa dos Segredos (2.ª edição)",
+   "url": "https://pt.wikipedia.org/wiki/Secret_Story_-_Casa_dos_Segredos_(2.%C2%AA_edi%C3%A7%C3%A3o)",
+   "snippet": "Secret Story - Casa dos Segredos 2 foi a segunda temporada da versão em português do reality show Secret Story, baseado na versão original francesa. \nEsta edição foi a primeira apresentada por Teresa Guilherme, após Júlia Pinheiro regressar à SIC. O programa iniciou em 18 de setembro e terminou em 3",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "sites TVI",
+   "kind": "facto"
+  },
+  {
+   "title": "Big Brother 2024",
+   "url": "https://pt.wikipedia.org/wiki/Big_Brother_2024",
+   "snippet": "O Big Brother 2024, também denominado BB 2024, foi a décima edição do reality show Big Brother em Portugal, transmitido pela TVI.  \nInicialmente planeada para ser apresentada por Cristina Ferreira, acabou, no entanto, por ser Cláudio Ramos a assumir esse cargo.\nEsta edição marca o regresso de Maria ",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "sites TVI",
+   "kind": "facto"
+  },
+  {
+   "title": "SIC Notícias",
+   "url": "https://pt.wikipedia.org/wiki/SIC_Not%C3%ADcias",
+   "snippet": "A SIC Notícias é um canal de televisão português que transmite programação jornalística. Criado em 8 de janeiro de 2001, foi o primeiro canal português de informação. \nO canal está disponível mediante assinatura, nas quatro plataformas portuguesas, e gratuitamente, através do site e da aplicação da ",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "fofocas PT",
+   "kind": "facto"
+  },
+  {
+   "title": "Joana Amaral Dias",
+   "url": "https://pt.wikipedia.org/wiki/Joana_Amaral_Dias",
+   "snippet": "Joana Beatriz Nunes Vicente Amaral Dias Terrinca (Luanda, 13 de maio de 1973) é uma psicóloga clínica e comentadora de assuntos políticos e sociais portuguesa. \nPossui licenciatura e mestrado pré-Bolonha pela Universidade de Coimbra. Foi bolseira da FCT e concluiu o doutoramento em 2025 na mesma Uni",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "fofocas PT",
+   "kind": "facto"
+  },
+  {
+   "title": "CMTV",
+   "url": "https://pt.wikipedia.org/wiki/CMTV",
+   "snippet": "A CMTV (Correio da Manhã TV) é um canal de TV fechado português, associado ao diário Correio da Manhã. É um canal generalista com um forte cunho informativo, neste caso de caráter sensacionalista, dando especial atenção à atualidade relativa a assuntos criminais, acidentes, tragédias pessoais, casos",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "fofocas PT",
+   "kind": "facto"
+  },
+  {
+   "title": "Marisa Cruz",
+   "url": "https://pt.wikipedia.org/wiki/Marisa_Cruz",
+   "snippet": "Carla Marisa da Cruz (Luanda, Angola, 27 de Junho de 1974) é uma modelo, atriz e apresentadora de televisão portuguesa.",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "fofocas PT",
+   "kind": "facto"
+  },
+  {
+   "title": "Universo Cinematográfico Marvel",
+   "url": "https://pt.wikipedia.org/wiki/Universo_Cinematogr%C3%A1fico_Marvel",
+   "snippet": "O Marvel Cinematic Universe (MCU) (Em português: Universo Cinematográfico Marvel, UCM) é uma franquia de mídia americana e um universo compartilhado centrado em uma série de filmes de super-heróis, produzida independentemente pela Marvel Studios e baseada em personagens que aparecem nas revistas em ",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "técnica",
+   "kind": "tecnica"
+  },
+  {
+   "title": "WandaVision",
+   "url": "https://pt.wikipedia.org/wiki/WandaVision",
+   "snippet": "WandaVision é uma minissérie estadunidense criada para o Disney+ por Jac Schaeffer, baseada nos personagens Wanda Maximoff / Feiticeira Escarlate e Visão, da Marvel Comics. É a primeira série televisiva do Universo Cinematográfico Marvel (UCM) produzida pelo Marvel Studios, compartilhando continuida",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "técnica",
+   "kind": "tecnica"
+  }
+ ],
+ "sourceErrors": [
+  "ddg[audiências, galas e expulsões de realities]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[site:tvi.iol.pt Dois às 10 momento insólito direto]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[site:tviplayer.iol.pt Secret Story Big Brother gala expulsão]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[CMTV manhãs polémica direto comentadores]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[Passadeira Vermelha polémica comentadores famosos]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[como escrever premissa cómica escalada payoff comédia]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[comedy writing premise escalation payoff rule of three caricature]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio)."
+ ],
+ "combos": [],
+ "proposals": [],
+ "twists": [],
+ "critiques": [],
+ "ranking": [],
+ "shortlist": [],
+ "errors": [
+  "research: Texto indisponível em todos os providers. openai: Quota OpenAI esgotada (429/insufficient_quota). Carrega créditos em https://platform.openai.com/settings/organization/billing. | anthropic: Sem créditos Anthropic (ou 429). Carrega em https://console.anthropic.com/settings/billing. | gemini: Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+ ],
+ "stats": {
+  "aiCalls": 1,
+  "startedAt": 1792007694823
+ },
+ "completedStages": [
+  "research"
+ ]
+}

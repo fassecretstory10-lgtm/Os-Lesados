@@ -1,0 +1,494 @@
+{
+ "id": "wr-mv8bba6z",
+ "topic": "polémicas da semana na TV portuguesa",
+ "version": 1,
+ "createdAt": "2026-10-14T16:16:34.139Z",
+ "updatedAt": "2026-10-14T16:17:25.347Z",
+ "status": "error",
+ "stage": "twists",
+ "stopped": false,
+ "agents": {
+  "investigador": {
+   "state": "concluído",
+   "detail": "15 fontes"
+  },
+  "analista": {
+   "state": "concluído",
+   "detail": "6 combinações"
+  },
+  "argumentista": {
+   "state": "concluído",
+   "detail": "10 premissas"
+  },
+  "improvisador": {
+   "state": "concluído",
+   "detail": "4 pacotes"
+  },
+  "critico": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  },
+  "showrunner": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  }
+ },
+ "messages": [
+  {
+   "from": "showrunner",
+   "to": [
+    "investigador"
+   ],
+   "task": "briefing",
+   "at": "2026-10-14T16:16:34.142Z",
+   "state": "ok",
+   "content": "Investiga: polémicas da semana na TV portuguesa. TVI, realities, daytime, polémicas recentes."
+  },
+  {
+   "from": "investigador",
+   "to": [
+    "analista"
+   ],
+   "task": "dossiê",
+   "at": "2026-10-14T16:16:37.405Z",
+   "state": "ok",
+   "content": "15 fontes (2 falhas)."
+  },
+  {
+   "from": "analista",
+   "to": [
+    "argumentista",
+    "improvisador"
+   ],
+   "task": "combinações",
+   "at": "2026-10-14T16:16:59.445Z",
+   "state": "ok",
+   "content": "6 combinações personagem×facto."
+  },
+  {
+   "from": "argumentista",
+   "to": [
+    "improvisador",
+    "critico"
+   ],
+   "task": "premissas prontas",
+   "at": "2026-10-14T16:17:18.132Z",
+   "state": "ok",
+   "content": "10 premissas (2 absurdas)."
+  },
+  {
+   "from": "improvisador",
+   "to": [
+    "critico"
+   ],
+   "task": "twists prontos",
+   "at": "2026-10-14T16:17:25.170Z",
+   "state": "ok",
+   "content": "4 pacotes de twists."
+  }
+ ],
+ "sources": [
+  {
+   "title": "Associação Portuguesa de Desportos",
+   "url": "https://pt.wikipedia.org/wiki/Associa%C3%A7%C3%A3o_Portuguesa_de_Desportos",
+   "snippet": "Associação Portuguesa de Desportos é um clube poliesportivo brasileiro de São Paulo cuja modalidade esportiva principal é o futebol. Foi fundada em 14 de agosto de 1920 por membros da comunidade portuguesa radicados na capital paulista, e suas cores são o vermelho e o verde, em alusão à bandeira nac",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "tópico"
+  },
+  {
+   "title": "Pânico na TV",
+   "url": "https://pt.wikipedia.org/wiki/P%C3%A2nico_na_TV",
+   "snippet": "Pânico na TV foi um programa de televisão humorístico brasileiro produzido e exibido pela RedeTV! entre  28 de setembro de 2003 e 4 de março de 2012 (Programa inédito até 25 de dezembro de 2011, a partir de 2012 somente reprises). Foi a primeira versão televisiva do programa radiofônico Pânico. Após",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "tópico"
+  },
+  {
+   "title": "Acordo Ortográfico de 1990",
+   "url": "https://pt.wikipedia.org/wiki/Acordo_Ortogr%C3%A1fico_de_1990",
+   "snippet": "Acordo Ortográfico da Língua Portuguesa de 1990 (abreviado AO90), também denominado Ortografia Unificada da Língua Portuguesa, é um tratado internacional firmado em 1990 com o objetivo de criar uma ortografia unificada para o português, a ser usada por todos os países de língua oficial portuguesa (l",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "tópico"
+  },
+  {
+   "title": "Audiências - Dioguinho",
+   "url": "https://dioguinho.com/tag/audiencias/",
+   "snippet": "Todas as audiências de televisão portuguesa. As audiências da RTP, SIC e TVI, todos os dias, além das notícias dos famosos e atualidades.",
+   "date": null,
+   "level": "documentado",
+   "source": "ddg",
+   "topic": "tópico"
+  },
+  {
+   "title": "A Televisão",
+   "url": "https://www.atelevisao.com/",
+   "snippet": "A Televisão é o site mais antigo dedicado à Televisão. As notícias mais recentes da TV, dos famosos, resumos das novelas e as audiências.",
+   "date": null,
+   "level": "documentado",
+   "source": "ddg",
+   "topic": "tópico"
+  },
+  {
+   "title": "Televisão Portuguesa - Informação, Atualidade e Notícias de ...",
+   "url": "https://pttv.eu/",
+   "snippet": "A Televisão Portuguesa é o seu canal de notícias 24h. Acompanhe a atualidade nacional e internacional, política, economia, cultura e desporto.",
+   "date": null,
+   "level": "documentado",
+   "source": "ddg",
+   "topic": "tópico"
+  },
+  {
+   "title": "Direto - TVI Player",
+   "url": "https://tviplayer.iol.pt/direto/T",
+   "snippet": "Veja os melhores conteúdos da TVI e da CNN Portugal, em direto e on-demand. Novelas, séries e programas imperdíveis como Big Brother, Dois às 10, Goucha e muito mais.",
+   "date": null,
+   "level": "documentado",
+   "source": "ddg",
+   "topic": "realities"
+  },
+  {
+   "title": "Big Brother All Stars: Últimas Notícias, Vídeos e Diretos - TVI",
+   "url": "https://tvi.iol.pt/bigbrother/",
+   "snippet": "Big Brother All Stars, da TVI. Acompanhe os concorrentes, o Big, as notícias, as galas, vídeos exclusivos e tudo o que acontece na casa mais vigiada do País.",
+   "date": null,
+   "level": "documentado",
+   "source": "ddg",
+   "topic": "realities"
+  },
+  {
+   "title": "Secret Story - TVI",
+   "url": "https://tvi.iol.pt/secretstory/direto",
+   "snippet": "Casa dos Segredos, da TVI. Acompanha os concorrentes, segredos, notícias, galas, vídeos exclusivos e tudo o que acontece dentro e fora da casa.",
+   "date": null,
+   "level": "documentado",
+   "source": "ddg",
+   "topic": "realities"
+  },
+  {
+   "title": "Senhora do Destino",
+   "url": "https://pt.wikipedia.org/wiki/Senhora_do_Destino",
+   "snippet": "Senhora do Destino é uma telenovela brasileira produzida e exibida pela TV Globo de 28 de junho de 2004 a 11 de março de 2005, em 221 capítulos. Substituiu Celebridade e foi substituída por América, sendo a 65ª \"novela das oito\" a ser transmitida pela emissora.\nCriada e escrita por Aguinaldo Silva, ",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "daytime"
+  },
+  {
+   "title": "Alma Gêmea",
+   "url": "https://pt.wikipedia.org/wiki/Alma_G%C3%AAmea",
+   "snippet": "Alma Gêmea é uma telenovela brasileira produzida e exibida pela TV Globo de 20 de junho de 2005 a 10 de março de 2006, em 227 capítulos. Substituiu Como uma Onda e sendo substituída por Sinhá Moça, foi a 66ª \"novela das seis\" exibida pela emissora. \nTeve a autoria de Walcyr Carrasco, com colaboração",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "daytime"
+  },
+  {
+   "title": "Secret Story - Casa dos Segredos",
+   "url": "https://pt.wikipedia.org/wiki/Secret_Story_-_Casa_dos_Segredos",
+   "snippet": "Secret Story - Casa dos Segredos é um reality show da TVI baseado no original francês Secret Story. A primeira edição do programa televisivo estreou no dia 3 de outubro de 2010.",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "daytime"
+  },
+  {
+   "title": "SIC Notícias",
+   "url": "https://pt.wikipedia.org/wiki/SIC_Not%C3%ADcias",
+   "snippet": "A SIC Notícias é um canal de televisão português que transmite programação jornalística. Criado em 8 de janeiro de 2001, foi o primeiro canal português de informação. \nO canal está disponível mediante assinatura, nas quatro plataformas portuguesas, e gratuitamente, através do site e da aplicação da ",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "concorrência"
+  },
+  {
+   "title": "Joana Amaral Dias",
+   "url": "https://pt.wikipedia.org/wiki/Joana_Amaral_Dias",
+   "snippet": "Joana Beatriz Nunes Vicente Amaral Dias Terrinca (Luanda, 13 de maio de 1973) é uma psicóloga clínica e comentadora de assuntos políticos e sociais portuguesa. \nPossui licenciatura e mestrado pré-Bolonha pela Universidade de Coimbra. Foi bolseira da FCT e concluiu o doutoramento em 2025 na mesma Uni",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "concorrência"
+  },
+  {
+   "title": "CMTV",
+   "url": "https://pt.wikipedia.org/wiki/CMTV",
+   "snippet": "A CMTV (Correio da Manhã TV) é um canal de TV fechado português, associado ao diário Correio da Manhã. É um canal generalista com um forte cunho informativo, neste caso de caráter sensacionalista, dando especial atenção à atualidade relativa a assuntos criminais, acidentes, tragédias pessoais, casos",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "concorrência"
+  }
+ ],
+ "sourceErrors": [
+  "ddg[Dois às 10 Cristina Ferreira Cláudio Ramos momento viral]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[CMTV manhãs polémica direto]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio)."
+ ],
+ "combos": [
+  {
+   "id": "c1",
+   "chars": [
+    "Teresa Guilhermina I de Portugal",
+    "Tininha"
+   ],
+   "fact": "Big Brother All Stars, da TVI. Acompanhe os concorrentes, o Big, as notícias, as galas, vídeos exclusivos e tudo o que acontece na casa mais vigiada do País. [https://tvi.iol.pt/bigbrother/]",
+   "conflict": "Teresa, a destronada rainha dos reality shows, tenta desesperadamente forçar a sua entrada ou influência no Big Brother All Stars para recuperar o trono, enquanto Tininha, a diretora em exercício, bloqueia subtilmente os seus esforços para manter o seu próprio poder e humilhar Teresa.",
+   "engine": "O drama exagerado de Teresa ao tentar reaver a sua glória passada num contexto que a vê como irrelevante, contrastado com a frieza calculista de Tininha, que goza com a situação sem se comprometer.",
+   "sourceUrls": [
+    "https://tvi.iol.pt/bigbrother/"
+   ]
+  },
+  {
+   "id": "c2",
+   "chars": [
+    "Cláudio Prantos",
+    "Capitão Gancho"
+   ],
+   "fact": "Pânico na TV foi um programa de televisão humorístico brasileiro produzido e exibido pela RedeTV! entre 28 de setembro de 2003 e 4 de março de 2012 (Programa i [https://pt.wikipedia.org/wiki/P%C3%A2nico_na_TV]",
+   "conflict": "Cláudio, que anseia ser levado a sério e controlar o direto, vê-se confrontado com uma sugestão ou segmento que o Capitão Gancho, focado na manutenção do controlo e da grelha, compara a algo 'à Pânico na TV!', ameaçando a sua reputação e a ordem do estúdio.",
+   "engine": "A reação histérica e defensiva de Cláudio à insinuação de que o seu trabalho está a descambar para o caos de um programa humorístico, versus a pragmática e desinteressada gestão de crise do Capitão que só quer evitar problemas.",
+   "sourceUrls": [
+    "https://pt.wikipedia.org/wiki/P%C3%A2nico_na_TV"
+   ]
+  },
+  {
+   "id": "c3",
+   "chars": [
+    "Abelha Maia",
+    "Coxa"
+   ],
+   "fact": "Todas as audiências de televisão portuguesa. As audiências da RTP, SIC e TVI, todos os dias, além das notícias dos famosos e atualidades. [https://dioguinho.com/tag/audiencias/]",
+   "conflict": "Abelha Maia tenta transformar um simples relatório de audiências numa notícia sensacionalista de última hora, com grandes implicações, enquanto Coxa tenta desesperadamente manter a calma e a dignidade do programa diurno.",
+   "engine": "O exagero dramático da Abelha ao narrar dados estatísticos secos como se fossem um escândalo nacional, em contraste com a tentativa do Coxa de sorrir e abafar a situação para o público.",
+   "sourceUrls": [
+    "https://dioguinho.com/tag/audiencias/"
+   ]
+  },
+  {
+   "id": "c4",
+   "chars": [
+    "Mário Galático",
+    "Patribunal"
+   ],
+   "fact": "Associação Portuguesa de Desportos é um clube poliesportivo brasileiro de São Paulo cuja modalidade esportiva principal é o futebol. Foi fundada em 14 de agosto [https://pt.wikipedia.org/wiki/Associa%C3%A7%C3%A3o_Portuguesa_de_Desportos]",
+   "conflict": "Mário Galático, com a sua megalomania, propõe uma fusão intercontinental absurda para 'levar a TV para órbita' através da aquisição ou patrocínio de um clube como a Associação Portuguesa de Desportos, enquanto Patribunal insiste na observância rigorosa de todos os trâmites legais e burocráticos, anotando cada irresponsabilidade.",
+   "engine": "A grandiosidade desproporcional e a falta de noção de Mário Galático perante a realidade dos processos, que colide com a frieza implacável e a linguagem formal de Patribunal, que documenta metodicamente as loucuras.",
+   "sourceUrls": [
+    "https://pt.wikipedia.org/wiki/Associa%C3%A7%C3%A3o_Portuguesa_de_Desportos"
+   ]
+  },
+  {
+   "id": "c5",
+   "chars": [
+    "Perpétua",
+    "Teresa Guilhermina I de Portugal"
+   ],
+   "fact": "Secret Story - TVI (ddg): Casa dos Segredos, da TVI. Acompanha os concorrentes, segredos, notícias, galas, vídeos exclusivos e tudo o que acontece dentro e fora da casa. [https://tvi.iol.pt/secretstory/direto]",
+   "conflict": "Perpétua, nos bastidores, deixa escapar um 'segredo' embaraçoso sobre um ex-concorrente do Secret Story ou até sobre como Teresa perdeu o seu 'trono', sem perceber a gravidade, enquanto Teresa, por perto, entra em pânico, tentando calá-la ou usar a informação a seu favor para recuperar a relevância nos reality shows.",
+   "engine": "A despretensiosa e quase inocente revelação de informações chocantes por Perpétua, que a contrastam com a reação exagerada e auto-centrada de Teresa, que vê conspirações e oportunidades em tudo.",
+   "sourceUrls": [
+    "https://tvi.iol.pt/secretstory/direto"
+   ]
+  },
+  {
+   "id": "c6",
+   "chars": [
+    "Capitão Gancho",
+    "Cláudio Prantos"
+   ],
+   "fact": "Acordo Ortográfico da Língua Portuguesa de 1990 (abreviado AO90), também denominado Ortografia Unificada da Língua Portuguesa, é um tratado internacional firmad [https://pt.wikipedia.org/wiki/Acordo_Ortogr%C3%A1fico_de_1990]",
+   "conflict": "Durante um direto, Cláudio Prantos, em busca de ser levado a sério, aponta de forma pedante um erro ortográfico numa legenda, referindo-se ao Acordo Ortográfico. O Capitão Gancho, preocupado com a fluidez da emissão, tenta minimizar a situação e resolver o 'problema' da forma mais rápida e displicente possível, colidindo com o purismo de Cláudio.",
+   "engine": "O foco microscópico e a indignação de Cláudio com uma questão gramatical, transformando-a num grande drama profissional, contra a visão macro e a impaciência do Capitão, que considera o detalhe insignificante perante a gestão do caos geral do programa.",
+   "sourceUrls": [
+    "https://pt.wikipedia.org/wiki/Acordo_Ortogr%C3%A1fico_de_1990"
+   ]
+  }
+ ],
+ "proposals": [
+  {
+   "id": "p1",
+   "title": "A Rainha Destronada",
+   "premise": "Teresa Guilhermina I tenta desesperadamente invadir o estúdio do Big Brother All Stars para reivindicar o seu trono de 'Rainha dos Reality Shows', enquanto Tininha, a diretora de produção, tenta contê-la com uma frieza calculista.",
+   "chars": [
+    "Teresa Guilhermina I de Portugal",
+    "Tininha",
+    "Segurança do Estúdio"
+   ],
+   "scenario": "Entrada dos estúdios da TVI, onde há uma barreira de segurança e uma porta giratória.",
+   "payoff": "Teresa acaba por ser expulsa por um segurança, mas jura vingança, prometendo aparecer no próximo direto, disfarçada de planta.",
+   "absurdo": false,
+   "state": "proposta"
+  },
+  {
+   "id": "p2",
+   "title": "Pânico na Régie",
+   "premise": "Cláudio Prantos tenta apresentar uma reportagem séria e densa sobre política, mas o Capitão Gancho, da régie, insiste em adicionar efeitos sonoros e visuais de comédia, comparando o segmento a 'Pânico na TV!'.",
+   "chars": [
+    "Cláudio Prantos",
+    "Capitão Gancho"
+   ],
+   "scenario": "Estúdio de televisão durante um direto e a régie de controlo, com ecrãs a piscar.",
+   "payoff": "Cláudio, furioso, desliga o microfone e abandona o estúdio em direto, deixando o Capitão Gancho a rir sozinho e a passar um clipe de 'Pânico na TV!'.",
+   "absurdo": false,
+   "state": "proposta"
+  },
+  {
+   "id": "p3",
+   "title": "O Apocalipse das Audiências",
+   "premise": "Abelha Maia transforma um simples relatório de audiências num apocalipse televisivo, anunciando que 'o canal vai implodir', enquanto Coxa, o apresentador, tenta acalmar os ânimos e o público em pânico.",
+   "chars": [
+    "Abelha Maia",
+    "Coxa"
+   ],
+   "scenario": "Cenário de um programa matinal, com um ecrã gigante a mostrar gráficos complexos e alarmantes.",
+   "payoff": "Abelha revela que a 'implosão' é apenas um novo sistema de aquisição de audiências, e Coxa desmaia de alívio/exaustão em direto.",
+   "absurdo": false,
+   "state": "proposta"
+  },
+  {
+   "id": "p4",
+   "title": "A Fusão Intergaláctica",
+   "premise": "Mário Galático propõe uma fusão intergaláctica com uma estação de TV alienígena para 'levar a TV para órbita', enquanto Patribunal tenta fazê-lo preencher formulários terrestres e obter licenças espaciais para o projeto.",
+   "chars": [
+    "Mário Galático",
+    "Patribunal"
+   ],
+   "scenario": "Sala de reuniões futurista com maquetas de foguetões e diagramas de galáxias projetados nas paredes.",
+   "payoff": "Patribunal entrega um dossiê de 500 páginas a Mário, que o usa para abanar o ar condicionado avariado, ignorando completamente o conteúdo legal.",
+   "absurdo": true,
+   "state": "proposta"
+  },
+  {
+   "id": "p5",
+   "title": "O Segredo da Cadeira",
+   "premise": "Perpétua, durante uma conversa inocente nos bastidores, revela acidentalmente que o 'trono' de Teresa Guilhermina I no Big Brother era, na verdade, uma cadeira de jardim roubada dos adereços, o que causa o pânico de Teresa.",
+   "chars": [
+    "Perpétua",
+    "Teresa Guilhermina I de Portugal"
+   ],
+   "scenario": "Zona de maquilhagem e camarins, cheia de adereços e figurinos espalhados.",
+   "payoff": "Teresa tenta convencer Perpétua de que é tudo uma teoria da conspiração, enquanto tenta esconder a cadeira de jardim que está a usar como trono no seu camarim.",
+   "absurdo": false,
+   "state": "proposta"
+  },
+  {
+   "id": "p6",
+   "title": "O Erro Ortográfico",
+   "premise": "Durante um direto crucial, Cláudio Prantos interrompe tudo para corrigir um erro ortográfico minúsculo numa legenda, enquanto o Capitão Gancho na régie entra em desespero para manter o programa no ar.",
+   "chars": [
+    "Capitão Gancho",
+    "Cláudio Prantos"
+   ],
+   "scenario": "Estúdio de notícias com teleprompter e régie de controlo com vários ecrãs.",
+   "payoff": "A correção de Cláudio leva a uma série de erros em cascata que bloqueiam todos os ecrãs do estúdio com a palavra 'erro' repetida infinitamente.",
+   "absurdo": false,
+   "state": "proposta"
+  },
+  {
+   "id": "p7",
+   "title": "O Filtro Fatal",
+   "premise": "Uma nova estagiária tenta impressionar a equipa ao criar um filtro de Instagram viral para o programa, mas acidentalmente transforma todos os apresentadores em personagens de desenhos animados durante o direto.",
+   "chars": [
+    "Estagiária Inês",
+    "Apresentadora Manuela",
+    "Diretor Carlos"
+   ],
+   "scenario": "Gabinete de produção digital e estúdio de televisão em pleno direto.",
+   "payoff": "Os apresentadores, agora com orelhas de coelho e narizes de porco, conseguem a maior audiência de sempre, mas Manuela está furiosa por ter um bigode de gato que não consegue remover.",
+   "absurdo": false,
+   "state": "proposta"
+  },
+  {
+   "id": "p8",
+   "title": "O Grilo das Audiências",
+   "premise": "Abelha Maia descobre que os relatórios de audiências são gerados por um grilo falante que vive dentro da impressora do escritório, e tenta convencê-lo a 'inflacionar' os números para um programa especial de Verão.",
+   "chars": [
+    "Abelha Maia",
+    "Coxa",
+    "O Grilo Falante (voz off)"
+   ],
+   "scenario": "Gabinete de Abelha Maia, com uma impressora antiga no canto que range e estala.",
+   "payoff": "O grilo concorda, mas só se Abelha lhe trouxer um trevo de quatro folhas gigante, do tamanho de um chapéu, que se diz crescer no jardim secreto do diretor.",
+   "absurdo": true,
+   "state": "proposta"
+  },
+  {
+   "id": "p9",
+   "title": "O Amigo Secreto Burocrático",
+   "premise": "Cláudio Prantos tenta organizar um 'amigo secreto' de Natal na redação, mas insiste em regras tão complexas e burocráticas que ninguém consegue perceber quem deve oferecer o quê, gerando o caos.",
+   "chars": [
+    "Cláudio Prantos",
+    "Jornalista Ana",
+    "Câmaraman Jorge"
+   ],
+   "scenario": "Redação de um canal de televisão, decorada com enfeites de Natal e papéis espalhados.",
+   "payoff": "O amigo secreto termina com Cláudio a dar um presente a si mesmo, enquanto os outros trocam presentes aleatoriamente, com Jorge a receber um porta-chaves de Ana.",
+   "absurdo": false,
+   "state": "proposta"
+  },
+  {
+   "id": "p10",
+   "title": "Relíquias do Reality",
+   "premise": "Teresa Guilhermina I, sem dinheiro, tenta vender 'relíquias' do seu tempo nos reality shows num leilão online do canal, mas os itens são apenas objetos banais e sem valor.",
+   "chars": [
+    "Teresa Guilhermina I de Portugal",
+    "Apresentador de Leilões",
+    "Fã (voz off)"
+   ],
+   "scenario": "Estúdio de um programa de vendas televisa, com um ecrã gigante a mostrar os lances e comentários dos telespectadores.",
+   "payoff": "O item mais valioso, um cotonete 'usado por Teresa', é arrematado por um euro por um fã que pensou que era uma piada interna.",
+   "absurdo": false,
+   "state": "proposta"
+  }
+ ],
+ "twists": [
+  {
+   "proposalId": "p1",
+   "twists": [
+    "A porta de entrada do estúdio do Big Brother, exausta das invasões e expulsões, descola-se subitamente das dobradiças e começa a rolar pelo chão como um hamster gigante em pânico, tentando escapar para fora do edifício.",
+    "No clímax da contenda, Tininha, a diretora de produção, revela-se como a verdadeira monarca destronada de um reino de 'reality shows' intergalácticos e exige que Teresa Guilhermina I assuma o seu lugar como diretora, enquanto Tininha viaja de volta para reclamar o seu trono cósmico."
+   ]
+  },
+  {
+   "proposalId": "p2",
+   "twists": [
+    "Enquanto Cláudio Prantos discute a dívida pública, a gravata dele começa a desenrolar-se, animar-se e dançar a Macarena, ejectando notas de euro minúsculas que se desintegram no ar antes de chegar ao chão.",
+    "Cláudio Prantos, farto da palhaçada, tem um surto e começa ele próprio a berrar ordens para a régie, exigindo mais explosões e confetis, enquanto o Capitão Gancho, chocado, tenta desesperadamente repor a seriedade da emissão, implorando por gráficos de barras e música clássica."
+   ]
+  },
+  {
+   "proposalId": "p3",
+   "twists": [
+    "A própria abelha Maia, em vez de anunciar o relatório, começa a emitir um gráfico de audiências holográfico que se expande, absorvendo Coxa e o cenário, transformando o estúdio num buraco negro que apenas mostra estática televisiva.",
+    "Quando Coxa tenta acalmar o público, o microfone ganha vida própria e começa a cantar ópera dramática sobre o fim dos tempos, cada nota fazendo as luzes do estúdio piscarem e os monitores mostrarem a face de um produtor em pânico que virou pipoca."
+   ]
+  },
+  {
+   "proposalId": "p5",
+   "twists": [
+    "A cadeira de jardim, exposta, começa a levitar, abre gavetas laterais inexistentes para revelar um mapa do tesouro riscado e, com uma voz profunda, exige ser chamada de 'Sir Cadeira-de-Jardim-da-Realeza'.",
+    "O pânico de Teresa não é pelo roubo, mas porque a cadeira de jardim era a única coisa que a impedia de, a cada 24 horas, ter de lutar contra um ornitorrinco gigante num duelo de rimas. Agora Perpétua é quem recebe o desafio."
+   ]
+  }
+ ],
+ "critiques": [],
+ "ranking": [],
+ "shortlist": [],
+ "errors": [
+  "twists: Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+ ],
+ "stats": {
+  "aiCalls": 11,
+  "startedAt": 1791994594140
+ },
+ "completedStages": [
+  "research",
+  "analyze",
+  "write",
+  "twists"
+ ]
+}

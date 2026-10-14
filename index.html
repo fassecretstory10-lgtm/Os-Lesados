@@ -33,13 +33,42 @@
       overflow: hidden;
     }
     .header {
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(1000px 200px at 20% -40px, rgba(255,0,110,.45), transparent 60%),
+        radial-gradient(900px 220px at 85% -30px, rgba(131,56,236,.55), transparent 60%),
+        linear-gradient(90deg, #2b0a2e, #12071f 55%, #0a0a18);
+      padding: 26px 20px 0;
       border-bottom: 3px solid var(--canon);
+      box-shadow: 0 0 24px rgba(255,215,0,.25), inset 0 -18px 40px rgba(0,0,0,.5);
       text-align: center;
     }
-    .header h1 { color: #fff; font-size: 1.8em; letter-spacing: 1.5px; text-transform: uppercase; }
-    .header p { color: rgba(255,255,255,.9); margin-top: 6px; font-size: .95em; }
+    .header::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 4px);
+    }
+    .header h1 { color: #fff; font-size: 2.4em; letter-spacing: 8px; text-transform: uppercase; text-shadow: 0 0 18px rgba(255,0,110,.8), 0 2px 0 #000; position: relative; }
+    .header h1::after { content: ""; display: block; width: 220px; height: 3px; margin: 10px auto 0; background: linear-gradient(90deg, transparent, var(--canon), transparent); box-shadow: 0 0 12px var(--canon); }
+    .header p { color: rgba(255,255,255,.9); margin-top: 8px; font-size: .95em; position: relative; }
+    .live-badge { position: absolute; top: 14px; right: 16px; display: flex; align-items: center; gap: 7px; background: #000; border: 1px solid var(--danger); color: #fff; font-weight: 800; font-size: .72em; letter-spacing: 2px; padding: 6px 12px; border-radius: 20px; box-shadow: 0 0 14px rgba(255,23,68,.7); z-index: 2; }
+    .live-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--danger); animation: blink 1.2s ease-in-out infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--danger); } 50% { opacity: .25; box-shadow: none; } }
+    .ticker { margin: 14px -20px 0; background: #000; border-top: 1px solid var(--canon); border-bottom: 1px solid var(--canon); overflow: hidden; white-space: nowrap; position: relative; }
+    .ticker-inner { display: inline-block; padding: 7px 0; font-family: "Courier New", monospace; font-size: .78em; font-weight: 700; letter-spacing: 1px; color: var(--canon); animation: tick 28s linear infinite; }
+    @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .epnav { position: relative; display: flex; gap: 14px; align-items: stretch; justify-content: center; flex-wrap: wrap; margin: 12px auto 14px; padding: 10px 18px; width: fit-content; max-width: 96%; background: rgba(0,0,0,.5); border: 1px solid rgba(255,215,0,.4); border-radius: 14px; box-shadow: 0 0 18px rgba(255,215,0,.15), inset 0 1px 0 rgba(255,255,255,.06); backdrop-filter: blur(4px); }
+    .epnav-group { display: flex; align-items: center; gap: 9px; }
+    .epnav-kicker { font-size: .62em; letter-spacing: 2.5px; color: var(--canon); font-weight: 800; text-transform: uppercase; text-shadow: 0 0 8px rgba(255,215,0,.5); }
+    .epnav-select-wrap { position: relative; display: inline-block; }
+    .epnav-select-wrap::after { content: "▾"; position: absolute; right: 11px; top: 50%; transform: translateY(-50%); color: var(--canon); pointer-events: none; font-size: .8em; }
+    .epnav select { appearance: none; -webkit-appearance: none; background: linear-gradient(180deg, #1c1c34, #0f0f1a); border: 1px solid rgba(255,255,255,.18); color: #fff; border-radius: 9px; padding: 8px 30px 8px 12px; font-family: inherit; font-size: .85em; font-weight: 700; max-width: 300px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+    .epnav select:hover { border-color: var(--primary); }
+    .epnav select:focus { outline: none; border-color: var(--canon); box-shadow: 0 0 12px rgba(255,215,0,.45); }
+    .epnav select option { background: #0f0f1a; font-weight: 400; }
+    .epnav-divider { width: 1px; background: linear-gradient(transparent, rgba(255,215,0,.45), transparent); }
+    .epnav-meta { align-self: center; font-size: .72em; font-weight: 800; letter-spacing: 1px; color: #000; background: linear-gradient(90deg, var(--canon), #ffe97a); padding: 6px 14px; border-radius: 20px; box-shadow: 0 0 12px rgba(255,215,0,.5); white-space: nowrap; }
+    .epnav-empty { font-size: .8em; color: rgba(255,255,255,.7); font-style: italic; }
     .layout { display: grid; grid-template-columns: 360px 1fr; min-height: 85vh; }
     .sidebar { background: #151525; border-right: 1px solid var(--border); padding: 18px; overflow-y: auto; max-height: 85vh; }
     .content { padding: 22px; overflow-y: auto; max-height: 85vh; }
@@ -91,6 +120,11 @@
     .reversal { text-align: center; font-style: italic; color: #8a0000; background: #fff3f3; border: 1px solid #ffcfcf; padding: 6px; border-radius: 4px; margin: 10px 0; font-size: .9em; }
     .reframe { font-style: italic; color: #666; background: #f1f1e5; border-left: 3px solid #999; padding: 6px 10px; margin: 8px 0; font-size: .88em; }
     .cut { text-align: right; font-weight: 800; text-transform: uppercase; margin: 16px 0; }
+    .narr { background: #fff8e1; border: 2px dashed #b36a00; border-radius: 6px; padding: 12px 16px; margin: 18px 0; font-size: .92em; }
+    .narr strong { color: #8a5200; }
+    .timecard { background: #000; color: #fff; text-align: center; font-family: Georgia, serif; letter-spacing: 4px; text-transform: uppercase; padding: 22px 10px; margin: 24px 0; border-radius: 4px; font-size: 1.05em; }
+    .transit { background: linear-gradient(90deg, #2b0a2e, #1a1a30); border-left: 4px solid var(--primary); border-radius: 4px; padding: 9px 14px; margin: 14px 0; font-size: .85em; color: #ffd7ea; }
+    .transit strong { color: var(--primary); }
     .end { text-align: center; font-weight: 800; margin-top: 34px; letter-spacing: 2px; }
     .summary { background: #1a1a30; border: 2px solid var(--canon); border-radius: 8px; padding: 18px; margin-bottom: 18px; }
     .summary h3 { color: var(--canon); margin-bottom: 12px; }
@@ -104,8 +138,10 @@
     .season { background: #1a1a30; border: 1px solid var(--border); border-radius: 6px; padding: 12px; }
     .season-title { color: var(--canon); font-weight: 800; margin-bottom: 8px; }
     .ep-list { display: flex; flex-direction: column; gap: 6px; }
-    .ep-item { background: #0f0f1a; padding: 8px 10px; border-radius: 4px; font-size: .85em; cursor: pointer; }
+    .ep-item { background: #0f0f1a; padding: 8px 10px; border-radius: 4px; font-size: .85em; cursor: pointer; display: flex; align-items: center; gap: 8px; }
     .ep-item.active { background: var(--secondary); color: #fff; }
+    .ep-del { color: #888; font-weight: 800; padding: 2px 6px; border-radius: 4px; }
+    .ep-del:hover { color: #fff; background: var(--danger); }
     .gen { background: #151525; border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 18px; }
     .gen h3 { color: var(--warning); margin-bottom: 10px; }
     .prompt { width: 100%; min-height: 120px; background: #0f0f1a; border: 1px solid var(--border); color: #fff; border-radius: 6px; padding: 12px; font-family: "Courier New", monospace; font-size: .84em; resize: vertical; margin-bottom: 12px; }
@@ -127,6 +163,55 @@
     .badge { background: var(--danger); color: #fff; padding: 2px 6px; border-radius: 3px; font-size: .68em; font-weight: 800; margin-left: 5px; }
     .badge-ok { background: var(--success); color: #000; padding: 2px 6px; border-radius: 3px; font-size: .68em; font-weight: 800; margin-left: 5px; }
     .meta { color: #888; font-size: .68em; margin-top: 6px; line-height: 1.25; }
+    .vtable { width: 100%; border-collapse: collapse; font-size: .82em; }
+    .agents { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 14px; }
+    .agent { background: #151525; border: 1px solid var(--border); border-radius: 8px; padding: 12px; position: relative; }
+    .agent.active { border-color: var(--warning); box-shadow: 0 0 12px rgba(255,171,0,.3); }
+    .agent.done { border-color: var(--success); }
+    .agent.failed { border-color: var(--danger); }
+    .agent h4 { font-size: .9em; margin-bottom: 2px; }
+    .agent .role { color: #a0a0c0; font-size: .72em; margin-bottom: 8px; }
+    .st { display: inline-block; padding: 3px 9px; border-radius: 12px; font-size: .68em; font-weight: 800; text-transform: uppercase; background: #2d2b55; color: #d7c7ff; }
+    .st.run { background: #4a3200; color: #ffd54d; animation: blink 1.2s ease-in-out infinite; }
+    .st.ok { background: #051a0a; color: #7dffb0; border: 1px solid var(--success); }
+    .st.err { background: #1a0505; color: #ff9aa8; border: 1px solid var(--danger); }
+    .feed { background: #0f0f1a; border: 1px solid var(--border); border-radius: 8px; padding: 12px; max-height: 260px; overflow-y: auto; font-size: .8em; line-height: 1.5; margin-bottom: 14px; }
+    .feed .msg { margin-bottom: 7px; padding-bottom: 7px; border-bottom: 1px dotted #2a2a4a; }
+    .flow { display: inline-block; background: #2d2b55; color: #fff; border-radius: 4px; padding: 1px 7px; font-weight: 800; font-size: .75em; }
+    .flow small { color: #a0a0c0; font-weight: 400; }
+    .src { font-size: .78em; color: #a0a0c0; margin-bottom: 5px; }
+    .src a { color: #7dffb0; }
+    .props { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-bottom: 14px; }
+    .prop { background: #151525; border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+    .prop.short { border-color: var(--canon); box-shadow: 0 0 10px rgba(255,215,0,.2); }
+    .prop.dead { opacity: .55; }
+    .prop h4 { color: var(--canon); font-size: .92em; margin-bottom: 6px; }
+    .prop p { font-size: .8em; line-height: 1.45; color: #c0c0e0; margin: 4px 0; }
+    .prop .kw { color: var(--warning); font-weight: 800; font-size: .72em; text-transform: uppercase; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
+    .habbo-room { position: relative; height: 230px; border-radius: 10px; overflow: hidden; margin-bottom: 14px;
+      background: linear-gradient(180deg, #2b1a4e 0 38%, #3d2b63 38% 40%, #4a3670 40% 100%);
+      border: 1px solid var(--border); }
+    .habbo-room::before { content: ""; position: absolute; inset: 40% 0 0 0;
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 24px, transparent 24px 48px),
+                  repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 24px); }
+    .habbo-room .door { position: absolute; left: 46%; top: 8%; width: 60px; height: 74px; background: #12071f; border: 2px solid var(--canon); border-radius: 30px 30px 4px 4px; }
+    .habbo { position: absolute; --px: 4px; width: calc(var(--px) * 10); height: calc(var(--px) * 15); animation: habboBob 2.4s ease-in-out infinite; }
+    .habbo .px { position: absolute; left: 0; top: 0; width: var(--px); height: var(--px); }
+    .habbo .tag { position: absolute; top: calc(var(--px) * -7); left: 50%; transform: translateX(-50%); white-space: nowrap;
+      font-size: .62em; font-weight: 800; background: rgba(0,0,0,.65); color: #fff; padding: 1px 7px; border-radius: 8px; }
+    .habbo .bub { position: absolute; top: calc(var(--px) * -13); left: 60%; font-size: 1em; animation: habboBob 1s ease-in-out infinite; }
+    .habbo.work { animation-duration: 1s; }
+    .habbo.done .px { filter: drop-shadow(0 0 5px #00c853); }
+    .habbo.failed .px { filter: drop-shadow(0 0 5px #ff1744); }
+    @keyframes habboBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    @media (max-width: 600px) { .habbo { --px: 3px; } .habbo-room { height: 190px; } }
+    .vtable th, .vtable td { border: 1px solid var(--border); padding: 10px; vertical-align: top; text-align: left; }
+    .vtable th { background: #151525; color: var(--canon); text-transform: uppercase; font-size: .75em; }
+    .vtable td.thumb img { width: 160px; border-radius: 4px; }
+    .vprompt { white-space: pre-wrap; font-family: "Courier New", monospace; font-size: .78em; line-height: 1.45; background: #0f0f1a; border-radius: 6px; padding: 10px; max-height: 280px; overflow-y: auto; margin: 0; }
+    .vnote { font-size: .78em; line-height: 1.4; background: #1a1a30; border: 1px dashed var(--warning); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; color: #ffe08a; }
     .bible { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
     .char-card { background: #151525; border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
     .char-card h3 { color: var(--canon); margin-bottom: 8px; font-size: 1em; }
@@ -146,15 +231,18 @@
 <body>
   <div class="container">
     <div class="header">
+      <div class="live-badge"><span class="live-dot"></span> NO AR</div>
       <h1>OS LESADOS</h1>
-      <p>HTML único · Guião + Pipeline + Canon · Backend Nano Banana opcional</p>
+      <div class="ticker"><span class="ticker-inner" id="tickerText"></span></div>
+      <div class="epnav" id="epNav"></div>
     </div>
 
     <div class="layout">
       <aside class="sidebar">
         <div class="box">
           <div class="title" style="margin-top:0;border:0;padding:0;">Sugestão</div>
-          <div id="suggestionText" style="font-style:italic;min-height:48px;line-height:1.4;font-size:.9em;">Clica para gerar ideia.</div>
+          <div id="suggestionTitle" style="font-weight:800;color:var(--canon);font-size:.9em;margin-bottom:4px;">Clica para gerar ideia.</div>
+          <div id="suggestionText" style="font-style:italic;min-height:48px;line-height:1.4;font-size:.9em;"></div>
           <button class="btn btn-sm btn-secondary" id="suggestBtn">Gerar ideia</button>
         </div>
 
@@ -167,7 +255,8 @@
           <label>Premissa</label>
           <textarea id="premise" placeholder="Escreve a premissa..."></textarea>
         </div>
-        <button class="btn" id="generateBtn">Gerar guião</button>
+        <button class="btn" id="aiGenerateBtn">✨ Gerar episódio com IA</button>
+        <button class="btn btn-sm btn-secondary" id="aiStoryBtn" title="Reescreve a história do episódio atual com IA (Gemini). Falhas aparecem aqui, nunca em silêncio.">✨ IA: reescrever história</button>
         <div id="status"></div>
         <div id="audit"></div>
 
@@ -176,6 +265,15 @@
           <label>URL do backend</label>
           <input id="backendUrl" value="/api" />
           <div class="hint">Para imagens reais, serve pelo backend e abre http://localhost:8787. Não uses file://.</div>
+        </div>
+        <div class="field">
+          <label>Fornecedor</label>
+          <select id="providerSelect">
+            <option value="gemini">Google Gemini (Nano Banana)</option>
+            <option value="openai">OpenAI (gpt-image)</option>
+            <option value="huggingface">Hugging Face</option>
+            <option value="cloudflare">Cloudflare Workers AI</option>
+          </select>
         </div>
         <div class="field">
           <label>Modelo</label>
@@ -197,6 +295,8 @@
           <button class="tab active" data-tab="script">Guião</button>
           <button class="tab" data-tab="pipeline">Pipeline</button>
           <button class="tab" data-tab="canon">Canon</button>
+          <button class="tab" data-tab="video">Video</button>
+          <button class="tab" data-tab="sala">Sala</button>
         </div>
 
         <section id="script" class="pane active">
@@ -210,32 +310,143 @@
         <section id="canon" class="pane">
           <div id="canonContent"></div>
         </section>
+
+        <section id="video" class="pane">
+          <div id="videoContent"></div>
+        </section>
+
+        <section id="sala" class="pane">
+          <div id="salaContent"></div>
+        </section>
       </main>
     </div>
   </div>
 
   <script>
-    const VERSION = "os-lesados-html-unico-v1";
+    const VERSION = "os-lesados-html-unico-v2";
+    let BIBLE_INFO = { source: "dados locais (embebidos)", count: 0, remote: false };
 
     const characters = [
-      { id: "teresa", name: "Teresa Guilhermina I de Portugal", visual: "Voluptuous middle-aged woman with blonde champagne wavy bob, pearl earrings, radiant theatrical smile. Ivory blazer with gold trim, brooch, white blouse, pearls. Loud warm daytime-TV presence, chin high." },
-      { id: "claudio", name: "Cláudio Prantos", visual: "Middle-aged man with short graying hair, gray stubble, heavy eyebrows, intense stare. Dark blue buttoned shirt. Tense calm that snaps into shout and back to serene smile." },
-      { id: "capitao", name: "Capitão Gancho", visual: "Dark combed hair, heavy eyebrows, deep-set solemn eyes, steel hook left hand. Dark suit, white shirt, dark tie. Motionless gravity." },
-      { id: "abelha", name: "Abelha Maia", visual: "Short brown hair, bee antennae headband, translucent wings, yellow-and-black striped body. Affectionate oracular presence." },
-      { id: "coxa", name: "Coxa", visual: "Charismatic daytime TV host, coral three-piece suit, orange tie, lapel mic. Warm ready smile, relaxed confidence." },
-      { id: "mario", name: "Mário Galático", visual: "Middle-aged Portuguese man, dark hair with silver at temples, broad shoulders, confident posture. Navy blue suit, white shirt open at collar, gold lapel pin with rocket and anchor crossed. Expansive gestures, visionary intensity." },
-      { id: "patribunal", name: "Patribunal", visual: "Authority figure, double-cut black suit, black tie, solemn composure, formal posture." },
-      { id: "perpetua", name: "Perpétua", visual: "Middle-aged woman, faded pink coat, scissors always in hand, perfect curls on own head, knowing eyes, discreet backstage presence." }
+      { id: "teresa", name: "Teresa Guilhermina I de Portugal", visual: "Voluptuous middle-aged woman with blonde wavy hair, golden crown, radiant theatrical smile. She wears a red dress. Loud warm daytime-TV presence, chin high.", voice: "Mature projected feminine PT-PT, theatrical with regal flourishes, clear diction and stage pauses; rises to wounded indignation when ignored. Despises Tininha, who stole her throne and her realities — calls her 'a diretora' with venom." },
+      { id: "tininha", name: "Tininha", visual: "Poised blonde executive woman with long straight honey-blonde hair, sharp tailored power suit, statement earrings, camera-ready smile that never reaches the eyes. Controlled institutional authority.", voice: "Sweetly superior feminine PT-PT, institutional calm with a venomous edge; quotes hierarchy and rankings. Obeys the Capitão with a smile. Catchphrase: 'Ainda sei o lugar das estacas.'" },
+      { id: "claudio", name: "Cláudio Prantos", visual: "Middle-aged man with short graying hair, gray stubble, heavy eyebrows, intense stare. Dark blue buttoned shirt. Tense calm that snaps into shout and back to serene smile.", voice: "Polished masculine presenter PT-PT that snaps into a loud theatrical shout and cuts back to serene; recovery catchphrase 'já passou'." },
+      { id: "capitao", name: "Capitão Gancho", visual: "Dark combed hair, heavy eyebrows, deep-set solemn eyes, steel hook left hand. Dark suit, white shirt, dark tie. Motionless gravity.", voice: "Deep, grave, slow masculine PT-PT, few words with active pauses; never raises volume, only gets more concise. Catchphrase 'Está decidido.'" },
+      { id: "abelha", name: "Abelha Maia", visual: "Short brown hair, bee antennae headband, translucent wings, yellow-and-black striped body. Affectionate oracular presence.", voice: "Alert feminine PT-PT at live-report speed, journalistic urgency with an affectionate-oracular lilt." },
+      { id: "coxa", name: "Coxa", visual: "Bald charismatic daytime TV host with round glasses and gray beard, coral three-piece suit, orange tie, lapel mic. Warm ready smile, relaxed confidence.", voice: "Warm effortless daytime-TV host PT-PT, easy smile in the voice. (Provisional — voice pending writers' room.)" },
+      { id: "mario", name: "Doutor Mário Galático", visual: "Middle-aged Portuguese man, dark hair with silver at temples, broad shoulders, confident posture. Navy blue suit, white shirt open at collar, gold lapel pin with rocket and anchor crossed. Expansive gestures, visionary intensity.", voice: "Loud expansive Northern-accent PT-PT, visionary sales pitch; demands to be called Doutor. Catchphrases 'Do Douro ao Espaço!', 'Eu estou dentro.'" },
+      { id: "patribunal", name: "Patribunal", visual: "Older authority figure with gray hair and gray beard, measured stern gaze. Black double-breasted suit, white shirt, black tie, solemn composure, formal posture.", voice: "Dry spare institutional PT-PT, short clipped sentences. (Provisional — voice pending writers' room.)" },
+      { id: "perpetua", name: "Perpétua", visual: "Middle-aged woman, faded pink coat, scissors always in hand, perfect curls on own head, knowing eyes, discreet backstage presence.", voice: "Discreet backstage whisper PT-PT, knowing undertone, phone-call cadence. (Provisional — no canon cover yet.)" }
     ];
 
     const charById = Object.fromEntries(characters.map(c => [c.id, c]));
 
+    // Abelha Maia como narradora (estilo Powerpuff): abre com BOMBAAAA,
+    // fecha com o moral invertido. Time cards pretos nos intervalos dos atos.
+    const NARR_OPENS = [
+      "BOMBAAAA! Em direto e em exclusivo: {name}. Eu vi tudo, eu ouvi tudo — e o que não vi, apurei.",
+      "BOMBAAAA! Liguem os televisores: hoje, {name}. Ninguém me contou — eu estava atrás da porta.",
+      "BOMBAAAA! Exclusivo mundial: {name}. Se isto não é notícia, nada é.",
+      "BOMBAAAA! Direto total: {name}. A direção não queria que eu contasse, por isso conto duas vezes.",
+      "BOMBAAAA! Apanhei tudo em primeira mão: {name}. As minhas fontes? Eu própria.",
+      "BOMBAAAA! Última hora, primeira mão: {name}. Quem vos avisa, vossa amiga é."
+    ];
+    const NARR_CLOSES = [
+      "E assim se prova: quem grita mais alto tem sempre razão. (Não tem. Mas ficou com o último plano.)",
+      "Moral da história: a culpa é sempre do direto. (Nunca é. Mas alguém vai pagar o direto de amanhã.)",
+      "E fica a lição: em televisão, pedir desculpa é admitir audiências. (Não peçam. Guardem para a gala.)",
+      "Conclusão: o trono é de quem grita 'meu' primeiro. (Não é. Mas a coroa ficou amolgada.)",
+      "Moral da história: o camarim ouve tudo e conta a metade. (Conta tudo. Na rádio, amanhã.)",
+      "E assim termina mais um dia normal na televisão portuguesa. (Normalíssimo. Até ao próximo escândalo.)"
+    ];
+    // Fio de temporada (estilo PTSD: 1 gancho por episódio, serial leve).
+    // Roda por número de episódio para variar sem repetir.
+    const SEASON_HOOKS = [
+      "A volta da Guilhermina: o trono continua vazio.",
+      "O dossier do Patribunal engorda: página nova todas as semanas.",
+      "A guerra das audiências: a curva mexe-se sempre contra alguém.",
+      "O satélite do Mário: cada vez mais perto da órbita.",
+      "O ficheiro da Abelha: ela sabe de todos, e anota tudo.",
+      "O camarim trancado: alguém lá dentro sabe demais."
+    ];
+    function pickSeasonHook(number) {
+      return SEASON_HOOKS[(Number(number || 1) - 1) % SEASON_HOOKS.length];
+    }
+    const TC_INCIDENTE = ["ENTRETANTO, NO DIRETO…", "SEGUNDOS DEPOIS, NO PLATEAU…", "NO AR EM 30 SEGUNDOS…", "ENQUANTO ISSO, NA RÉGIE…"];
+    const TC_BASTIDOR = ["NO CAMARIM, AO MESMO TEMPO…", "NOS BASTIDORES…", "LONGE DAS CÂMARAS…", "ATRÁS DO CENÁRIO…"];
+    const TC_FINAL = ["DOIS MINUTOS DEPOIS…", "DE VOLTA AO DIRETO…", "PARA ENCERRAR…", "ANTES DO GENÉRICO…"];
+    function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+    // Cold opens de localização: alguns episódios abrem com o exterior/hall
+    // em zoom in antes do estúdio (metragem de biblioteca, não se gera).
+    const COLD_OPENS = [
+      { location: "Exterior TVI (transição, sempre zoom in)", camera: "SLOW ZOOM IN", duration: 3, action: "Placar exterior com o logo. Zoom in lento até à entrada. Sempre zoom in." },
+      { location: "Hall TVI (receção)", camera: "SLOW ZOOM IN", duration: 3, action: "Hall vazio ao amanhecer. Zoom in lento até ao balcão da receção." },
+      { location: "Exterior TVI (aérea, torre)", camera: "SLOW PUSH-IN", duration: 4, action: "Torre em vista aérea. Push-in majestoso até ao topo com o letreiro." }
+    ];
+    function pickColdOpen(premise, number) {
+      const low = String(premise || "").toLowerCase();
+      const has = (...ws) => ws.some(w => low.includes(w));
+      if (has("rua", "exterior", "chegada", "estação", "estacao", "placar")) return COLD_OPENS[0];
+      if (has("hall", "receção", "rececao", "visita", "gala", "chega")) return COLD_OPENS[1];
+      const rotation = [COLD_OPENS[0], null, COLD_OPENS[1], null, COLD_OPENS[2]];
+      return rotation[(Number(number || 1) - 1) % rotation.length];
+    }
+    // Transição entre dois cenários, como na TV real (escolhida pelo destino).
+    // O clímax (RESOLUÇÃO) abre sempre com o push-in aéreo da torre.
+    function transitionFor(nextScene, isFinale) {
+      const loc = String(nextScene.location || "");
+      const base = locBase(loc);
+      if (isFinale) return "Push-in aéreo da torre (Exterior TVI aérea) — abre a resolução";
+      if (base === "Camarim") return "Bater de porta + placa — corta para o camarim";
+      if (base === "Exterior da Estação") return "Zoom in no exterior da estação (sempre zoom in)";
+      if (base === "Gabinete do Diretor") return "Relógio (2 min) + fusão branca — corta para o gabinete";
+      if (base === "Estúdio Central") return nextScene.alertMel
+        ? "Sting ALERTA MEL (wipe rápido com mel) — corta para o direto"
+        : "Corte seco + sting do genérico — volta ao estúdio";
+      if (base === "Hall TVI (receção)") return "Zoom in no exterior — chegada ao hall";
+      return "Chicote de câmara (whip pan) — muda de cenário";
+    }
+    function buildNarration(epName) {
+      return {
+        open: pick(NARR_OPENS).replace("{name}", epName),
+        close: pick(NARR_CLOSES),
+        tcIncidente: pick(TC_INCIDENTE),
+        tcBastidor: pick(TC_BASTIDOR),
+        tcFinal: pick(TC_FINAL)
+      };
+    }
+
+    // Gabinete do Diretor: o sistema escolhe o lado sozinho.
+    // Capitão sozinho -> secretária e muro de TVs. Com visita -> lado
+    // corporativo (ele sentado, cobertura do visitante). Hífens (não travessão)
+    // para o sanitize() não partir as chaves do manifest.
+    const OFFICE_SOLO = "Gabinete do Diretor - secretária e muro de TVs (SOLO, a monitorizar e decidir)";
+    const OFFICE_VISIT = "Gabinete do Diretor - lado corporativo (RECEBE VISITAS, diálogos e confrontos, estilo 1a/1b)";
+    const locBase = l => String(l || "").split(" - ")[0];
+    function resolveOfficeSide(scene) {
+      if (String(scene.location || "").indexOf("Gabinete do Diretor") !== 0) return;
+      const others = (scene.characters || []).filter(id => id !== "capitao");
+      scene.location = others.length ? OFFICE_VISIT : OFFICE_SOLO;
+    }
+
     const suggestions = [
-      "Mário Galático impõe iates no direto das 20h e o Capitão Gancho tenta conter o caos.",
-      "Teresa Guilhermina I exige o trono dos reality-shows, mas o Capitão Gancho responde com uma decisão seca.",
-      "Coxa e Cláudio ficam presos no camarim durante uma falha técnica.",
-      "Abelha Maia lê as cartas em direto e anuncia uma queda nas audiências.",
-      "Perpétua tenta pedir um passeio de barco, mas confunde o pedido com um reality show."
+      { title: "Iates no Direto das 20h", premise: "Mário Galático impõe iates no direto das 20h e o Capitão Gancho tenta conter o caos." },
+      { title: "O Trono dos Reality-Shows", premise: "Teresa Guilhermina I exige o trono dos reality-shows, mas o Capitão Gancho responde com uma decisão seca." },
+      { title: "Presos no Camarim", premise: "Coxa e Cláudio ficam presos no camarim durante uma falha técnica." },
+      { title: "Queda nas Audiências", premise: "Abelha Maia lê as cartas em direto e anuncia uma queda nas audiências." },
+      { title: "O Passeio de Barco", premise: "Perpétua tenta pedir um passeio de barco, mas confunde o pedido com um reality show." },
+      { title: "O Ar Condicionado", premise: "O ar condicionado do estúdio falha em pleno direto e Cláudio tenta manter o sorriso enquanto derrete." },
+      { title: "Audiências em Queda Livre", premise: "Os gráficos despencam na sala de controlo e o Capitão Gancho tem dois minutos para salvar o direto." },
+      { title: "A Entrevista Impossível", premise: "Teresa Guilhermina I invade uma entrevista de Coxa e transforma-a numa coroação improvisada." },
+      { title: "Escândalo no Catering", premise: "Desaparece o bolo do aniversário da estação e Abelha Maia cobre o 'crime' como breaking news." },
+      { title: "Do Douro ao Espaço", premise: "Mário Galático anuncia uma gala espacial em direto e ninguém na redação sabe se é a sério." },
+      { title: "O Iate do Doutor", premise: "Perpétua pede boleia no iate do Doutor Mário Galático para ver o mar, mas o iate é insuflável e está num stand." },
+      { title: "A Placa Trocada", premise: "Alguém troca a placa do camarim por 'ESTACAS às 10' e Tininha exige uma investigação em direto; no final, Guilhermina aparece no esconderijo a rir-se malevolamente: A placa certa para a diretora errada." },
+      { title: "Trancadas no Camarim", premise: "Tininha e Guilhermina ficam trancadas juntas no camarim a minutos do direto e têm de fingir união." },
+      { title: "O Espelho Diz", premise: "Cláudio ensaia serenidade ao espelho do camarim enquanto Abelha Maia o filma por trás sem ele saber." },
+      { title: "Torre em Direto", premise: "Mário Galático quer apresentar o direto do topo da torre e toda a estação descobre quem tem vertigens." },
+      { title: "O Trono Ocupado", premise: "Guilhermina encontra Perpétua sentada no trono do esconderijo a experimentar a coroa." },
+      { title: "O Lugar das Estacas", premise: "Tininha carimba em direto uma decisão do Capitão como se fosse dela, e Guilhermina invade o estúdio a reclamar o trono." },
+      { title: "Obedece Sorrindo", premise: "O Capitão veta a grelha da Tininha com duas palavras e ela agradece em direto; Guilhermina assiste da régie a rir." }
     ];
 
     let state = {
@@ -252,9 +463,8 @@
       let s = String(t || "");
       s = s.replace(/\bGoucha\b/gi, "Coxa");
       s = s.replace(/\bMoniz\b/gi, "Capitão Gancho");
-      s = s.replace(/\bCristina Ferreira\b/gi, "Teresa Guilhermina I de Portugal");
-      s = s.replace(/\bJoão Patribunal\b/gi, "Patribunal");
-      s = s.replace(/\bDois às 10\b/gi, "Central");
+      s = s.replace(/\bCristina Ferreira\b/gi, "Tininha");
+      s = s.replace(/\bTeresa Guilherme\b/gi, "Teresa Guilhermina I de Portugal");
       s = s.replace(/\s*—\s*/g, ", ");
       s = s.replace(/--/g, ", ");
       s = s.replace(/\s{2,}/g, " ");
@@ -273,6 +483,15 @@
     }
     function normalize() {
       if (!Array.isArray(state.seasons)) state.seasons = [];
+      if (state.version !== VERSION) {
+        // Migração v1 -> v2: episódios antigos ganham story:null e continuam
+        // a renderizar pelo motor clássico, sem corrupção.
+        state.seasons.forEach(s => (s.episodes || []).forEach(ep => {
+          if (!("story" in ep)) ep.story = null;
+        }));
+        state.version = VERSION;
+        try { localStorage.setItem("osLesados_html", JSON.stringify(state)); } catch (e) {}
+      }
       state.seasons.forEach(s => {
         if (!Array.isArray(s.episodes)) s.episodes = [];
         s.episodes.forEach(ep => {
@@ -280,10 +499,13 @@
           ep.number = Number(ep.number || 1);
           ep.name = sanitize(ep.name || "O Grande Plano");
           ep.premise = sanitize(ep.premise || "");
+          if (!ep.narration || !ep.narration.open) ep.narration = buildNarration(ep.name);
+          if (!ep.hook && ep.number) ep.hook = pickSeasonHook(ep.number);
           ep.scenes.forEach(sc => {
             sc.location = sanitize(sc.location || "Estúdio Central");
             sc.action = sanitize(sc.action || "");
             sc.characters = Array.isArray(sc.characters) ? sc.characters.filter(id => charById[id]) : [];
+            resolveOfficeSide(sc);
             sc.alertMel = sc.characters.includes("abelha");
             sc.prompt = sc.prompt || buildPrompt(sc);
             sc.imageUrl = sc.imageUrl || null;
@@ -302,21 +524,636 @@
       if (tab === "script") renderScript();
       if (tab === "pipeline") renderPipeline();
       if (tab === "canon") renderCanon();
+      if (tab === "video") renderVideo();
+      if (tab === "sala") { enterSala(); }
     }
     function suggestion() {
       const idea = suggestions[Math.floor(Math.random() * suggestions.length)];
-      $("suggestionText").textContent = idea;
-      $("premise").value = idea;
-      status("Sugestão gerada.", "success");
+      $("suggestionTitle").textContent = "“" + idea.title + "”";
+      $("suggestionText").textContent = idea.premise;
+      $("episodeName").value = idea.title;
+      $("premise").value = idea.premise;
+      status("Sugestão gerada: nome + premissa.", "success");
     }
     function buildPrompt(scene) {
       const visuals = (scene.characters || []).map(id => charById[id]?.visual).filter(Boolean).join(" ");
       const continuity = scene.reframeOf ? `VISUAL CONTINUITY: same location, lighting, costumes and character positions as take ${scene.reframeOf}. Only camera framing changes. ` : "";
-      const mel = scene.alertMel ? "MANDATORY GRAPHIC OVERLAY: a red sensationalist lower-third at the bottom of the frame with exact text ALERTA MEL. Do not rename it. Do not make it a physical object. Characters do not look at it unless explicitly requested. " : "";
+      const mel = scene.alertMel ? "MANDATORY GRAPHIC OVERLAY: a yellow/honey-colored sensationalist lower-third with dripping honey effect at the bottom of the frame with exact text ALERTA MEL. Do not rename it. Do not make it a physical object. Characters do not look at it unless explicitly requested. " : "";
       return `${continuity}2D satirical animation, thick black outlines, vibrant colors, professional TV cartoon, Looney Tunes slapstick energy, 16:9, high detail. Shot: ${scene.shot}. Camera movement: ${scene.camera}. Location: ${sanitize(scene.location)}. Characters: ${visuals || "environment detail only, no people"}. Action: ${sanitize(scene.action)}. ${mel}Negative: no real people, no logos, no extra text, no changed costumes, no new props, no dialogue bubbles.`;
+    }
+    // Deteta personagens mencionadas na premissa (ordem de aparição).
+    const CAST_KEYWORDS = [
+      ["tininha", ["tininha", /\btina\b/, "diretora", "estacas"]],
+      ["teresa", ["guilhermina", "rainha"]],
+      ["capitao", ["capitao", "capitão", "gancho", /\bdiretor(?!a)\b/]],
+      ["claudio", ["claudio", "cláudio", "prantos"]],
+      ["coxa", ["coxa"]],
+      ["abelha", ["abelha", "maia", "bombaaaa"]],
+      ["mario", ["mario", "mário", "galat", "douro", "espaço", "espaco", "iate"]],
+      ["patribunal", ["patribunal", "autos"]],
+      ["perpetua", ["perpetua", "perpétua", "tesoura"]]
+    ];
+    function detectCast(premise) {
+      const low = String(premise || "").toLowerCase();
+      const found = [];
+      for (const [id, words] of CAST_KEYWORDS) {
+        let at = Infinity;
+        for (const w of words) {
+          let i = -1;
+          if (typeof w === "string") i = low.indexOf(w);
+          else { const m = low.match(w); i = m ? m.index : -1; }
+          if (i !== -1 && i < at) at = i;
+        }
+        if (at !== Infinity) found.push({ id, at });
+      }
+      return found.sort((a, b) => a.at - b.at).map(f => f.id).filter(id => charById[id]);
+    }
+    // Falas-assinatura por personagem (diálogos dos takes adaptados).
+    const SIG_LINES = {
+      tininha: { paren: "(sorrindo, veneno doce)", line: "Claro que sim, diretor. Ainda sei o lugar das estacas." },
+      capitao: { paren: "(olhar imóvel)", line: "Está decidido." },
+      teresa: { paren: "(pose régia)", line: "Eu sou a rainha dos reality-shows! E exijo o meu lugar." },
+      claudio: { paren: "(sério, à beira do berro)", line: "Compostura. Profissionalismo. Já passou… ou vai passar." },
+      coxa: { paren: "(sorriso de antena)", line: "Estamos em direto e está tudo sob controlo, não é?" },
+      abelha: { paren: "(ritmo rápido)", line: "BOMBAAAA! Exclusivo em direto, eu vi tudo!" },
+      mario: { paren: "(expansivo)", line: "Do Douro ao Espaço! Isto aqui precisa é de mais escala!" },
+      patribunal: { paren: "(neutro, formal)", line: "Prossiga. Consta nos autos." },
+      perpetua: { paren: "(sussurrando)", line: "Ai filha, eu ouvi isto... mas não fui eu que disse, tá?" }
+    };
+    function sigDialogue(id) {
+      const s = SIG_LINES[id] || SIG_LINES.claudio;
+      return { char: id, paren: s.paren, line: s.line };
+    }
+    // Banco de falas situacionais (4 por personagem: abrir, chocar, pressão,
+    // remate). O compositor consome sem repetir no episódio.
+    const DIALOGUE_BANK = {
+      tininha: [
+        { c: "open", paren: "(sorrindo, veneno doce)", line: "Claro que sim, diretor. Ainda sei o lugar das estacas." },
+        { c: "clash", paren: "(doce, a escorregar)", line: "Que giro. Vou fingir que isto foi ideia minha desde o início." },
+        { c: "pressure", paren: "(sorriso colado)", line: "Alguém está a ver demasiada televisão. Eu, por exemplo. A ver-vos." },
+        { c: "button", paren: "(para a câmara)", line: "E correu tudo bem. Corrigi eu. De nada." }
+      ],
+      teresa: [
+        { c: "open", paren: "(pose régia)", line: "Eu sou a rainha dos reality-shows! E exijo o meu lugar." },
+        { c: "clash", paren: "(indignação ferida)", line: "TINA! Chamo-me TINA! Ninguém me vai reconhecer assim!" },
+        { c: "pressure", paren: "(dramática)", line: "Fui pré-selecionada. Foi uma conversa muito positiva, ao contrário desta." },
+        { c: "button", paren: "(triunfante)", line: "Vês? O trono estava só a arejar. Voltei." }
+      ],
+      capitao: [
+        { c: "open", paren: "(olhar imóvel)", line: "Está decidido." },
+        { c: "clash", paren: "(seco)", line: "Não. Próximo assunto." },
+        { c: "pressure", paren: "(ainda mais conciso)", line: "Duas palavras: não insistam. Eram três. Acabou." },
+        { c: "button", paren: "(a sair)", line: "Consta que está decidido. Consta duas vezes." }
+      ],
+      claudio: [
+        { c: "open", paren: "(sorriso forçado, tenso)", line: "Sob controlo absoluto. Apenas... um pouco de calor." },
+        { c: "clash", paren: "(maxilar preso)", line: "Repete isso. Devagar. Para eu não me rir. Para eu não GRITAR." },
+        { c: "pressure", paren: "(a subir de volume)", line: "EU ESTOU CALMO! Isto é a minha cara de calmo! OLHEM BEM!" },
+        { c: "button", paren: "(sereno, de repente)", line: "Já passou. Viu? Nem dei por isso. Vamos em frente." }
+      ],
+      coxa: [
+        { c: "open", paren: "(sorriso de antena)", line: "Estamos em direto e está tudo sob controlo, não é?" },
+        { c: "clash", paren: "(profissional, a derreter)", line: "Adoramos surpresas! A produção adora surpresas! Eu odeio surpresas." },
+        { c: "pressure", paren: "(para o auricular)", line: "Alguém me diga que isto faz parte do alinhamento. Por favor. Estou a implorar em direto." },
+        { c: "button", paren: "(aliviado)", line: "Viram? Nem se notou. Em televisão, isto chama-se magia." }
+      ],
+      abelha: [
+        { c: "open", paren: "(ritmo rápido)", line: "BOMBAAAA! Exclusivo em direto, eu vi tudo!" },
+        { c: "clash", paren: "(a apontar o microfone)", line: "Confirme só com um sim ou com um berro, tanto me serve para o direto." },
+        { c: "pressure", paren: "(urgente)", line: "As minhas fontes — eu — acabam de confirmar: vai piorar!" },
+        { c: "button", paren: "(para a câmara)", line: "E foi assim. Eu avisei. Está gravado. Voltem a fita." }
+      ],
+      mario: [
+        { c: "open", paren: "(expansivo)", line: "Do Douro ao Espaço! Isto aqui precisa é de mais escala!" },
+        { c: "clash", paren: "(a apontar)", line: "Eu é que mando nisto, pá! Os números do rio não mentem." },
+        { c: "pressure", paren: "(visionário, ofendido)", line: "No meu barco é que mandava… quer dizer, aqui também. EU ESTOU DENTRO!" },
+        { c: "button", paren: "(generoso)", line: "Resolvido! E ofereço um passeio a todos. No meu iate. Que ainda vou comprar." }
+      ],
+      patribunal: [
+        { c: "open", paren: "(neutro, formal)", line: "Prossiga. Consta nos autos." },
+        { c: "clash", paren: "(seco)", line: "Registo a objeção. E registo quem objetou." },
+        { c: "pressure", paren: "(a abrir o dossier)", line: "Página quarenta e dois, parágrafo terceiro. Leiam em voz alta." },
+        { c: "button", paren: "(a fechar o dossier)", line: "Arquive-se. Com cópia para todos os presentes." }
+      ],
+      perpetua: [
+        { c: "open", paren: "(sussurrando)", line: "Ai filha, eu ouvi isto... mas não fui eu que disse, tá?" },
+        { c: "clash", paren: "(tesoura em riste)", line: "Eu corto panos, não conversas. Mas esta conversa cortava-a já!" },
+        { c: "pressure", paren: "(ao telefone, aflita)", line: "Está tudo a correr mal e eu estou a adorar cada segundo, desculpa." },
+        { c: "button", paren: "(a sair de fininho)", line: "Eu não vi nada, eu não ouvi nada, eu só passo a ferro." }
+      ]
+    };
+    function consumeLine(charId, used) {
+      const bank = DIALOGUE_BANK[charId] || DIALOGUE_BANK.claudio;
+      const pickLine = bank.find(b => !used.has(charId + "|" + b.line));
+      if (!pickLine) return null; // Banco esgotado: o take fica visual, sem fala. Nunca repetir.
+      used.add(charId + "|" + pickLine.line);
+      return { char: charId, paren: pickLine.paren, line: pickLine.line };
+    }
+    // Objetivos-canónicos por personagem (espelho da bíblia; o resto vem dela).
+    const GOALS = {
+      tininha: "manter o poder sem confrontar o Capitão",
+      teresa: "recuperar o trono dos reality-shows",
+      capitao: "manter a operação sob controlo",
+      claudio: "ser levado a sério sem explodir",
+      coxa: "manter o direto apresentável",
+      abelha: "chegar primeiro à história",
+      mario: "resolver tudo com escala",
+      patribunal: "que tudo conste nos autos",
+      perpetua: "saber tudo sem ser vista"
+    };
+    // Slots de história: a premissa escolhe OS CENÁRIOS (não só o elenco).
+    // Perseguição -> camarim / exterior / corredor. Miolo -> gabinete ou hall.
+    // Subplot -> camarim ou corredor. Estúdio abre e fecha sempre (formato).
+    function premiseSlots(p) {
+      const low = String(p || "").toLowerCase();
+      const has = (...ws) => ws.some(w => low.includes(w));
+      const chase = has("camarim", "tranc", "presos", "fechad") ? "Camarim"
+        : has("rua", "exterior", "chegada", "estação", "estacao", "carro", "estacionamento") ? "Exterior da Estação"
+        : "Corredor de Bastidores";
+      const office = has("gabinete", "decis", "veta", "diretor", "diretora", "grelha", "reuni", "poder", "demit", "contrata");
+      const sub = (chase === "Camarim") ? "Corredor de Bastidores"
+        : has("camarim", "tranc", "presos") ? "Camarim" : "Corredor de Bastidores";
+      return { chase, office, sub };
+    }
+    function patchCast(scenes, stars, p) {
+      if (stars.length < 2) return;
+      const byId = Object.fromEntries(scenes.map(s => [s.id, s]));
+      const slots = premiseSlots(p);
+      const A = stars[0], B = stars[1], C = stars[2] || stars[0];
+      const n = id => charById[id].name;
+      const set = (id, chars, loc, action, dlg) => {
+        const s = byId[id];
+        s.characters = chars;
+        if (loc) s.location = loc;
+        s.action = action;
+        s.dialogue = dlg ? sigDialogue(dlg) : null;
+      };
+      // 1a/1b/1c: setup no estúdio.
+      set("1a", [A, B], null,
+        `Plano geral do estúdio. ${n(A)} prepara-se para o direto. ${n(B)} ao lado, máscara profissional.`, A);
+      set("1b", [A], null,
+        `MESMA CENA DO 1a. A câmara aproxima-se de ${n(A)}. O sorriso mantém-se, mas a testa brilha.`, A);
+      set("1c", [A], null,
+        `MESMA CENA DO 1a. INSERT: a mão de ${n(A)} tamborila na mesa. Corte para ${n(B)}, que reage.`, null);
+      // 2a/2b/2c: incidente com os protagonistas.
+      const a = byId["2a"];
+      a.characters = stars.slice(0, 3);
+      a.action = `WHIP PAN para a porta. ${n(A)} entra em grande e impõe a situação: ${p}`;
+      a.dialogue = sigDialogue(A);
+      set("2b", [A], null,
+        `MESMA CENA DO 2a. ${n(A)} avança para o centro do plateau, gesto largo.`, A);
+      const c = byId["2c"];
+      c.characters = [B];
+      c.action = `MESMA CENA DO 2a. CLOSE-UP de ${n(B)}. A máscara escorrega por um segundo.`;
+      c.dialogue = null;
+      c.reversal = null;
+      // 3a/3b: perseguição no cenário da premissa.
+      const chaseActs = {
+        "Camarim": [`${n(A)} e ${n(B)} encurralados no camarim. A porta não abre por dentro.`,
+          `MESMA CENA DO 3a. ${n(B)} tenta a maçaneta; ${n(A)} já procura outra saída.`],
+        "Exterior da Estação": [`${n(A)} e ${n(B)} discutem à porta da estação, entre a rua e o hall.`,
+          `MESMA CENA DO 3a. Por cima do ombro de ${n(A)}, ${n(B)} aponta para a rua.`],
+        "Corredor de Bastidores": [`TRACKING SHOT. ${n(B)} segue ${n(A)} pelo corredor, passo urgente.`,
+          `MESMA CENA DO 3a. Por cima do ombro de ${n(A)}, ${n(B)} fala sem parar.`]
+      };
+      set("3a", [A, B], slots.chase, chaseActs[slots.chase][0], B);
+      set("3b", [A, B], slots.chase, chaseActs[slots.chase][1], B);
+      // 4a/4b: gabinete (poder) ou hall (chegadas).
+      if (slots.office) {
+        set("4a", [A], "Gabinete do Diretor",
+          `Gabinete do diretor. ${n(A)} aguarda sozinho. Os gráficos descem nos monitores.`, A);
+        const f = byId["4b"];
+        f.characters = [A, B];
+        f.location = "Gabinete do Diretor";
+        f.action = `MESMO GABINETE, lado corporativo. ${n(B)} entra para uma audiência. ${n(A)} recebe, imóvel.`;
+        f.dialogue = sigDialogue(B);
+      } else {
+        set("4a", [A], "Hall TVI (receção)",
+          `Hall de entrada. ${n(A)} atravessa o hall sob o olhar do segurança.`, null);
+        set("4b", [A, B], "Hall TVI (receção)",
+          `MESMO HALL. ${n(B)} interceta ${n(A)} junto à receção.`, B);
+        byId["4b"].reframeOf = "4a";
+      }
+      // 5a/5b: subplot no cenário restante.
+      const subActs = {
+        "Camarim": [`${n(C)} esconde-se no camarim vazio, ao telefone.`,
+          `MESMA CENA DO 5a. ${n(B)} abre a porta do camarim de repente.`],
+        "Corredor de Bastidores": [`${n(C)} sussurra ao telefone, escondido atrás de um cenário no corredor.`,
+          `MESMA CENA DO 5a. ${n(B)} aparece no corredor. ${n(C)} encolhe-se, mas não larga o telefone.`]
+      };
+      set("5a", [C], slots.sub, subActs[slots.sub][0], C);
+      set("5b", [C, B], slots.sub, subActs[slots.sub][1], B);
+      // 6a/6b: final com a estrela.
+      const f6 = byId["6a"];
+      f6.characters = stars.slice(0, 3);
+      f6.action = `${n(A)} entra como aparição. O plateau pára.`;
+      f6.dialogue = sigDialogue(A);
+      const r6 = byId["6b"];
+      r6.characters = [A];
+      r6.action = `MESMA CENA DO 6a. CLOSE-UP de ${n(A)}. Queixo erguido, sorriso de quem já ganhou a cena.`;
+      r6.reversal = `IRIS OUT sobre o rosto de ${n(A).split(" ")[0]}. Fim.`;
+      // MODO GABINETE: premissa de poder com o Capitão = episódio quase todo
+      // no gabinete dele (espera → veto → corredor → veredicto). Fluido porque
+      // quase não muda de cenário: a história anda por confronto, não por sets.
+      const officeStory = stars.includes("capitao") && slots.office;
+      if (officeStory) {
+        const G = "Gabinete do Diretor";
+        set("1a", [A, B], G,
+          `Antecâmara do poder. ${n(B)} aguarda à porta do gabinete, ensaia o sorriso. ${n(A)} lá dentro, impassível.`, B);
+        set("1b", [B], G,
+          `MESMA CENA DO 1a. CLOSE-UP de ${n(B)}. O sorriso ensaiado treme um milímetro.`, B);
+        set("1c", [B], G,
+          `MESMA CENA DO 1a. INSERT: a mão de ${n(B)} aperta um dossier.`, null);
+        a.characters = [A, B];
+        a.location = G;
+        a.action = `${n(B)} entra no gabinete. ${n(A)} nem levanta os olhos — e veta a grelha com duas palavras: ${p}`;
+        a.dialogue = sigDialogue(A);
+        const b2 = byId["2b"];
+        b2.characters = [A];
+        b2.location = G;
+        b2.action = `MESMA CENA DO 2a. ${n(A)} carimba um papel. Caso encerrado.`;
+        b2.dialogue = sigDialogue(A);
+        const c2 = byId["2c"];
+        c2.characters = [B];
+        c2.location = G;
+        c2.action = `MESMA CENA DO 2a. CLOSE-UP de ${n(B)}. Agradece sorrindo — e o sorriso não chega aos olhos.`;
+        c2.dialogue = sigDialogue(B);
+        c2.reversal = null;
+        f6.characters = stars.slice(0, 3);
+        f6.location = G;
+        f6.action = `${n(C)} irrompe no gabinete sem bater. ${n(A)} continua sentado. ${n(B)} finge que isto estava combinado.`;
+        f6.dialogue = sigDialogue(C);
+        r6.characters = [A];
+        r6.location = G;
+        r6.action = `MESMA CENA DO 6a. CLOSE-UP de ${n(A)}.`;
+        r6.reversal = `IRIS OUT. Fim.`;
+      }
+    }
+    // CAMADA NARRATIVA (independente do storyboard).
+    // Pipeline: premissa -> ideia cómica -> beats causais -> atos ->
+    // takes -> prompts. Cada função recebe dados e devolve dados.
+    function contentWords(t) {
+      const stop = new Set(("o,a,os,as,um,uma,de,do,da,dos,das,em,no,na,nos,nas,por,para,com,sem,que,se,é,são,foi,ser,estar,como,mas,mais,muito,não,nada,isto,isso,esse,essa,ele,ela,eles,elas,eu,tu,nos,lhe,vos,seu,sua,ao,à,as,ou,quando,onde,porque,pois,então,também,já,ainda,até,só,entre,sobre,após,depois,antes,durante".split(",")));
+      return String(t || "").toLowerCase().replace(/[^\p{L}\s]/gu, "").split(/\s+/)
+        .filter(w => w.length >= 4 && !stop.has(w));
+    }
+    // Palavras salientes da premissa: substantivos/conteúdo, não verbos genéricos.
+    function salientKeys(premise, n) {
+      const generic = new Set(["tenta,tentar,pedir,pedido,fazer,ficar,fica,dizer,diz,falar,dar,ter,desta,deste,isto,isso,essa,esse,esta,este,para,porque,quando,como,eles,elas".split(",")]);
+      const words = contentWords(premise).filter(w => !generic.has(w));
+      const uniq = [...new Set(words)].sort((a, b) => b.length - a.length);
+      return uniq.slice(0, n || 3);
+    }
+    function buildStoryLocal(premise, stars) {
+      const P = sanitize(premise || "O caos instala-se na estação.");
+      const cast0 = (stars && stars.length ? [...stars] : ["coxa", "claudio"]).filter(id => charById[id]);
+      if (!cast0.length) cast0.push("coxa", "claudio");
+      if (cast0.length === 1) {
+        const partner = { abelha: "claudio", claudio: "coxa", coxa: "claudio", teresa: "coxa", mario: "coxa", capitao: "claudio", tininha: "capitao", patribunal: "perpetua", perpetua: "patribunal" }[cast0[0]];
+        if (partner && partner !== cast0[0]) cast0.push(partner);
+      }
+      const cast = cast0;
+      const keys = salientKeys(P, 3).join(", ");
+      const Pshort = P.length > 140 ? P.slice(0, 140) + "…" : P;
+      const A = cast[0], B = cast[1] || cast[0];
+      const C = cast[2] || cast[0];
+      const slots = premiseSlots(P);
+      const officeStory = cast.includes("capitao") && slots.office;
+      const n = id => charById[id].name;
+      const used = new Set();
+      const L = (id) => consumeLine(id, used);
+      const locChase = slots.chase, locSub = slots.sub;
+      const locOffice = "Gabinete do Diretor";
+      const idea = `${n(A)} quer ${GOALS[A] || "resolver o dia"} — e ${P.charAt(0).toLowerCase() + P.slice(1)}`;
+      const beats = [
+        { kind: "setup", who: A, with: B, loc: officeStory ? locOffice : "Estúdio Central",
+          want: GOALS[A] || "ter um dia normal",
+          does: `${n(A)} prepara o dia; ${n(B)} aparece com esta história: ${Pshort}.`,
+          obstacle: `${n(B)} não larga o assunto.`,
+          result: `O assunto instala-se e já não há volta a dar.`,
+          change: "Rotina -> problema.",
+          link: "O problema exige reação imediata.",
+          comic: "Normalidade sitiada.",
+          dialogue: L(A), dur: 6 },
+        { kind: "incident", who: A, with: B, loc: officeStory ? locOffice : "Estúdio Central",
+          want: `Resolver isto: ${Pshort.split(",")[0].slice(0, 60)}.`,
+          does: `${n(A)} confronta ${n(B)} em direto por causa disto: ${Pshort}.`,
+          obstacle: `${n(B)} responde à altura.`,
+          result: `O confronto fica registado em direto e a história (${keys}) é agora pública.`,
+          change: "Problema -> incidente público.",
+          link: "O direto obriga toda a gente a posicionar-se.",
+          comic: "Duas certezas a colidir.",
+          dialogue: L(B), dur: 7 },
+        { kind: "complication", who: B, with: A, loc: locChase,
+          want: `Virar a situação a seu favor longe das câmaras.`,
+          does: `${n(B)} persegue ${n(A)} até ${locChase.split(" (")[0]} por causa de ${keys}.`,
+          obstacle: `${n(A)} recusa ceder um milímetro.`,
+          result: `A perseguição semeia um novo problema em cima de ${keys}.`,
+          change: "Incidente -> fuga para a frente.",
+          link: "Fugir só espalha o problema pela estação.",
+          comic: "Perseguição com sapatos de estúdio.",
+          dialogue: L(B), dur: 6 },
+        { kind: "complication", who: A, with: C, loc: officeStory ? locOffice : locSub,
+          want: `Recuperar o controlo onde ninguém vê.`,
+          does: `${n(A)} refugia-se e telefona a ${n(C)} sobre ${keys}.`,
+          obstacle: `${n(C)} tem agenda própria.`,
+          result: `O telefonema cria mais um nó em vez de desfazer ${keys}.`,
+          change: "Fuga -> complicação nova.",
+          link: "Cada ajuda pedida cobra juros.",
+          comic: "Sussurros que toda a gente ouve.",
+          dialogue: L(A), dur: 6, reframe: true },
+        { kind: "climax", who: A, with: B, loc: officeStory ? locOffice : "Estúdio Central",
+          want: `Fechar ${keys} de vez.`,
+          does: `${n(A)} e ${n(B)} decidem tudo numa última confrontação sobre ${keys}.`,
+          obstacle: `${n(C)} aparece e vira a mesa.`,
+          result: `Decisão tomada sobre ${keys} — ao contrário do planeado por todos.`,
+          change: "Caos -> veredicto.",
+          link: "O veredicto exige uma saída de cena.",
+          comic: "Todos ganham e todos perdem.",
+          dialogue: L(C), dur: 7 },
+        { kind: "resolution", who: A, with: null, loc: officeStory ? locOffice : "Estúdio Central",
+          want: `Sair com dignidade.`,
+          does: `${n(A)} recolhe os cacos em direto. Caso (${keys}) encerrado.`,
+          obstacle: `As câmaras ainda rolam.`,
+          result: `Fecha-se o dia; ${keys} fica resolvido à maneira da casa.`,
+          change: "Veredicto -> consequência.",
+          link: "A consequência pede um remate.",
+          comic: "Dignidade em ruínas, pose intacta.",
+          dialogue: L(A), dur: 5 }
+      ];
+      const punchline = `${n(A)} remata para a câmara sobre ${keys}. Moral invertida: a culpa foi do direto.`;
+      // Distribuição de falas por ordem de take: a continuação do reframe
+      // consome-se logo a seguir à fala do master. Sem linha livre, o take
+      // fica visual (nunca repete, nunca falha silenciosamente).
+      beats.forEach(b => { b._spk = b.dialogue ? b.dialogue.char : null; b.dialogue = null; b.reframeDialogue = null; });
+      {
+        const u2 = new Set();
+        const takeLine = (ch) => {
+          const bank = DIALOGUE_BANK[ch] || DIALOGUE_BANK.claudio;
+          const pick = bank.find(x => !u2.has(ch + "|" + x.line));
+          if (!pick) return null;
+          u2.add(ch + "|" + pick.line);
+          return { char: ch, paren: pick.paren, line: pick.line };
+        };
+        beats.forEach(b => {
+          if (!b._spk) return;
+          b.dialogue = takeLine(b._spk);
+          if (b.reframe && b.dialogue) {
+            const cont = takeLine(b._spk);
+            b.reframeDialogue = cont
+              ? { char: cont.char, paren: `(cont.) ${cont.paren}`, line: cont.line }
+              : null;
+          }
+          delete b._spk;
+        });
+      }
+      return {
+        engine: "local",
+        title: "", premise: P, stars: cast,
+        comicIdea: idea, protagonist: A, protagonistGoal: GOALS[A] || "",
+        incident: beats[1].does, conflict: `${n(A)} vs ${n(B)}: ${P}`,
+        beats, climax: beats[4].does, resolution: beats[5].does + " " + beats[5].result,
+        punchline, intentionalRepeats: []
+      };
+    }
+    // Storyboard: beats -> takes. Um beat = um master; reframe SÓ com função
+    // visual própria (reação/insert) e ação diferente. Sem filler.
+    const SHOT_BY_KIND = {
+      setup: ["WIDE SHOT", "STATIC"], incident: ["WIDE SHOT", "WHIP PAN"],
+      complication: ["MEDIUM SHOT", "TRACKING"], climax: ["MEDIUM SHOT", "DOLLY IN"],
+      resolution: ["CLOSE-UP", "SLOW ZOOM IN"]
+    };
+    function storyToScenes(story) {
+      const scenes = [];
+      let t = 0;
+      story.beats.forEach((b, i) => {
+        const chars = b.with && b.with !== b.who ? [b.who, b.with] : [b.who];
+        const [shot, camera] = SHOT_BY_KIND[b.kind] || SHOT_BY_KIND.setup;
+        const dur = Math.min(8, Math.max(4, b.dur || 6));
+        const start = t; t += dur;
+        const id = `n${i + 1}`;
+        const who = charById[b.who] ? b.who : story.stars[0];
+        scenes.push({
+          id, title: `Take ${i + 1} (${b.kind})`, type: "MASTER SHOT",
+          location: b.loc, duration: dur, shot, camera,
+          characters: chars.filter(id2 => charById[id2]),
+          action: `${b.does} ${b.result}`,
+          dialogue: b.dialogue && b.dialogue.char && charById[b.dialogue.char]
+            ? { char: b.dialogue.char, paren: b.dialogue.paren, line: b.dialogue.line } : null,
+          reversal: i === story.beats.length - 1 ? null : null,
+          reframeOf: null, timecode: `${fmt(start)} - ${fmt(t)}`,
+          actLabel: b.kind === "setup" ? "ATO I — SETUP"
+            : b.kind === "incident" ? "INCIDENTE INCITANTE"
+            : b.kind === "climax" ? "RESOLUÇÃO"
+            : b.kind === "resolution" ? "TAG FINAL" : null,
+          imageUrl: null, model: null, variant: 0, approved: false, referenceCount: 0,
+          prompt: null, alertMel: chars.includes("abelha")
+        });
+        const last = scenes[scenes.length - 1];
+        if (b.reframe) {
+          const rd = Math.min(8, 5); t += rd;
+          scenes.push({
+            id: `${id}r`, title: `Take ${i + 1} reframe`, type: "REFRAME",
+            location: b.loc, duration: rd, shot: "CLOSE-UP", camera: "STATIC",
+            characters: [who],
+            action: `MESMO MOMENTO. CLOSE-UP de ${charById[who].name}: a reação decide o próximo passo.`,
+            dialogue: b.reframeDialogue && b.reframeDialogue.char && charById[b.reframeDialogue.char]
+              ? { char: b.reframeDialogue.char, paren: b.reframeDialogue.paren, line: b.reframeDialogue.line }
+              : null, reversal: null, reframeOf: id,
+            timecode: `${fmt(t - rd)} - ${fmt(t)}`,
+            actLabel: null,
+            imageUrl: null, model: null, variant: 0, approved: false, referenceCount: 0,
+            prompt: null, alertMel: who === "abelha"
+          });
+        }
+        last.prompt = buildPrompt(last);
+        const rf = scenes[scenes.length - 1];
+        if (rf !== last) rf.prompt = buildPrompt(rf);
+      });
+      scenes.forEach(s => { resolveOfficeSide(s); s.prompt = buildPrompt(s); s.alertMel = s.characters.includes("abelha"); });
+      return scenes;
+    }
+    // Auditoria narrativa (determinística; assinalada como tal no relatório).
+    function auditStory(ep) {
+      const issues = [];
+      if (!ep.story || !Array.isArray(ep.story.beats) || !ep.story.beats.length) {
+        issues.push({ type: "error", msg: "Sem camada story: episódio do motor antigo." });
+        return issues;
+      }
+      const lines = [];
+      ep.scenes.forEach(s => {
+        if (s.dialogue?.line) lines.push({ take: s.id, line: s.dialogue.line.trim() });
+      });
+      const seen = new Set();
+      for (const l of lines) {
+        const exempt = (ep.story.intentionalRepeats || []).includes(l.line);
+        if (seen.has(l.line) && !exempt) {
+          issues.push({ type: "error", msg: `Diálogo repetido sem intenção no take ${l.take}: "${l.line.slice(0, 50)}…"` });
+        }
+        seen.add(l.line);
+      }
+      const acts = ep.scenes.map(s => (s.action || "").trim()).filter(Boolean);
+      for (let i = 1; i < acts.length; i++) {
+        if (acts[i] === acts[i - 1]) {
+          const id = ep.scenes.filter(s => (s.action || "").trim())[i]?.id || "?";
+          issues.push({ type: "error", msg: `Ação repetida sem progressão no take ${id}.` });
+        }
+      }
+      for (const id of (ep.story.stars || [])) {
+        const mine = ep.story.beats.filter(b => b.who === id && b.want && b.want.length > 3);
+        if (!mine.length) issues.push({ type: "error", msg: `${charById[id]?.name || id} sem objetivo próprio.` });
+      }
+      const keys = salientKeys(ep.story.premise + " " + ep.story.incident, 6);
+      const prog = (ep.story.beats.map(b => `${b.does} ${b.result}`).join(" ") + " " + ep.story.resolution).toLowerCase();
+      const hits = keys.filter(k => prog.includes(k));
+      if (keys.length >= 3 && hits.length < Math.ceil(keys.length / 2)) {
+        issues.push({ type: "warning", msg: `Premissa pouco presente na progressão (${hits.length}/${keys.length} palavras-chave).` });
+      }
+      const resWords = contentWords(ep.story.resolution);
+      const cause = (ep.story.incident + " " + ep.story.beats.map(b => b.result).join(" ")).toLowerCase();
+      if (resWords.length >= 3 && !resWords.some(w => cause.includes(w))) {
+        issues.push({ type: "warning", msg: "Resolução sem eco causal do incidente/beats (heurística)." });
+      }
+      ep.story.beats.forEach((b, i) => {
+        for (const f of ["who", "want", "does", "obstacle", "result", "change", "link"]) {
+          if (!b[f] || String(b[f]).length < 3) issues.push({ type: "error", msg: `Beat ${i + 1} sem '${f}'.` });
+        }
+        if (b.who && !charById[b.who]) issues.push({ type: "error", msg: `Beat ${i + 1} com personagem fora do canon: ${b.who}.` });
+      });
+      ep.scenes.forEach(s => {
+        if (!s.prompt || !s.prompt.includes(s.location.split(" (")[0].split(" - ")[0])) {
+          issues.push({ type: "warning", msg: `Take ${s.id}: prompt visual sem o cenário.` });
+        }
+      });
+      if (!issues.length) issues.push({ type: "success", msg: "Auditoria narrativa OK (checks determinísticos)." });
+      return issues;
+    }
+    // Normaliza story vinda da IA para o schema interno (sem inventar dados).
+    const STORY_LOCS = ["Estúdio Central", "Corredor de Bastidores", "Gabinete do Diretor", "Camarim", "Hall TVI (receção)", "Exterior da Estação", "Sala de Controlo", "Zona de Catering"];
+    function mapWhoToId(who, stars) {
+      const low = String(who || "").toLowerCase();
+      for (const id of stars) {
+        if (low.includes(id)) return id;
+        const nm = (charById[id]?.name || "").toLowerCase();
+        if (nm && (low.includes(nm) || nm.split(" ").some(p => p.length > 4 && low.includes(p)))) return id;
+      }
+      for (const id of Object.keys(charById)) {
+        if (low.includes(id)) return id;
+      }
+      return stars[0];
+    }
+    function mapLocToKnown(loc, fallback) {
+      const low = String(loc || "").toLowerCase();
+      if (low.includes("gabinete") || low.includes("escritório") || low.includes("escritorio")) return "Gabinete do Diretor";
+      for (const L of STORY_LOCS) {
+        const base = L.split(" (")[0].split(" - ")[0].toLowerCase();
+        if (low.includes(base)) return L;
+      }
+      return fallback;
+    }
+    function stripSpeaker(line) {
+      return String(line || "").replace(/^[A-Za-zÀ-ÿ'’\- ]{2,30}:\s*/, "").trim();
+    }
+    function normalizeAIStory(raw, premise, stars) {
+      const beats = (raw.beats || []).map((b, i) => {
+        const who = mapWhoToId(b.who, stars);
+        const co = stars[(stars.indexOf(who) + 1) % stars.length] || who;
+        return {
+          kind: i === 0 ? "setup" : i === raw.beats.length - 1 ? "resolution" : i === raw.beats.length - 2 ? "climax" : "complication",
+          who, with: co === who ? null : co,
+          loc: mapLocToKnown(b.location, i === 0 ? "Estúdio Central" : null) || "Estúdio Central",
+          want: String(b.want || ""), does: String(b.does || ""), obstacle: String(b.obstacle || ""),
+          result: String(b.result || ""), change: String(b.change || ""), link: String(b.link || ""),
+          comic: String(b.comic || ""),
+          dialogue: b.dialogue ? { char: who, paren: "", line: stripSpeaker(b.dialogue) } : null,
+          dur: 6, reframe: false
+        };
+      });
+      // Reframe só com função: beat sem diálogo na mesma localização do anterior.
+      beats.forEach((b, i) => {
+        if (i > 0 && !b.dialogue && b.loc === beats[i - 1].loc) b.reframe = true;
+      });
+      return {
+        engine: "ai", title: "", premise: sanitize(premise),
+        stars: [...new Set(beats.map(b => b.who))],
+        comicIdea: String(raw.comicIdea || ""), protagonist: mapWhoToId(raw.protagonist, stars),
+        protagonistGoal: String(raw.protagonistGoal || ""),
+        incident: String(raw.incident || ""), conflict: String(raw.conflict || ""),
+        beats, climax: String(raw.climax || ""), resolution: String(raw.resolution || ""),
+        punchline: String(raw.punchline || ""), intentionalRepeats: []
+      };
+    }
+    async function loadBible() {
+      let proto = "unknown";
+      try { proto = typeof location !== "undefined" ? location.protocol : "unknown"; } catch (e) { proto = "unknown"; }
+      if (proto === "file:") return;
+      try {
+        const res = await fetch(`${backendUrl()}/canon/bible`, { headers: { Accept: "application/json" } });
+        const data = await res.json();
+        if (data?.ok && Array.isArray(data.characters) && data.characters.length) {
+          BIBLE_INFO = { source: data.source || "context/canon/personagens.json", count: data.characters.length, remote: true };
+        }
+      } catch (e) {
+        console.warn("[bible] remota indisponível, a usar dados locais:", e.message);
+      }
+    }
+    async function expandWithAI() {
+      if (location.protocol === "file:") return status("Para IA, abre via http://localhost:8787.", "error");
+      // Se os campos têm uma ideia nova (diferente do episódio selecionado),
+      // cria primeiro o episódio a partir dela — senão a IA reescreveria o EP1.
+      const fieldName = ($("episodeName").value || "").trim();
+      const fieldPremise = ($("premise").value || "").trim();
+      let ep = currentEpisode();
+      if (fieldPremise && (!ep || sanitize(fieldPremise) !== ep.premise)) {
+        // Ideia nova nos campos: criar o episódio com IA em vez de reescrever o atual.
+        return aiGenerateEpisode();
+      }
+      if (!ep) return status("Gera um episódio primeiro.", "error");
+      if (ep.scenes.some(s => s.approved) && !confirm("Isto substitui takes (inclui aprovados). Continuar?")) return;
+      const btn = $("aiStoryBtn");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span> IA a escrever...';
+      try {
+        const stars = ep.story?.stars?.length ? ep.story.stars : detectCast(ep.premise);
+        const castIds = (stars.length ? stars : ["coxa", "claudio"]).filter(id => charById[id]);
+        const res = await fetch(`${backendUrl()}/story/generate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ premise: ep.premise, castIds })
+        });
+        let data;
+        try { data = await res.json(); }
+        catch { throw new Error(`Resposta inválida do backend (HTTP ${res.status}).`); }
+        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
+        if (!data.story) throw new Error("Backend não devolveu história.");
+        ep.story = normalizeAIStory(data.story, ep.premise, castIds);
+        ep.scenes = storyToScenes(ep.story);
+        state.currentScene = ep.scenes[0]?.id || null;
+        save();
+        ep.audit = [...auditStory(ep), ...audit(ep)];
+        renderAudit(ep.audit);
+        renderScript();
+        renderPipeline();
+        renderHeaderNav();
+        status(`História reescrita por IA (${data.provider || "gemini-text"}, ${data.model || "?"}). Modo local NÃO foi usado.`, "success");
+      } catch (e) {
+        status("IA indisponível: " + e.message + " Nada foi alterado (modo local intacto).", "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = "✨ IA: reescrever história";
+      }
     }
     function buildScenes(premise) {
       const p = sanitize(premise || "O caos instala-se na estação.");
+      // Elenco da premissa: o guião adapta os takes principais a quem a
+      // premissa menciona (senão, cai no elenco default do template).
+      // Com uma só estrela, entra o par canónico (um coadjuvante que faça
+      // sentido dramático, nunca elenco aleatório do template).
+      const stars = detectCast(p);
+      if (stars.length === 1) {
+        const partner = { abelha: "claudio", claudio: "coxa", coxa: "claudio", teresa: "coxa", mario: "coxa", capitao: "claudio", tininha: "capitao", patribunal: "perpetua", perpetua: "patribunal" }[stars[0]];
+        if (partner && partner !== stars[0]) stars.push(partner);
+      }
       let t = 0;
       const tc = d => { const a = t; t += d; return `${fmt(a)} - ${fmt(t)}`; };
       const scenes = [
@@ -326,19 +1163,21 @@
         { id:"2a", title:"Cena 2a", type:"MASTER SHOT", location:"Estúdio Central", duration:7, shot:"WIDE SHOT", camera:"WHIP PAN", characters:["mario","coxa","claudio"], action:`WHIP PAN para a porta. Mário Galático entra em grande e impõe a premissa: ${p}`, dialogue:{char:"mario",paren:"(voz profunda, expansiva)",line:"Do Douro ao Espaço! Este império também fala comigo."}, reversal:null, reframeOf:null },
         { id:"2b", title:"Cena 2b", type:"REFRAME", location:"Estúdio Central", duration:6, shot:"MEDIUM SHOT", camera:"DOLLY IN", characters:["mario"], action:"MESMA CENA DO 2a. Mário avança para o centro do plateau, gesto largo, confiança de quem já decidiu.", dialogue:{char:"mario",paren:"(a apontar)",line:"Eu é que mando nisto, pá! Os números do rio não mentem."}, reversal:null, reframeOf:"2a" },
         { id:"2c", title:"Cena 2c", type:"REACTION", location:"Estúdio Central", duration:5, shot:"CLOSE-UP", camera:"STATIC", characters:["claudio"], action:"MESMA CENA DO 2a. CLOSE-UP de Cláudio. A compostura estala por um segundo.", dialogue:null, reversal:"Mário mostra um plano já escrito. Não veio propor. Veio impor.", reframeOf:"2a" },
-        { id:"3a", title:"Cena 3a", type:"MASTER SHOT", location:"Corredor de Bastidores", duration:6, shot:"WIDE SHOT", camera:"TRACKING", characters:["abelha","claudio"], action:"TRACKING SHOT. Abelha Maia segue Cláudio pelo corredor, microfone na mão, energia de direto.", dialogue:{char:"abelha",paren:"(ritmo rápido)",line:"BOMBAAAA! Exclusivo em direto: o patrão quer iates no noticiário."}, reversal:null, reframeOf:null },
-        { id:"3b", title:"Cena 3b", type:"REFRAME", location:"Corredor de Bastidores", duration:5, shot:"OVER-SHOULDER", camera:"STATIC", characters:["abelha","claudio"], action:"MESMA CENA DO 3a. Por cima do ombro de Cláudio, Abelha fala para a câmara com charme urgente.", dialogue:{char:"abelha",paren:"(a olhar para a câmara)",line:"Eu vi nas cartas que há uma grande mudança no ar."}, reversal:null, reframeOf:"3a" },
-        { id:"4a", title:"Cena 4a", type:"MASTER SHOT", location:"Sala de Controlo", duration:6, shot:"MEDIUM SHOT", camera:"STATIC", characters:["capitao"], action:"Capitão Gancho observa monitores. O gancho repousa imóvel. Os gráficos descem.", dialogue:{char:"capitao",paren:"(olhar imóvel)",line:"Está decidido."}, reversal:null, reframeOf:null },
-        { id:"4b", title:"Cena 4b", type:"INSERT", location:"Sala de Controlo", duration:5, shot:"INSERT SHOT", camera:"STATIC", characters:[], action:"MESMA CENA DO 4a. INSERT: monitores mostram audiências em queda. Um aviso vermelho pisca.", dialogue:null, reversal:"No ecrã: NO AR EM DOIS MINUTOS.", reframeOf:"4a" },
+        { id:"3a", title:"Cena 3a", type:"MASTER SHOT", location:"Corredor de Bastidores", duration:6, shot:"WIDE SHOT", camera:"TRACKING", characters:["coxa","claudio"], action:"TRACKING SHOT. Coxa segue Cláudio pelo corredor com o alinhamento na mão, a tentar reler a ordem das falas.", dialogue:{char:"coxa",paren:"(a andar depressa)",line:"Espera, espera — a ordem era esta? Ou era a outra?"}, reversal:null, reframeOf:null },
+        { id:"3b", title:"Cena 3b", type:"REFRAME", location:"Corredor de Bastidores", duration:5, shot:"OVER-SHOULDER", camera:"STATIC", characters:["coxa","claudio"], action:"MESMA CENA DO 3a. Por cima do ombro de Cláudio, Coxa mostra o papel com ar de quem pede ajuda.", dialogue:{char:"claudio",paren:"(sem parar)",line:"Anda. E não me faças perguntas."}, reversal:null, reframeOf:"3a" },
+        { id:"4a", title:"Cena 4a", type:"MASTER SHOT", location:"Gabinete do Diretor", duration:6, shot:"MEDIUM SHOT", camera:"STATIC", characters:["capitao"], action:"Gabinete do diretor. Capitão Gancho sentado à secretária, de olhos no muro de televisores. O gancho repousa imóvel. Os gráficos descem.", dialogue:{char:"capitao",paren:"(olhar imóvel)",line:"Está decidido."}, reversal:"No ecrã: NO AR EM DOIS MINUTOS.", reframeOf:null },
+        { id:"4b", title:"Cena 4b", type:"REFRAME", location:"Gabinete do Diretor", duration:5, shot:"OVER-SHOULDER", camera:"STATIC", characters:["capitao","claudio"], action:"MESMO GABINETE, lado corporativo. Cláudio entra sem bater e exige uma decisão. Capitão sentado, imóvel, nem levanta os olhos.", dialogue:{char:"claudio",paren:"(a entrar, exaltado)",line:"Isto não pode esperar pela sua solenidade!"}, reversal:null, reframeOf:"4a" },
         { id:"5a", title:"Cena 5a", type:"MASTER SHOT", location:"Corredor de Bastidores", duration:6, shot:"MEDIUM CLOSE-UP", camera:"STATIC", characters:["perpetua"], action:"Perpétua sussurra ao telefone, escondida atrás de um cenário. Olha em redor com ar de quem sabe demais.", dialogue:{char:"perpetua",paren:"(sussurrando)",line:"Ai filha, eu ouvi isto... mas não fui eu que disse, tá?"}, reversal:null, reframeOf:null },
         { id:"5b", title:"Cena 5b", type:"REFRAME", location:"Corredor de Bastidores", duration:5, shot:"MEDIUM SHOT", camera:"STATIC", characters:["perpetua","patribunal"], action:"MESMA CENA DO 5a. Patribunal aparece no corredor. Perpétua encolhe-se, mas não larga o telefone.", dialogue:{char:"patribunal",paren:"(neutro, formal)",line:"Prossiga. Consta nos autos."}, reversal:null, reframeOf:"5a" },
         { id:"6a", title:"Cena 6a", type:"MASTER SHOT", location:"Estúdio Central", duration:7, shot:"WIDE SHOT", camera:"DOLLY IN", characters:["teresa","coxa","claudio"], action:"Teresa Guilhermina I entra como aparição real. O plateau pára.", dialogue:{char:"teresa",paren:"(pose régia)",line:"Eu sou a rainha dos reality-shows! E exijo o meu lugar."}, reversal:null, reframeOf:null },
         { id:"6b", title:"Cena 6b", type:"REFRAME", location:"Estúdio Central", duration:5, shot:"CLOSE-UP", camera:"STATIC", characters:["teresa"], action:"MESMA CENA DO 6a. CLOSE-UP de Teresa. Queixo erguido, sorriso de quem já ganhou a cena.", dialogue:null, reversal:"IRIS OUT sobre o rosto de Teresa. Fim.", reframeOf:"6a" }
       ];
+      patchCast(scenes, stars, p);
       scenes.forEach(s => {
         s.timecode = tc(s.duration);
         s.characters = s.characters.filter(id => charById[id]);
         s.alertMel = s.characters.includes("abelha");
+        resolveOfficeSide(s);
         if (s.dialogue) { s.dialogue.line = sanitize(s.dialogue.line); s.dialogue.paren = sanitize(s.dialogue.paren); }
         if (s.reversal) s.reversal = sanitize(s.reversal);
         s.prompt = buildPrompt(s);
@@ -352,7 +1191,7 @@
     }
     function audit(ep) {
       const issues = [];
-      const banned = ["goucha", "moniz", "cristina ferreira", "joão patribunal"];
+      const banned = ["goucha", "moniz", "cristina ferreira", "teresa guilherme"];
       const text = [ep.name, ep.premise, ...ep.scenes.flatMap(s => [s.location, s.action, s.reversal || "", s.prompt || "", s.dialogue?.line || ""])].join(" ").toLowerCase();
       banned.forEach(b => { if (text.includes(b)) issues.push({ type:"critical", msg:`Nome real proibido detetado: ${b}.` }); });
       ep.scenes.forEach(s => {
@@ -361,7 +1200,7 @@
         if (s.reframeOf) {
           const ref = ep.scenes.find(x => x.id === s.reframeOf);
           if (!ref) issues.push({ type:"error", msg:`Take ${s.id} referencia reframe inexistente ${s.reframeOf}.` });
-          else if (ref.location !== s.location) issues.push({ type:"error", msg:`Take ${s.id} é reframe mas mudou de localização.` });
+          else if (locBase(ref.location) !== locBase(s.location)) issues.push({ type:"error", msg:`Take ${s.id} é reframe mas mudou de localização.` });
         }
       });
       if (!issues.length) issues.push({ type:"success", msg:"Auditoria OK." });
@@ -373,60 +1212,141 @@
     }
     function currentEpisode() {
       const season = state.seasons.find(s => s.id === state.currentSeason) || state.seasons[0];
-      if (!season) return null;
-      return season.episodes.find(e => e.id === state.currentEpisode) || season.episodes[0] || null;
+      if (!season || !Array.isArray(season.episodes)) return null;
+      // Sem fallback silencioso para o EP1 (FASE 7): pointer inválido = null.
+      if (!state.currentEpisode) return null;
+      return season.episodes.find(e => e.id === state.currentEpisode) || null;
     }
-    function generateEpisode() {
-      const name = $("episodeName").value.trim();
-      const premise = $("premise").value.trim();
+    // Fluxo único de criação: nome+premissa -> história IA -> episódio novo.
+    // Sem IA disponível, nada é criado (erro explícito; sem modo escondido).
+    async function aiGenerateEpisode() {
+      if (location.protocol === "file:") return status("Para gerar, abre via http://localhost:8787.", "error");
+      const name = ($("episodeName").value || "").trim();
+      const premise = ($("premise").value || "").trim();
       if (!name) return status("Escreve o nome do episódio.", "error");
       if (!premise) return status("Escreve uma premissa.", "error");
-      const btn = $("generateBtn");
+      const btn = $("aiGenerateBtn");
       btn.disabled = true;
-      btn.innerHTML = '<span class="loading"></span> A gerar...';
-      setTimeout(() => {
-        try {
-          const number = (state.seasons[0]?.episodes.length || 0) + 1;
-          const episode = {
-            id: `e${number}-${Date.now()}`,
-            number,
-            name: sanitize(name),
-            premise: sanitize(premise),
-            season: 1,
-            scenes: buildScenes(premise)
-          };
-          episode.audit = audit(episode);
-          if (!state.seasons.length) state.seasons.push({ id: "s1", name: "Season 1", episodes: [] });
-          state.seasons[0].episodes.push(episode);
-          state.currentSeason = "s1";
-          state.currentEpisode = episode.id;
-          state.currentScene = episode.scenes[0]?.id || null;
-          save();
-          renderAudit(episode.audit);
-          renderScript();
-          renderPipeline();
-          switchTab("script");
-          $("episodeName").value = "";
-          $("premise").value = "";
-          status(`Episódio ${number} gerado.`, "success");
-        } catch(e) {
-          status("Erro: " + e.message, "error");
-        } finally {
-          btn.disabled = false;
-          btn.innerHTML = "Gerar guião";
-        }
-      }, 500);
+      btn.innerHTML = '<span class="loading"></span> IA a escrever...';
+      try {
+        const cleanPremise = sanitize(premise), cleanName = sanitize(name);
+        const stars = detectCast(cleanPremise);
+        const castIds = (stars.length ? stars : ["coxa", "claudio"]).filter(id => charById[id]);
+        const res = await fetch(`${backendUrl()}/story/generate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ premise: cleanPremise, castIds })
+        });
+        let data;
+        try { data = await res.json(); }
+        catch { throw new Error(`Resposta inválida do backend (HTTP ${res.status}).`); }
+        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
+        if (!data.story) throw new Error("Backend não devolveu história.");
+        if (!state.seasons.length) state.seasons.push({ id: "s1", name: "Season 1", episodes: [] });
+        const season = state.seasons.find(s => s.id === state.currentSeason) || state.seasons[0];
+        const number = (season.episodes.length || 0) + 1;
+        const story = normalizeAIStory(data.story, cleanPremise, castIds);
+        story.title = cleanName;
+        const episode = {
+          id: `e${season.id}-${number}-${Date.now()}`,
+          number, name: cleanName, premise: cleanPremise,
+          season: state.seasons.indexOf(season) + 1,
+          story, scenes: storyToScenes(story),
+          narration: buildNarration(cleanName),
+          tagScene: buildTagScene(castIds, cleanPremise),
+          coldOpen: pickColdOpen(premise, number)
+        };
+        episode.audit = [...auditStory(episode), ...audit(episode)];
+        season.episodes.push(episode);
+        state.currentSeason = season.id;
+        state.currentEpisode = episode.id;
+        state.currentScene = episode.scenes[0]?.id || null;
+        save();
+        renderAudit(episode.audit);
+        renderScript();
+        renderPipeline();
+        renderHeaderNav();
+        switchTab("script");
+        $("episodeName").value = "";
+        $("premise").value = "";
+        status(`Episódio ${number} gerado por IA (${data.provider || "gemini-text"}, ${data.model || "?"}).`, "success");
+      } catch (e) {
+        status("IA indisponível: " + e.message + " Nenhum episódio foi criado.", "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = "✨ Gerar episódio com IA";
+      }
+    }
+    // TAG com cena (varia com a temática do episódio).
+    function buildTagScene(stars, premise) {
+      const S = stars || [];
+      const has = (id) => S.includes(id);
+      if (has("teresa")) return {
+        location: "Escritório Secreto da Guilhermina (trono)",
+        action: "No esconderijo vazio, Guilhermina revê nos monitores tudo o que causou hoje e ri-se sozinha, malévola, brindando com uma chávena.",
+        dialogue: { char: "teresa", paren: "(rindo, malévola)", line: "Chorem, meus amores. A rainha já cá estava antes das câmaras." }
+      };
+      if (has("capitao")) return {
+        location: "Gabinete do Diretor - lado corporativo (RECEBE VISITAS, diálogos e confrontos, estilo 1a/1b)",
+        action: "O telefone preto da secretária de vidro toca no gabinete vazio. Toca três vezes. Ninguém atende — porque o Capitão já foi embora há uma hora e deixou o gancho pousado em cima do auscultador.",
+        dialogue: null
+      };
+      if (has("abelha")) return {
+        location: "Sala de Controlo",
+        action: "Abelha Maia revê as imagens do dia nos monitores e descobre-se a si própria ao fundo de todos os takes, de microfone em riste, em sítios onde jura que não esteve.",
+        dialogue: { char: "abelha", paren: "(gelada)", line: "Está bem. A partir de hoje filmo-me a mim. Alguém tem de me vigiar." }
+      };
+      if (has("mario")) return {
+        location: "Gabinete do Diretor - lado corporativo (RECEBE VISITAS, diálogos e confrontos, estilo 1a/1b)",
+        action: "Sobre a secretária, o foguetão de secretária do Mário — brinquedo — acende de verdade, fura o teto e some com um assobio. Silêncio. Papéis a flutuar.",
+        dialogue: { char: "mario", paren: "(V.O., encantado)", line: "VIRAM?! Sem orçamento, sem autorização, sem teto!" }
+      };
+      if (has("perpetua")) return {
+        location: "Camarim",
+        action: "Perpétua faz flutuar um barquinho de papel no lavatório do camarim e sopra-o até à outra margem. O seu passeio de barco, finalmente.",
+        dialogue: { char: "perpetua", paren: "(sussurrando, feliz)", line: "Lá vou eu. Ninguém me leva? Levo-me eu." }
+      };
+      if (has("tininha")) return {
+        location: "Gabinete do Diretor - lado corporativo (RECEBE VISITAS, diálogos e confrontos, estilo 1a/1b)",
+        action: "Tininha emoldura o memorando do veto e pendura-o torto na parede. O quadro cai sozinho. Ela endireita-o. Cai outra vez.",
+        dialogue: { char: "tininha", paren: "(sorrindo, a estalar)", line: "Está direitinho. Está tudo direitinho." }
+      };
+      if (has("claudio") || has("coxa")) return {
+        location: "Estúdio Central",
+        action: "Os microfones ficaram abertos. Toda a estação ouve os dois a sussurrar mal um do outro no escuro — e a rirem-se juntos no fim.",
+        dialogue: null
+      };
+      if (has("patribunal")) return {
+        location: "Corredor de Bastidores",
+        action: "Patribunal abre o dossier em casa e encontra uma página que ele não escreveu, com a sua própria letra: 'Rever o caso do sorriso'.",
+        dialogue: { char: "patribunal", paren: "(pela primeira vez, em voz alta)", line: "…Prossiga-se. A mim." }
+      };
+      return null;
     }
     function renderScript() {
       const ep = currentEpisode();
       if (!ep) return $("scriptContent").innerHTML = '<div class="empty"><h3>Guião</h3><p>Gera um episódio.</p></div>';
-      let html = `<div class="script"><div class="script-head"><h2>OS LESADOS</h2><p>"${esc(ep.name)}"</p><p>Season 1 · Episódio ${ep.number} · ${ep.scenes.length} takes</p></div>`;
+      let html = `<div class="script"><div class="script-head"><h2>OS LESADOS</h2><p>"${esc(ep.name)}"</p><p>Season 1 · Episódio ${ep.number} · ${ep.scenes.length} takes</p>${ep.hook ? `<p style="color:var(--canon);font-size:.85em;">🧵 Fio de temporada: ${esc(ep.hook)}</p>` : ""}</div>`;
+      if (ep.narration?.open) html += `<div class="narr"><strong>ABELHA MAIA (V.O.) — ABERTURA:</strong> ${esc(ep.narration.open)}</div>`;
+      if (ep.coldOpen) html += `<div class="slug">EXT. ${esc(ep.coldOpen.location).toUpperCase()} - DIA [0:00 - 0:0${esc(String(ep.coldOpen.duration))}]</div><div class="camera">🎥 WIDE SHOT · ${esc(ep.coldOpen.camera)}</div><div class="take">▶ COLD OPEN · ${esc(String(ep.coldOpen.duration))}s · ESTABLISHING</div><div class="action">${esc(ep.coldOpen.action)}</div>`;
       ep.scenes.forEach((s, i) => {
+        if (i > 0) {
+          const prev = ep.scenes[i - 1];
+          if (locBase(prev.location) !== locBase(s.location)) {
+            html += `<div class="transit"><strong>🔀 TRANSIÇÃO:</strong> ${esc(transitionFor(s, s.id === "6a"))}</div>`;
+          }
+        }
+        if (ep.story && s.actLabel) html += `<div class="act">${esc(s.actLabel)}${ep.story.engine === "local" ? " · MOTOR LOCAL, SEM IA" : ""}</div>`;
+        else {
         if (s.id === "1a") html += '<div class="act">ATO I — SETUP</div>';
+        if (s.id === "2a" && ep.narration?.tcIncidente) html += `<div class="timecard">${esc(ep.narration.tcIncidente)}</div>`;
         if (s.id === "2a") html += '<div class="act">INCIDENTE INCITANTE</div>';
         if (s.id === "3a") html += '<div class="act">ATO II — ESCALADA</div>';
+        if (s.id === "5a" && ep.narration?.tcBastidor) html += `<div class="timecard">${esc(ep.narration.tcBastidor)}</div>`;
         if (s.id === "5a") html += '<div class="act">SUBLOT / BASTIDORES</div>';
+        if (s.id === "6a" && ep.narration?.tcFinal) html += `<div class="timecard">${esc(ep.narration.tcFinal)}</div>`;
         if (s.id === "6a") html += '<div class="act">RESOLUÇÃO</div>';
+        }
         html += `<div class="slug">INT. ${esc(s.location).toUpperCase()} - DIA [${esc(s.timecode)}]</div>`;
         if (s.reframeOf) html += `<div class="reframe">[REFRAME do take ${esc(s.reframeOf)} — mesma localização, só muda enquadramento]</div>`;
         html += `<div class="camera">🎥 ${esc(s.shot)} · ${esc(s.camera)}</div>`;
@@ -441,6 +1361,8 @@
         if (i < ep.scenes.length - 1) html += '<div class="cut">CUT TO:</div>';
       });
       html += '<div class="end">— FIM DO EPISÓDIO —</div></div>';
+      if (ep.narration?.close) html = html.replace('<div class="end">', `<div class="narr"><strong>ABELHA MAIA (V.O.) — FECHO:</strong> ${esc(ep.narration.close)}</div><div class="end">`);
+      if (ep.tagScene) html = html.replace('<div class="end">', `<div class="slug">TAG — ${esc(ep.tagScene.location).toUpperCase()}</div><div class="action">${esc(ep.tagScene.action)}</div>${ep.tagScene.dialogue ? `<div class="char">${esc(charById[ep.tagScene.dialogue.char]?.name || ep.tagScene.dialogue.char)}</div><div class="paren">${esc(ep.tagScene.dialogue.paren)}</div><div class="dialogue">${esc(ep.tagScene.dialogue.line)}</div>` : ""}<div class="end">`);
       $("scriptContent").innerHTML = html;
     }
     function renderPipeline() {
@@ -468,7 +1390,7 @@
           <div class="nav"><div class="season"><div class="season-title">${esc(season.name)}</div><div class="ep-list">
       `;
       season.episodes.forEach(e => {
-        html += `<div class="ep-item ${e.id === ep.id ? "active" : ""}" data-ep="${esc(e.id)}">Ep. ${e.number}: ${esc(e.name)}</div>`;
+        html += `<div class="ep-item ${e.id === ep.id ? "active" : ""}" data-ep="${esc(e.id)}"><span style="flex:1;">Ep. ${e.number}: ${esc(e.name)}</span><span class="ep-del" data-del="${esc(e.id)}" title="Apagar episódio">✕</span></div>`;
       });
       html += `</div></div></div><div>
         <div class="gen">
@@ -501,11 +1423,11 @@
       $("pipelineContent").innerHTML = html;
 
       $("pipelineContent").querySelectorAll(".ep-item").forEach(el => el.addEventListener("click", () => {
-        state.currentEpisode = el.dataset.ep;
-        state.currentScene = null;
-        save();
-        renderPipeline();
-        renderScript();
+        selectEpisode(el.dataset.ep);
+      }));
+      $("pipelineContent").querySelectorAll("[data-del]").forEach(el => el.addEventListener("click", ev => {
+        ev.stopPropagation();
+        deleteEpisode(el.dataset.del);
       }));
       $("pipelineContent").querySelectorAll(".scene").forEach(el => el.addEventListener("click", () => {
         state.currentScene = el.dataset.scene;
@@ -526,10 +1448,12 @@
             <h3>${esc(c.name)} ${c.id === "abelha" ? '<span class="badge">ALERTA MEL</span>' : ""}</h3>
             <p><strong>ID:</strong> ${esc(c.id)}</p>
             <p><strong>Visual:</strong> ${esc(c.visual)}</p>
+            <p><strong>Voice:</strong> ${esc(c.voice || "—")}</p>
           </div>
         `;
       });
       html += "</div>";
+      html += `<div class="meta" style="margin-top:12px;">Bíblia narrativa: ${esc(BIBLE_INFO.remote ? `${BIBLE_INFO.source} (${BIBLE_INFO.count} fichas) ✓` : "remota indisponível — dados locais embebidos (mesmo conteúdo)")}</div>`;
       $("canonContent").innerHTML = html;
     }
     function approveImage() {
@@ -539,10 +1463,555 @@
       scene.approved = true;
       save();
       renderPipeline();
-      status("Imagem aprovada.", "success");
+      updateVideoTab();
+      updateTicker();
+      status("Imagem aprovada. Vê a aba VIDEO para o prompt de animação.", "success");
+    }
+    // Técnica adaptada de src/cinematic/omniAdapter.js (V2): guião curto por
+    // blocos (Subject/Action/Scene/Camera/Lighting/Audio/Negative/Style),
+    // Character Lock verbatim, um clip = uma ideia, duração + aspeto explícitos.
+    // NOTA operacional (não vai para o modelo): que asset anexar como first frame.
+    // Critério de frame FINAL: o take descreve progressão visível — câmara em
+    // movimento (não STATIC), INSERT/REACTION com transformação, ou reframe
+    // (fecha a composição do novo enquadramento).
+    function needsFinalFrame(scene) {
+      return scene.camera !== "STATIC" || ["INSERT", "REACTION"].includes(scene.type) || Boolean(scene.reframeOf);
+    }
+    function endFrameHint(scene) {
+      const cam = scene.camera || "";
+      if (/WHIP PAN/.test(cam)) return "frame final: câmara já assente no novo sujeito após o pan.";
+      if (/TRACKING/.test(cam)) return "frame final: personagens progrediram pelo corredor, mesma localização.";
+      if (/DOLLY IN|ZOOM IN/.test(cam)) return "frame final: enquadramento mais fechado no sujeito, mesmo setup.";
+      if (/DOLLY OUT|ZOOM OUT/.test(cam)) return "frame final: enquadramento mais aberto, revela mais do cenário.";
+      if (scene.type === "INSERT") return "frame final: detalhe assente após a ação (ex. mão pousada, ecrã visível).";
+      if (scene.type === "REACTION") return "frame final: segura a reação no pico da expressão.";
+      if (scene.reframeOf) return `frame final: segura a composição final do reframe do take ${scene.reframeOf}`;
+      return "frame final: segura o fim composto do movimento.";
+    }
+    function buildVideoNote(scene, parentLocation) {
+      const coverage = videoCoverageNote(scene.location);
+      if (needsFinalFrame(scene)) {
+        let ctx = "";
+        if (scene.reframeOf) {
+          ctx = (parentLocation && parentLocation !== scene.location)
+            ? ` Continua no mesmo gabinete do take ${scene.reframeOf}, noutro lado/ângulo.`
+            : ` Mesmo setup do take ${scene.reframeOf} (só muda o enquadramento).`;
+        }
+        return `📎 NOTA (2 FRAMES): Anexar o still do take ${scene.id} como INITIAL FRAME. Gerar FINAL FRAME: ${endFrameHint(scene)}.${ctx}${coverage} Manter caras, figurinos, cenário e luz idênticos ao still.`;
+      }
+      return `📎 NOTA (1 FRAME): Anexar o still do take ${scene.id} como frame único (image-to-video).${coverage} Manter caras, figurinos, cenário e luz idênticos ao still.`;
+    }
+    // Gramática de cobertura por cenário (zoom nos sentados, etc.).
+    // Chave: base da localização. Valor: frase para a NOTA operacional.
+    const VIDEO_COVERAGE = {
+      "Sala de Reuniões Secret Story": " Cobertura da sala: plano A (master larga da mesa) → plano C (close individual de cada um que fala, um de cada vez)."
+    };
+    function videoCoverageNote(location) {
+      const base = locBase(location || "");
+      for (const [k, v] of Object.entries(VIDEO_COVERAGE)) {
+        if (base.indexOf(k) === 0 || k.indexOf(base) === 0) return v;
+      }
+      return "";
+    }
+    function buildVideoPrompt(scene) {
+      const chars = scene.characters || [];
+      const lock = chars.map(id => { const c = charById[id]; return c ? `${c.name}: ${c.visual}` : null; }).filter(Boolean);
+      const names = chars.map(id => charById[id]?.name || id).join(" + ") || "empty set";
+      const parts = [];
+      parts.push(`[Character Lock — paste verbatim every clip]\n${lock.join("\n") || "No characters."}`);
+      parts.push(`Subject: ${names} in take ${scene.id} — ${sanitize(scene.location)}`);
+      parts.push(`Action: Single continuous shot, no cuts. ${sanitize(scene.action)} Physics: realistic mass and collision, grounded contact, no floating between contacts, no skipped motion.`);
+      let sceneLine = `Scene: ${sanitize(scene.location)}. 2D satirical animation, thick black outlines, vibrant colors.`;
+      if (scene.alertMel) sceneLine += " Lower third graphic overlay with exact text ALERTA MEL in yellow/honey with dripping honey effect visible at bottom of frame.";
+      parts.push(sceneLine);
+      parts.push(`Camera: ${scene.shot}, ${scene.camera}, level horizon, 24-70mm studio feel. Duration: ${scene.duration}s. Aspect: 16:9.`);
+      parts.push("Lighting: Warm three-point daytime-TV lighting (3200K-4500K), soft key + fill, gentle rim separation. Identical light direction across reframes.");
+      if (scene.dialogue) {
+        const c = charById[scene.dialogue.char];
+        const who = c?.name || scene.dialogue.char;
+        const vox = c?.voice ? ` (voice: ${c.voice})` : "";
+        parts.push(`Audio: Diegetic lip-sync dialogue — ${who}${vox}: "${sanitize(scene.dialogue.line)}" — synced lip movement, clear voice.`);
+      } else {
+        parts.push("Audio: Natural room tone, no music.");
+      }
+      parts.push("Negative: face shape changes, eye color shifts, hair length changes, outfit changes, jewelry inconsistency, extra fingers or limbs, motion-blur smearing, second scene, background change, camera cut, text, logos, watermarks (ALERTA MEL overlay excepted), real people.");
+      parts.push("Style: Looney Tunes slapstick energy meets CNN broadcast framing, professional TV cartoon, high detail.");
+      return parts.join("\n");
+    }
+    // Agrupa reframes aprovados com o take base: uma linha = um clip
+    // (INITIAL FRAME do base → FINAL FRAME do último reframe).
+    // Clips de vídeo: UM take = UMA linha. Reframes são coberturas paralelas
+    // do mesmo momento (não sequência) — nunca se misturam stills de takes
+    // diferentes. O 2.º slot só existe quando o próprio take tem movimento
+    // interno; aí o final gera-se (ver buildVideoNote), não se reutiliza.
+    function buildVideoClips(list) {
+      return list.map(s => ({ takes: [s], chained: false }));
+    }
+    function clipKey(c) { return c.takes.map(s => s.id).join("+"); }
+    function clipVideoNote(c, byId) {
+      const s = c.takes[0];
+      const parentLocation = s.reframeOf && byId ? byId[s.reframeOf]?.location : null;
+      return buildVideoNote(s, parentLocation);
+    }
+    function clipVideoPrompt(c) { return buildVideoPrompt(c.takes[0]); }
+    function approvedScenes() {
+      const ep = currentEpisode();
+      if (!ep) return { ep: null, list: [] };
+      return { ep, list: ep.scenes.filter(s => s.approved && s.imageUrl) };
+    }
+    function renderVideo() {
+      const { ep, list } = approvedScenes();
+      if (!ep) return $("videoContent").innerHTML = '<div class="empty"><h3>Video</h3><p>Gera um episódio.</p></div>';
+      if (!list.length) return $("videoContent").innerHTML = '<div class="empty"><h3>Video</h3><p>Aprova imagens no Pipeline para gerar prompts de vídeo OMNI FLASH.</p></div>';
+      let html = '<div class="buttons" style="margin-bottom:12px;"><button class="btn btn-sm btn-secondary" id="copyAllVideoBtn" style="max-width:240px;">Copiar todos</button></div>';
+      html += "<table class=\"vtable\"><tr><th>Take</th><th>Still aprovado</th><th>Prompt imagem aprovado</th><th>Animar em vídeo (OMNI FLASH)</th><th></th></tr>";
+      const clips = list.map(s => ({ takes: [s], chained: false }));
+      const byId = Object.fromEntries(list.map(s => [s.id, s]));
+      clips.forEach(c => {
+        const takes = c.takes;
+        const ids = takes.map(s => s.id).join(" → ");
+        const totalDur = takes.reduce((a, s) => a + Number(s.duration || 0), 0);
+        const mel = takes.some(s => s.alertMel);
+        const pair = takes.length > 1;
+        html += `<tr><td><strong style="color:var(--canon)">▶ ${esc(ids)}</strong><br><span class="meta">${totalDur}s · 16:9${mel ? " · MEL" : ""} · ${pair ? "🎬 INITIAL+FINAL" : (needsFinalFrame(takes[0]) ? "🎬 2 FRAMES" : "🎬 1 FRAME")}</span></td>`;
+        html += `<td class="thumb">${takes.map(s => `<img src="${esc(s.imageUrl)}" alt="take ${esc(s.id)}" style="margin-bottom:6px;">`).join("")}</td>`;
+        html += `<td>${takes.map(s => `<div class="vprompt" style="margin-bottom:6px;">${esc((s.prompt || "").slice(0, 400))}${(s.prompt || "").length > 400 ? "…" : ""}</div><div class="meta">${esc(s.id)} · ${esc(s.model || "sem modelo")} · v${s.variant || 0}</div>`).join("")}</td>`;
+        html += `<td><div class="vnote">${esc(clipVideoNote(c, byId))}</div><div class="vprompt">${esc(clipVideoPrompt(c))}</div></td>`;
+        html += `<td><button class="btn btn-sm" data-copy="${esc(clipKey(c))}">Copiar</button></td></tr>`;
+      });
+      html += "</table>";
+      $("videoContent").innerHTML = html;
+      $("copyAllVideoBtn")?.addEventListener("click", copyAllVideoPrompts);
+      $("videoContent").querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => copyVideoPrompt(b.dataset.copy)));
+    }
+    function copyVideoPrompt(key) {
+      const { list } = approvedScenes();
+      const c = buildVideoClips(list).find(x => clipKey(x) === key);
+      if (!c) return status("Take não encontrado.", "error");
+      const label = c.takes.map(s => s.id).join(" → ");
+      navigator.clipboard.writeText(clipVideoPrompt(c)).then(() => status(`Prompt vídeo (${label}) copiado.`, "success"), () => status("Falha ao copiar.", "error"));
+    }
+    function copyAllVideoPrompts() {
+      const { list } = approvedScenes();
+      const clips = list.map(s => ({ takes: [s], chained: false }));
+      const byId = Object.fromEntries(list.map(s => [s.id, s]));
+      const all = clips.map(c => {
+        const label = c.takes.map(s => s.id).join(" → ");
+        return `=== TAKES ${label} ===\n${clipVideoNote(c, byId)}\n\n${clipVideoPrompt(c)}`;
+      }).join("\n\n");
+      navigator.clipboard.writeText(all).then(() => status(`${clips.length} prompts copiados.`, "success"), () => status("Falha ao copiar.", "error"));
+    }
+    function updateVideoTab() {
+      const { list } = approvedScenes();
+      const tab = document.querySelector('[data-tab="video"]');
+      if (tab) tab.textContent = `Video${list.length ? ` (${list.length})` : ""}`;
+    }
+    function updateVideoTab() {
+      const { list } = approvedScenes();
+      const tab = document.querySelector('[data-tab="video"]');
+      if (tab) tab.textContent = `Video${list.length ? ` (${list.length})` : ""}`;
+    }
+    // SALA DOS ARGUMENTISTAS — laboratório multiagente (polling de eventos reais).
+    let SALA = { id: null, data: null, timer: null, agents: [], history: [] };
+    // Modo automático: ao entrar na Sala sem sessão ativa, inicia uma sozinha
+    // com tópico rotativo. Nunca duplica sessões a correr nem repete tópico.
+    const SALA_AUTO_KEY = "osLesados_salaAuto";
+    const SALA_TOPIC_KEY = "osLesados_salaTopicIdx";
+    const SALA_TOPICS = [
+      "realities e daytime TVI",
+      "polémicas da semana na TV portuguesa",
+      "bastidores, camarins e corridors de estúdio",
+      "audiências, galas e expulsões de realities",
+      "diretos que correram mal"
+    ];
+    function salaAutoOn() {
+      try { return localStorage.getItem(SALA_AUTO_KEY) !== "off"; } catch (e) { return true; }
+    }
+    function nextAutoTopic() {
+      let i = 0;
+      try {
+        i = Number(localStorage.getItem(SALA_TOPIC_KEY) || "0") || 0;
+        localStorage.setItem(SALA_TOPIC_KEY, String((i + 1) % SALA_TOPICS.length));
+      } catch (e) {}
+      return SALA_TOPICS[i % SALA_TOPICS.length];
+    }
+    async function enterSala() {
+      renderSala();
+      await salaHistory();
+      if (!salaAutoOn()) return;
+      if (SALA.id) { await salaPoll(true); if (salaRunning()) return; }
+      const hasRunning = (SALA.history || []).some(h => h.status === "running");
+      if (hasRunning) return;
+      const today = new Date().toISOString().slice(0, 10);
+      const doneToday = (SALA.history || []).some(h => h.status === "done" && (h.updatedAt || "").slice(0, 10) === today);
+      if (doneToday) return;
+      const input = $("salaTopic");
+      if (input && !input.value.trim()) input.value = nextAutoTopic();
+      status("Sala automática: a iniciar sessão sozinha...", "success");
+      await salaStart();
+    }
+    const ST_LABEL = { espera: ["À espera", ""], pesquisar: ["A pesquisar", "run"], gerar: ["A gerar ideias", "run"], criticar: ["A criticar", "run"], rever: ["A rever", "run"], "concluído": ["Concluído", "ok"], concluído: ["Concluído", "ok"], erro: ["Erro", "err"] };
+    function salaRunning() { return SALA.data && (SALA.data.status === "running"); }
+    function salaStopPoll() { if (SALA.timer) { clearInterval(SALA.timer); SALA.timer = null; } }
+    async function salaStart() {
+      if (location.protocol === "file:") return status("A Sala precisa do backend: abre via http://localhost:8787.", "error");
+      const topic = ($("salaTopic")?.value || "").trim() || "atualidade televisiva portuguesa";
+      salaStopPoll();
+      try {
+        const res = await fetch(`${backendUrl()}/writers/start`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic })
+        });
+        const data = await safeJson(res);
+        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
+        SALA.id = data.id;
+        SALA.data = null;
+        status(`Sala aberta: sessão ${data.id}. A trabalhar...`, "success");
+        await salaPoll(true);
+        SALA.timer = setInterval(() => salaPoll(false), 3000);
+      } catch (e) { status("Sala: " + e.message, "error"); }
+    }
+    async function salaPoll(force) {
+      if (!SALA.id) return;
+      try {
+        const res = await fetch(`${backendUrl()}/writers/session/${encodeURIComponent(SALA.id)}`, { headers: { Accept: "application/json" } });
+        const data = await safeJson(res);
+        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
+        SALA.data = data.session;
+        if (Array.isArray(data.agents) && data.agents.length) SALA.agents = data.agents;
+        renderSala();
+        if (!salaRunning()) { salaStopPoll(); salaHistory(); }
+      } catch (e) { if (force) status("Sala: " + e.message, "error"); }
+    }
+    async function salaStop() {
+      if (!SALA.id) return;
+      try {
+        await fetch(`${backendUrl()}/writers/session/${encodeURIComponent(SALA.id)}/stop`, { method: "POST" });
+        salaStopPoll();
+        await salaPoll(true);
+      } catch (e) { status("Sala: " + e.message, "error"); }
+    }
+    async function salaContinue(id) {
+      SALA.id = id || SALA.id;
+      if (!SALA.id) return;
+      try {
+        const res = await fetch(`${backendUrl()}/writers/session/${encodeURIComponent(SALA.id)}/continue`, { method: "POST" });
+        const data = await safeJson(res);
+        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
+        salaStopPoll();
+        await salaPoll(true);
+        SALA.timer = setInterval(() => salaPoll(false), 3000);
+      } catch (e) { status("Sala: " + e.message, "error"); }
+    }
+    async function salaView(id) {
+      SALA.id = id;
+      salaStopPoll();
+      await salaPoll(true);
+      const s = SALA.data;
+      if (s && s.status === "running") SALA.timer = setInterval(() => salaPoll(false), 3000);
+    }
+    async function salaHistory() {
+      if (location.protocol === "file:") return;
+      try {
+        const res = await fetch(`${backendUrl()}/writers/sessions`, { headers: { Accept: "application/json" } });
+        const data = await safeJson(res);
+        if (data?.ok) { SALA.history = data.sessions || []; renderSalaHistory(); }
+      } catch (e) {}
+    }
+    async function salaVerdict(proposalId, verdict) {
+      if (!SALA.id) return;
+      try {
+        const res = await fetch(`${backendUrl()}/writers/session/${encodeURIComponent(SALA.id)}/approve`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ proposalId, verdict })
+        });
+        const data = await safeJson(res);
+        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
+        await salaPoll(true);
+      } catch (e) { status("Sala: " + e.message, "error"); }
+    }
+    function salaUseInScript(p) {
+      $("episodeName").value = p.title || "";
+      $("premise").value = p.premise || "";
+      switchTab("script");
+      document.querySelector(".layout")?.scrollIntoView?.();
+      status(`Ideia "${p.title}" enviada para o guião (gera o episódio na sidebar). Nada foi criado automaticamente.`, "success");
+    }
+    // Bonequinhos estilo Habbo: avatar pixel gerado por agente (cor própria),
+    // posição fixa na sala, animação CSS por estado real (parado / a trabalhar).
+    const HABBO_MAP = [
+      "....HHHH....",
+      "...HHHHHH...",
+      "...HFFFFH...",
+      "...FFFFFF...",
+      "....FFFF....",
+      "..SSSSSSSS..",
+      ".SSSSSSSSSS.",
+      ".SS.SSSS.SS.",
+      "....PPPP....",
+      "....P..P....",
+      "....P..P....",
+      "...SS..SS...",
+      "...SS..SS...",
+      "............",
+      "............"
+    ];
+    const HABBO_SPOTS = [[6, 52], [22, 38], [38, 54], [54, 40], [70, 54], [86, 42]];
+    const HABBO_BUB = { espera: "💤", pesquisar: "🔍", gerar: "✍️", criticar: "🔪", rever: "🔁", "concluído": "✅", erro: "❌" };
+    function habboHTML(a, live, i) {
+      const shirt = ["#ff006e", "#8338ec", "#ffd700", "#00c853", "#ffab00", "#4dd0e1"][i % 6];
+      const hair = ["#3e2723", "#111111", "#ffeb3b", "#795548", "#e0e0e0", "#880e4f"][i % 6];
+      let shadows = [];
+      HABBO_MAP.forEach((row, y) => {
+        [...row].forEach((ch, x) => {
+          if (ch === ".") return;
+          const c = ch === "H" ? hair : ch === "F" ? "#ffcc99" : ch === "S" ? shirt : "#222233";
+          shadows.push(`calc(var(--px) * ${x}) calc(var(--px) * ${y}) 0 0 ${c}`);
+        });
+      });
+      const st = live?.state || "espera";
+      const cls = st === "concluído" ? "done" : st === "erro" ? "failed" : ["pesquisar", "gerar", "criticar", "rever"].includes(st) ? "work" : "";
+      const [left, top] = HABBO_SPOTS[i % HABBO_SPOTS.length];
+      return `<div class="habbo ${cls}" style="left:${left}%;top:${top}%;animation-delay:${(i * 0.35).toFixed(2)}s;">` +
+        `<span class="tag">${esc(a.name.split(" ")[0])}</span>` +
+        `<span class="bub">${HABBO_BUB[st] || "💤"}</span>` +
+        `<span class="px" style="box-shadow:${shadows.join(",")};"></span></div>`;
+    }
+    function salaRoomHTML(agents, s) {
+      return `<div class="door"></div>` + agents.map((a, i) => habboHTML(a, s?.agents?.[a.id], i)).join("");
+    }
+    function agentCard(a, live) {
+      const [label, cls] = ST_LABEL[live?.state] || ST_LABEL.espera;
+      const active = ["pesquisar", "gerar", "criticar", "rever"].includes(live?.state) ? "active" : "";
+      const done = live?.state === "concluído" ? "done" : "";
+      const failed = live?.state === "erro" ? "failed" : "";
+      return `<div class="agent ${active} ${done} ${failed}"><h4>${a.icon || "🤖"} ${esc(a.name)}</h4><div class="role">${esc(a.desc || "")}</div><span class="st ${cls}">${label}</span>${live?.detail ? `<div class="meta">${esc(live.detail)}</div>` : ""}</div>`;
+    }
+    function renderSala() {
+      const s = SALA.data;
+      const agents = SALA.agents.length ? SALA.agents : [
+        { id: "investigador", name: "Investigador", icon: "🔎", desc: "Pesquisa factos reais na web." },
+        { id: "analista", name: "Analista", icon: "🧩", desc: "Cruza factos com o canon." },
+        { id: "argumentista", name: "Argumentista", icon: "✍️", desc: "Cria 10 premissas curtas." },
+        { id: "improvisador", name: "Improvisador Absurdo", icon: "🤪", desc: "Reviravoltas inesperadas." },
+        { id: "critico", name: "Crítico", icon: "🔪", desc: "Ataca clichés." },
+        { id: "showrunner", name: "Showrunner", icon: "🎬", desc: "Shortlist final." }
+      ];
+      let html = `<div class="gen"><h3>🛋️ Sala dos Argumentistas</h3>
+        <div class="field"><label>Tópico da sessão</label><input id="salaTopic" placeholder="Ex: realities, daytime, polémicas da semana" value="${esc(s?.topic || "")}"></div>
+        <div class="buttons">
+          <button class="btn btn-sm btn-danger" id="salaStopBtn" ${salaRunning() ? "" : "disabled"}>Parar</button>
+          ${s && ["error", "stopped", "interrupted"].includes(s.status) ? `<button class="btn btn-sm btn-warning" id="salaContinueBtn">Continuar</button>` : ""}
+        </div>
+        <div class="meta"><label style="cursor:pointer;"><input type="checkbox" id="salaAutoChk" ${salaAutoOn() ? "checked" : ""} style="vertical-align:middle;"> Automático (inicia sozinha ao abrir, 1 sessão/dia)</label></div>
+        ${s ? `<div class="meta">Sessão ${esc(s.id)} · ${esc(s.status)} · etapa ${esc(s.stage || "-")} · ${s.stats?.aiCalls || 0} chamadas IA · ${esc(s.topic || "")}</div>` : '<div class="meta">Sem sessão ativa. As mensagens e animações refletem eventos reais do backend.</div>'}
+      </div>`;
+      html += `<h3 style="color:var(--warning);margin-bottom:10px;">🤖 Agentes</h3><div class="habbo-room" id="salaRoom"></div><div class="agents">`;
+      SALA.roomAgents = agents;
+      html += agents.map(a => agentCard(a, s?.agents?.[a.id])).join("");
+      html += `</div><div class="cols"><div><h3 style="color:var(--warning);margin-bottom:10px;">📡 Atividade (remetente → destino)</h3><div class="feed">`;
+      const msgs = (s?.messages || []).slice().reverse();
+      html += msgs.length ? msgs.map(m =>
+        `<div class="msg"><span class="flow">${esc(m.from)} → ${esc((m.to || []).join(", "))}</span> <small style="color:#888">${esc(m.task || "")} · ${esc((m.at || "").slice(11, 19))}</small><br>${esc(m.content || "")}</div>`
+      ).join("") : '<div class="meta">Sem mensagens ainda.</div>';
+      html += `</div></div><div><h3 style="color:var(--warning);margin-bottom:10px;">📚 Fontes consultadas</h3><div class="feed">`;
+      const srcs = s?.sources || [];
+      html += srcs.length ? srcs.map(x =>
+        `<div class="src">${x.kind === "tecnica" ? "🎓" : "🔗"} <a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title || x.url)}</a> <span style="color:#888">[${esc(x.kind === "tecnica" ? "TÉCNICA" : "FACTO")}]</span><br><span style="color:#666">${esc(x.source || "")} · ${esc(x.topic || "")}</span><br>${esc((x.snippet || "").slice(0, 160))}</div>`
+      ).join("") : '<div class="meta">Sem fontes ainda.</div>';
+      if (s?.sourceErrors?.length) html += `<div class="meta">Falhas de pesquisa: ${esc(s.sourceErrors.slice(0, 3).join(" | "))}</div>`;
+      html += `</div></div></div>`;
+    const SALA_THEMES = [
+      ["poder", "🏛️ Poder", ["capitao", "gancho", "tininha", "diretora", "diretor", "veto", "grelha", "decis"]],
+      ["bastidores", "🚪 Bastidores", ["camarim", "corredor", "esconderijo", "trono", "perpetua", "perpétua", "bastidor"]],
+      ["realities", "👁️ Realities", ["secret story", "big brother", "reality", "gala", "expuls", "nomea", "desafio", "concorrente", "tereza", "guilhermina", "rainha", "trono"]],
+      ["daytime", "☀️ Daytime", ["coxa", "manhã", "manha", "entrevista", "dois às", "claudio", "cláudio"]],
+      ["diretos", "📡 Diretos", ["abelha", "maia", "mel", "direto", "emissão", "emissao", "falha", "técnica", "tecnica"]]
+    ];
+    function salaThemeOf(p) {
+      const t = `${p.title || ""} ${(p.chars || []).join(" ")} ${p.scenario || ""} ${p.premise || ""}`.toLowerCase();
+      for (const [key, , words] of SALA_THEMES) {
+        if (words.some(w => t.includes(w))) return key;
+      }
+      return "geral";
+    }
+    function salaPropCard(p, short, crit) {
+        const c = crit[p.id];
+        const cls = p.state === "rejeitada" ? "dead" : (short.has(p.id) ? "short" : "");
+        return `<div class="prop ${cls}"><h4>${p.absurdo ? "🤪 " : ""}${esc(p.title)} ${short.has(p.id) ? '<span class="badge-ok">SHORTLIST</span>' : ""} ${p.revised ? '<span class="badge">REVISTA</span>' : ""} ${p.state === "aprovada" && !short.has(p.id) ? '<span class="badge-ok">APROVADA</span>' : ""}</h4>
+          <p>${esc(p.premise)}</p>
+          <p><span class="kw">Elenco:</span> ${esc((p.chars || []).join(", "))} · <span class="kw">Cenário:</span> ${esc(p.scenario || "—")}</p>
+          <p><span class="kw">Payoff:</span> ${esc(p.payoff || "—")}</p>
+          ${c ? `<p><span class="kw">Crítica ${c.score}/10:</span> ${esc(c.flaw)} <em>Correção: ${esc(c.fix)}</em></p>` : ""}
+          <div class="buttons" style="margin-top:8px;">
+            <button class="btn btn-sm btn-success" data-sact="approve" data-pid="${esc(p.id)}">Aprovar</button>
+            <button class="btn btn-sm btn-danger" data-sact="reject" data-pid="${esc(p.id)}">Rejeitar</button>
+            <button class="btn btn-sm btn-secondary" data-sact="use" data-pid="${esc(p.id)}">Usar no guião</button>
+          </div></div>`;
+    }
+    function salaGroupedProps() {
+      const sd = SALA.data;
+      const props = sd?.proposals || [];
+      const short = new Set(sd?.shortlist || []);
+      const crit = Object.fromEntries((sd?.critiques || []).map(c => [c.proposalId, c]));
+      const filter = SALA.theme || "todas";
+      const groups = [["todas", "💡 Todas", null]];
+      for (const [key, label] of SALA_THEMES) groups.push([key, label, key]);
+      groups.push(["geral", "📦 Geral", "geral"]);
+      let html = `<h3 style="color:var(--warning);margin:12px 0 10px;">💡 Propostas (${props.length}) · Shortlist (${short.size})</h3>`;
+      html += `<div class="buttons" style="margin-bottom:10px;">` + groups.map(([key, label]) => {
+        const n = key === "todas" ? props.length : props.filter(p => salaThemeOf(p) === key).length;
+        const on = (SALA.theme || "todas") === key;
+        return `<button class="btn btn-sm ${on ? "" : "btn-secondary"}" data-theme="${key}" style="flex:0 1 auto;">${label} (${n})</button>`;
+      }).join("") + `</div>`;
+      if (!props.length) return html + '<div class="empty"><h3>Sem propostas</h3><p>Inicia uma sessão para gerar 10 ideias.</p></div>';
+      const order = [];
+      if (filter === "todas") {
+        for (const [key, label] of [...SALA_THEMES.map(([k, l]) => [k, l]), ["geral", "📦 Geral"]]) {
+          const list = props.filter(p => salaThemeOf(p) === key);
+          if (list.length) order.push([label, list]);
+        }
+      } else {
+        const label = (SALA_THEMES.find(([k]) => k === filter)?.[1]) || "📦 Geral";
+        order.push([label, props.filter(p => salaThemeOf(p) === filter)]);
+      }
+      for (const [label, list] of order) {
+        if (!label) continue;
+        html += `<h4 style="color:var(--canon);margin:10px 0 8px;">${label} (${list.length})</h4><div class="props">`;
+        html += list.map(p => salaPropCard(p, short, crit)).join("");
+        html += `</div>`;
+      }
+      return html;
+    }
+      html += salaGroupedProps();
+      html += `<h3 style="color:var(--warning);margin:12px 0 10px;">🗂️ Histórico de sessões</h3><div id="salaHistory"><div class="meta">A carregar...</div></div>`;
+      $("salaContent").innerHTML = html;
+      const roomEl = $("salaRoom");
+      if (roomEl && SALA.roomAgents) {
+        const sig = JSON.stringify(SALA.roomAgents.map(a => a.id)) + "|" + JSON.stringify(s && Object.entries(s.agents || {}).map(([k, v]) => k + v.state));
+        if (sig !== SALA.roomSig) {
+          SALA.roomSig = sig;
+          roomEl.innerHTML = salaRoomHTML(SALA.roomAgents, s);
+        }
+      }
+      $("salaContent").querySelectorAll("[data-theme]").forEach(b => b.addEventListener("click", () => {
+        SALA.theme = b.dataset.theme;
+        renderSala();
+      }));
+      $("salaStopBtn")?.addEventListener("click", salaStop);
+      $("salaAutoChk")?.addEventListener("change", ev => {
+        try { localStorage.setItem(SALA_AUTO_KEY, ev.target.checked ? "on" : "off"); } catch (e) {}
+      });
+      $("salaContinueBtn")?.addEventListener("click", () => salaContinue());
+      $("salaContent").querySelectorAll("[data-sact]").forEach(b => b.addEventListener("click", () => {
+        const pid = b.dataset.pid;
+        const p = (SALA.data?.proposals || []).find(x => x.id === pid);
+        if (b.dataset.sact === "use" && p) return salaUseInScript(p);
+        salaVerdict(pid, b.dataset.sact === "reject" ? "reject" : "approve");
+      }));
+      renderSalaHistory();
+    }
+    function renderSalaHistory() {
+      const el = $("salaHistory");
+      if (!el) return;
+      const h = SALA.history || [];
+      el.innerHTML = h.length ? h.map(x =>
+        `<div class="ep-item" style="margin-bottom:6px;"><span style="flex:1;">${esc(x.topic || x.id)} · ${esc(x.status)} · ${x.proposals} propostas${x.shortlist ? ` · ⭐${x.shortlist}` : ""}</span><button class="btn btn-sm btn-secondary" data-hview="${esc(x.id)}" style="width:auto;margin:0;">Ver</button></div>`
+      ).join("") : '<div class="meta">Sem histórico.</div>';
+      el.querySelectorAll("[data-hview]").forEach(b => b.addEventListener("click", () => salaView(b.dataset.hview)));
+    }
+    function activeTab() { const t = document.querySelector(".tab.active"); return (t && t.dataset.tab) || "script"; }
+    function refreshAll() {
+      renderHeaderNav();
+      updateVideoTab();
+      const t = activeTab();
+      if (t === "script") renderScript();
+      if (t === "pipeline") renderPipeline();
+      if (t === "canon") renderCanon();
+      if (t === "video") renderVideo();
+    }
+    function renderHeaderNav() {
+      updateTicker();
+      const nav = $("epNav");
+      if (!state.seasons.length) {
+        nav.innerHTML = '<span class="epnav-empty">Sem episódios — gera o primeiro na sidebar.</span>';
+        return;
+      }
+      const sOpts = state.seasons.map(s => `<option value="${esc(s.id)}"${s.id === state.currentSeason ? " selected" : ""}>${esc(s.name)}</option>`).join("");
+      const season = state.seasons.find(s => s.id === state.currentSeason) || state.seasons[0];
+      const eOpts = season.episodes.map(e => {
+        const ap = e.scenes.filter(s => s.approved).length;
+        return `<option value="${esc(e.id)}"${e.id === state.currentEpisode ? " selected" : ""}>Ep. ${e.number}: ${esc(e.name)}${ap ? ` ✅${ap}` : ""}</option>`;
+      }).join("");
+      const total = state.seasons.reduce((a, s) => a + s.episodes.length, 0);
+      const totalAp = state.seasons.reduce((a, s) => a + s.episodes.reduce((x, e) => x + e.scenes.filter(sc => sc.approved).length, 0), 0);
+      nav.innerHTML = `<div class="epnav-group"><span class="epnav-kicker">Season</span><span class="epnav-select-wrap"><select id="seasonSel">${sOpts}</select></span></div><div class="epnav-divider"></div><div class="epnav-group"><span class="epnav-kicker">Episódio</span><span class="epnav-select-wrap"><select id="epSel">${eOpts}</select></span></div><div class="epnav-divider"></div><span class="epnav-meta">${total} ep${total === 1 ? "" : "s"} · ${totalAp} aprovados</span>`;
+      $("seasonSel").addEventListener("change", ev => {
+        const s = state.seasons.find(x => x.id === ev.target.value);
+        if (!s) return;
+        state.currentSeason = s.id;
+        state.currentEpisode = s.episodes[0]?.id || null;
+        state.currentScene = null;
+        save();
+        const ep = currentEpisode();
+        if (ep) renderAudit(ep.audit);
+        refreshAll();
+      });
+      $("epSel").addEventListener("change", ev => selectEpisode(ev.target.value));
+    }
+    function selectEpisode(epId) {
+      state.currentEpisode = epId;
+      state.currentScene = null;
+      const ep = currentEpisode();
+      save();
+      if (ep) renderAudit(ep.audit);
+      refreshAll();
+    }
+    function deleteEpisode(epId) {
+      const season = state.seasons.find(s => s.id === state.currentSeason) || state.seasons[0];
+      if (!season) return;
+      const ep = season.episodes.find(e => e.id === epId);
+      if (!ep) return;
+      if (!confirm(`Apagar o episódio ${ep.number} "${ep.name}"?`)) return;
+      season.episodes = season.episodes.filter(e => e.id !== epId);
+      if (state.currentEpisode === epId) {
+        state.currentEpisode = season.episodes[0]?.id || null;
+        state.currentScene = null;
+      }
+      save();
+      const cur = currentEpisode();
+      if (cur) renderAudit(cur.audit);
+      else $("audit").innerHTML = "";
+      refreshAll();
+      status(`Episódio ${ep.number} apagado.`, "success");
+    }
+    function updateTicker() {
+      const el = $("tickerText");
+      if (!el) return;
+      const ep = currentEpisode();
+      let txt;
+      if (ep) {
+        const ap = ep.scenes.filter(s => s.approved).length;
+        txt = `EM DIRETO ▸ ${ep.name} ▸ Episódio ${ep.number} ▸ ${ep.scenes.length} takes ▸ ${ap} aprovados ▸ ALERTA MEL ▸ A seguir: mais caos nos bastidores ▸ `;
+      } else {
+        txt = "BOMBAAAA ▸ Exclusivo em direto ▸ Gera um episódio na sidebar para entrar no ar ▸ ALERTA MEL ▸ ";
+      }
+      el.textContent = txt + txt;
     }
     function backendUrl() { return ($("backendUrl").value || "/api").replace(/\/$/, ""); }
     function model() { return $("modelSelect").value || "gemini-nano-banana-2.1"; }
+    function provider() { const el = $("providerSelect"); return (el && el.value) || "gemini"; }
+    const providerModels = {
+      gemini: [["gemini-nano-banana-2.1", "Nano Banana 2.1"], ["gemini-3-pro-image", "Nano Banana Pro"]],
+      openai: [["gpt-image-1", "gpt-image-1 (recomendado)"], ["gpt-image-1-mini", "gpt-image-1-mini (rápido)"], ["gpt-image-1.5", "gpt-image-1.5"]],
+      huggingface: [["stabilityai/stable-diffusion-xl-base-1.0", "SDXL base (default)"], ["stabilityai/stable-diffusion-2-1", "SD 2.1"]],
+      cloudflare: [["@cf/black-forest-labs/flux-1-schnell", "FLUX schnell (rápido)"], ["@cf/stabilityai/stable-diffusion-xl-base-1.0", "SDXL base"]]
+    };
+    function syncModelOptions() {
+      const sel = $("modelSelect");
+      const list = providerModels[provider()] || providerModels.gemini;
+      sel.innerHTML = list.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join("");
+    }
     async function safeJson(res) { try { return await res.json(); } catch { return { ok:false, error: await res.text() || `HTTP ${res.status}` }; } }
     function collectRefs(ep, scene) {
       const refs = [];
@@ -565,12 +2034,12 @@
         const h = await fetch(`${backendUrl()}/health`, { headers: { Accept: "application/json" } });
         const health = await safeJson(h);
         if (!h.ok || health.ok === false) throw new Error(health.error || `HTTP ${h.status}`);
-        if (!health.keyConfigured) return apiStatus("⚠️ Backend ativo, mas GEMINI_API_KEY não configurada no .env.", "testing");
-        apiStatus("Backend ativo. A fazer geração real de teste...", "testing");
-        const t = await fetch(`${backendUrl()}/test`, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ model: model() }) });
+        if (!health.keyConfigured) return apiStatus("⚠️ Backend ativo, mas nenhuma chave configurada no .env.", "testing");
+        apiStatus(`Backend ativo (${esc(provider())}). A fazer geração real de teste...`, "testing");
+        const t = await fetch(`${backendUrl()}/test`, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ provider: provider(), model: model() }) });
         const test = await safeJson(t);
         if (!t.ok || test.ok === false) throw new Error(test.error || `HTTP ${t.status}`);
-        apiStatus(`✅ OK. Modelo: ${esc(test.model)} · Bytes: ${Number(test.bytes).toLocaleString("pt-PT")}`, "success");
+        apiStatus(`✅ OK. Fornecedor: ${esc(test.provider || provider())} · Modelo: ${esc(test.model)} · Bytes: ${Number(test.bytes).toLocaleString("pt-PT")}`, "success");
       } catch(e) {
         apiStatus("❌ " + esc(e.message), "error");
       } finally {
@@ -611,6 +2080,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             prompt,
+            provider: provider(),
             model: model(),
             references: refs,
             sceneContext: { characters: scene.characters || [], location: scene.location || "" }
@@ -627,6 +2097,8 @@
         scene.referenceCount = Number(data.referenceCount || refs.length || 0);
         save();
         renderPipeline();
+        updateVideoTab();
+        updateTicker();
         status(`Imagem gerada com ${scene.model}.`, "success");
         if (Array.isArray(data.warnings) && data.warnings.length) status(data.warnings.join(" | "), "info");
       } catch(e) {
@@ -642,6 +2114,9 @@
       state = { version: VERSION, seasons: [], currentSeason: null, currentEpisode: null, currentScene: null };
       $("scriptContent").innerHTML = '<div class="empty"><h3>Guião</h3><p>Gera um episódio.</p></div>';
       $("pipelineContent").innerHTML = '<div class="empty"><h3>Pipeline</h3><p>Gera um episódio.</p></div>';
+      $("videoContent").innerHTML = "";
+      updateVideoTab();
+      renderHeaderNav();
       $("audit").innerHTML = "";
       $("apiStatus").innerHTML = "";
       $("contextStatus").innerHTML = "";
@@ -652,11 +2127,17 @@
       load();
       renderCanon();
       suggestion();
+      updateVideoTab();
+      renderHeaderNav();
       $("suggestBtn").addEventListener("click", suggestion);
-      $("generateBtn").addEventListener("click", generateEpisode);
+      $("aiGenerateBtn").addEventListener("click", aiGenerateEpisode);
       $("testBtn").addEventListener("click", testBackend);
       $("contextBtn").addEventListener("click", checkContext);
+      $("providerSelect").addEventListener("change", syncModelOptions);
+      syncModelOptions();
+      $("aiStoryBtn").addEventListener("click", expandWithAI);
       $("resetBtn").addEventListener("click", resetAll);
+      loadBible();
       document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => switchTab(t.dataset.tab)));
       if (state.seasons.length && state.currentEpisode) {
         const ep = currentEpisode();

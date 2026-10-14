@@ -1,0 +1,163 @@
+{
+ "id": "wr-mv8e73hw",
+ "topic": "audiências, galas e expulsões de realities",
+ "version": 1,
+ "createdAt": "2026-10-14T17:37:17.684Z",
+ "updatedAt": "2026-10-14T17:37:20.339Z",
+ "status": "error",
+ "stage": "research",
+ "stopped": false,
+ "agents": {
+  "investigador": {
+   "state": "concluído",
+   "detail": "9 fontes"
+  },
+  "analista": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  },
+  "argumentista": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  },
+  "improvisador": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  },
+  "critico": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  },
+  "showrunner": {
+   "state": "erro",
+   "detail": "Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+  }
+ },
+ "messages": [
+  {
+   "from": "showrunner",
+   "to": [
+    "investigador"
+   ],
+   "task": "briefing",
+   "at": "2026-10-14T17:37:17.687Z",
+   "state": "ok",
+   "content": "Investiga: audiências, galas e expulsões de realities. TVI, realities, daytime, polémicas recentes."
+  },
+  {
+   "from": "investigador",
+   "to": [
+    "analista"
+   ],
+   "task": "dossiê",
+   "at": "2026-10-14T17:37:19.946Z",
+   "state": "ok",
+   "content": "9 fontes (4 falhas)."
+  }
+ ],
+ "sources": [
+  {
+   "title": "Danilo Gentili",
+   "url": "https://pt.wikipedia.org/wiki/Danilo_Gentili",
+   "snippet": "Danilo Gentili Júnior (Santo André, 27 de setembro de 1979) é um comediante, apresentador, escritor, cartunista, repórter, publicitário e empresário brasileiro. Gentili é reconhecido como um dos precursores e idealizadores do movimento do stand-up comedy no Brasil. Nos palcos, foi membro do Clube da",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "tópico"
+  },
+  {
+   "title": "Lista de participantes do Big Brother Brasil",
+   "url": "https://pt.wikipedia.org/wiki/Lista_de_participantes_do_Big_Brother_Brasil",
+   "snippet": "A lista dos participantes de todas as edições do Big Brother Brasil (BBB) reúne todos os indivíduos que participaram do programa, um reality show transmitido pela TV Globo, entre sua primeira edição, em 2002, até a mais recente edição, em 2026. O programa é transmitido sobre diferentes nomes em mais",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "tópico"
+  },
+  {
+   "title": "The Real World",
+   "url": "https://pt.wikipedia.org/wiki/The_Real_World",
+   "snippet": "The Real World (conhecido como Real World entre 2014 e 2019) é um programa de reality show estadunidense produzido pela MTV e pela Bunim/Murray Productions, exibido pela MTV de 1992 a 2017 e pelo Facebook Watch em 2019. Originalmente, foi produzido por Mary-Ellis Bunim e Jonathan Murray. Exibido pel",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "tópico"
+  },
+  {
+   "title": "Senhora do Destino",
+   "url": "https://pt.wikipedia.org/wiki/Senhora_do_Destino",
+   "snippet": "Senhora do Destino é uma telenovela brasileira produzida e exibida pela TV Globo de 28 de junho de 2004 a 11 de março de 2005, em 221 capítulos. Substituiu Celebridade e foi substituída por América, sendo a 65ª \"novela das oito\" a ser transmitida pela emissora.\nCriada e escrita por Aguinaldo Silva, ",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "daytime"
+  },
+  {
+   "title": "Alma Gêmea",
+   "url": "https://pt.wikipedia.org/wiki/Alma_G%C3%AAmea",
+   "snippet": "Alma Gêmea é uma telenovela brasileira produzida e exibida pela TV Globo de 20 de junho de 2005 a 10 de março de 2006, em 227 capítulos. Substituiu Como uma Onda e sendo substituída por Sinhá Moça, foi a 66ª \"novela das seis\" exibida pela emissora. \nTeve a autoria de Walcyr Carrasco, com colaboração",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "daytime"
+  },
+  {
+   "title": "Secret Story - Casa dos Segredos",
+   "url": "https://pt.wikipedia.org/wiki/Secret_Story_-_Casa_dos_Segredos",
+   "snippet": "Secret Story - Casa dos Segredos é um reality show da TVI baseado no original francês Secret Story. A primeira edição do programa televisivo estreou no dia 3 de outubro de 2010.",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "daytime"
+  },
+  {
+   "title": "SIC Notícias",
+   "url": "https://pt.wikipedia.org/wiki/SIC_Not%C3%ADcias",
+   "snippet": "A SIC Notícias é um canal de televisão português que transmite programação jornalística. Criado em 8 de janeiro de 2001, foi o primeiro canal português de informação. \nO canal está disponível mediante assinatura, nas quatro plataformas portuguesas, e gratuitamente, através do site e da aplicação da ",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "concorrência"
+  },
+  {
+   "title": "Joana Amaral Dias",
+   "url": "https://pt.wikipedia.org/wiki/Joana_Amaral_Dias",
+   "snippet": "Joana Beatriz Nunes Vicente Amaral Dias Terrinca (Luanda, 13 de maio de 1973) é uma psicóloga clínica e comentadora de assuntos políticos e sociais portuguesa. \nPossui licenciatura e mestrado pré-Bolonha pela Universidade de Coimbra. Foi bolseira da FCT e concluiu o doutoramento em 2025 na mesma Uni",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "concorrência"
+  },
+  {
+   "title": "CMTV",
+   "url": "https://pt.wikipedia.org/wiki/CMTV",
+   "snippet": "A CMTV (Correio da Manhã TV) é um canal de TV fechado português, associado ao diário Correio da Manhã. É um canal generalista com um forte cunho informativo, neste caso de caráter sensacionalista, dando especial atenção à atualidade relativa a assuntos criminais, acidentes, tragédias pessoais, casos",
+   "date": null,
+   "level": "documentado",
+   "source": "wikipedia",
+   "topic": "concorrência"
+  }
+ ],
+ "sourceErrors": [
+  "ddg[audiências, galas e expulsões de realities]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[TVI Secret Story Big Brother momento insólito direto]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[Dois às 10 Cristina Ferreira Cláudio Ramos momento viral]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio).",
+  "ddg[CMTV manhãs polémica direto]: DuckDuckGo sem resultados parseáveis (layout ou bloqueio)."
+ ],
+ "combos": [],
+ "proposals": [],
+ "twists": [],
+ "critiques": [],
+ "ranking": [],
+ "shortlist": [],
+ "errors": [
+  "research: Quota de texto esgotada (429). Tenta mais tarde ou verifica https://ai.dev/rate-limit."
+ ],
+ "stats": {
+  "aiCalls": 1,
+  "startedAt": 1791999437684
+ },
+ "completedStages": [
+  "research"
+ ]
+}
