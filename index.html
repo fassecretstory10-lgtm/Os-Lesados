@@ -288,6 +288,11 @@
         <div id="contextStatus"></div>
 
         <button class="btn btn-sm btn-danger" id="resetBtn" style="margin-top:18px;">Reset total</button>
+        <div class="buttons" style="margin-top:8px;">
+          <button class="btn btn-sm btn-secondary" id="exportBtn">Exportar</button>
+          <button class="btn btn-sm btn-secondary" id="importBtn">Importar</button>
+          <input type="file" id="importFile" accept="application/json" style="display:none;">
+        </div>
       </aside>
 
       <main class="content">
@@ -2108,8 +2113,52 @@
         btn.innerHTML = "Gerar imagem";
       }
     }
-    function resetAll() {
-      if (!confirm("Apagar tudo?")) return;
+    // Export/import de episódios (recuperação; F0). Formato versionado, validação
+    // explícita, nunca apaga sem confirmação. Não toca em sessões da Sala.
+    function exportState() {
+      try {
+        const payload = { app: "os-lesados", format: 1, exportedAt: new Date().toISOString(), state };
+        const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `os-lesados-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+        status("Backup exportado.", "success");
+      } catch (e) { status("Falha ao exportar: " + e.message, "error"); }
+    }
+    function validateImported(data) {
+      if (!data || typeof data !== "object") return "ficheiro inválido (não é objeto)";
+      const st = data.state || data;
+      if (!Array.isArray(st.seasons)) return "sem temporadas válidas";
+      for (const s of st.seasons) {
+        if (!Array.isArray(s.episodes)) return "temporada sem episódios válidos";
+        for (const ep of s.episodes) {
+          if (!ep || typeof ep.id !== "string" || !Array.isArray(ep.scenes)) return "episódio inválido (id/scenes)";
+        }
+      }
+      return null;
+    }
+    function importStateFile(file) {
+      const rd = new FileReader();
+      rd.onload = () => {
+        try {
+          const data = JSON.parse(rd.result);
+          const problem = validateImported(data);
+          if (problem) return status("Importação recusada: " + problem + ". Nada foi alterado.", "error");
+          if (!confirm("Substituir TODOS os episódios atuais pelo backup? (As sessões da Sala não são afetadas.)")) return;
+          state = data.state || data;
+          save();
+          normalize();
+          renderHeaderNav();
+          refreshAll();
+          status("Backup importado e validado.", "success");
+        } catch (e) { status("Importação recusada: ficheiro ilegível. Nada foi alterado.", "error"); }
+      };
+      rd.onerror = () => status("Falha a ler o ficheiro.", "error");
+      rd.readAsText(file);
+    }
+    function resetAll() {      if (!confirm("Apagar tudo?")) return;
       localStorage.removeItem("osLesados_html");
       state = { version: VERSION, seasons: [], currentSeason: null, currentEpisode: null, currentScene: null };
       $("scriptContent").innerHTML = '<div class="empty"><h3>Guião</h3><p>Gera um episódio.</p></div>';
@@ -2137,6 +2186,12 @@
       syncModelOptions();
       $("aiStoryBtn").addEventListener("click", expandWithAI);
       $("resetBtn").addEventListener("click", resetAll);
+      $("exportBtn").addEventListener("click", exportState);
+      $("importBtn").addEventListener("click", () => $("importFile").click());
+      $("importFile").addEventListener("change", ev => {
+        if (ev.target.files && ev.target.files[0]) importStateFile(ev.target.files[0]);
+        ev.target.value = "";
+      });
       loadBible();
       document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => switchTab(t.dataset.tab)));
       if (state.seasons.length && state.currentEpisode) {
