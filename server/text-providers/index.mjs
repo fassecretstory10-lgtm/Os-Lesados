@@ -1,5 +1,5 @@
-// Router de texto narrativo: escolhe o provider por TEXT_PROVIDER=openai|gemini
-// (default: openai se configurado, senão gemini). Em falha, tenta o outro
+// Router de texto narrativo: escolhe o provider por TEXT_PROVIDER=openai|anthropic|gemini
+// (default: openai se configurado, senão anthropic, senão gemini). Em falha, tenta o seguinte
 // antes de desistir — mas o erro final lista sempre o que aconteceu em cada um.
 
 import * as geminiText from "./gemini-text.mjs";
@@ -52,7 +52,7 @@ export async function generateJSON({ system, user, schema = null, schemaName = "
     }
   }
   if (!tried.length) {
-    const err = new Error("Texto indisponível: sem chaves (OPENAI_API_KEY / GEMINI_API_KEY) no .env.");
+    const err = new Error("Texto indisponível: sem chaves (OPENAI_API_KEY / ANTHROPIC_API_KEY / GEMINI_API_KEY) no .env.");
     err.httpStatus = 503;
     throw err;
   }

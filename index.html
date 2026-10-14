@@ -519,7 +519,7 @@
             sc.approved = Boolean(sc.approved);
             sc.referenceCount = Number(sc.referenceCount || 0);
           });
-          ep.audit = audit(ep);
+          ep.audit = [...(ep.story ? auditStory(ep) : [{ type: "info", msg: "Episódio do motor antigo: só auditoria formal." }]), ...audit(ep)];
         });
       });
     }
@@ -1605,11 +1605,6 @@
         return `=== TAKES ${label} ===\n${clipVideoNote(c, byId)}\n\n${clipVideoPrompt(c)}`;
       }).join("\n\n");
       navigator.clipboard.writeText(all).then(() => status(`${clips.length} prompts copiados.`, "success"), () => status("Falha ao copiar.", "error"));
-    }
-    function updateVideoTab() {
-      const { list } = approvedScenes();
-      const tab = document.querySelector('[data-tab="video"]');
-      if (tab) tab.textContent = `Video${list.length ? ` (${list.length})` : ""}`;
     }
     function updateVideoTab() {
       const { list } = approvedScenes();
