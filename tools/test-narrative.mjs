@@ -19,12 +19,12 @@ function makeEl(id) {
   };
 }
 
-function loadApp({ search = "", protocol = "http:" } = {}) {
+function loadApp({ search = "", protocol = "http:" } = {}, presetStore = null) {
   const els = {};
   const html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
   const m = html.match(/<script>([\s\S]*)<\/script>/);
   assert.ok(m, "bloco <script> existe no index.html");
-  const store = {};
+  const store = presetStore || {};
   const sandbox = {
     document: {
       getElementById: (id) => els[id] || (els[id] = makeEl(id)),
@@ -84,8 +84,7 @@ test("normalizeAIStory mapeia nomes→ids e valida estrutura", () => {
   assert.ok(!s.beats[0].dialogue.line.startsWith("Capitão"));
 });
 
-test("storyToScenes: timecodes sequenciais, clamp de duração, reframe só com função", () => {
-  const { api } = loadApp();
+test("storyToScenes: timecodes sequenciais, clamp de duração, reframe só com função", () => {  const { api } = loadApp();
   const story = {
     stars: ["capitao", "tininha"], premise: "p",
     beats: [
@@ -142,4 +141,34 @@ test("sanitize idempotente e sem nomes reais", () => {
   const once = api.sanitize("Goucha e Moniz na Cristina Ferreira");
   assert.ok(!/Goucha|Moniz|Cristina Ferreira/i.test(once));
   assert.equal(api.sanitize(once), once);
+});
+
+test("Fase 2: takes levam sv + clipApproved; migração preenche sem reescrever", () => {
+  const { api, store } = loadApp();
+  const story = {
+    stars: ["coxa", "claudio"], premise: "p",
+    beats: [
+      { kind: "setup", who: "coxa", with: "claudio", loc: "Estúdio Central", want: "querer", does: "faz", obstacle: "trava", result: "muda", change: "a", link: "b", comic: "c", dialogue: { char: "coxa", paren: "", line: "Olá." }, dur: 6 },
+      { kind: "resolution", who: "coxa", with: null, loc: "Estúdio Central", want: "querer", does: "fecha", obstacle: "trava", result: "muda", change: "a", link: "b", comic: "c", dialogue: null, dur: 5 },
+    ],
+  };
+  const scenes = api.storyToScenes(story, 3);
+  assert.ok(scenes.every((s) => s.sv === 3 && s.clipApproved === false));
+  // legacy sem campos novos -> normalize preenche, sem tocar em conteúdo
+  const legacy = {
+    "osLesados_html": JSON.stringify({
+      version: "os-lesados-html-unico-v1",
+      seasons: [{ id: "s1", name: "S1", episodes: [{ id: "e1", number: 1, name: "Velho", premise: "P", scenes: [{ id: "1a", location: "Estúdio Central", action: "Age", characters: [], duration: 5 }] }] }],
+      currentSeason: "s1", currentEpisode: "e1", currentScene: null,
+    }),
+  };
+  const holder = loadApp({}, legacy);
+  holder.sandbox.__ready?.();
+  const ep = holder.api.state.seasons[0].episodes[0];
+  assert.equal(ep.schemaVersion, 1);
+  assert.equal(ep.storyVersion, 1);
+  assert.equal(ep.scenes[0].clipApproved, false);
+  assert.equal(ep.scenes[0].sv, 1);
+  assert.equal(ep.scenes[0].action, "Age"); // conteúdo intacto
+  assert.equal(ep.story, null); // legacy sem história continua sem história
 });

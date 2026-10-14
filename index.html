@@ -329,6 +329,10 @@
 
   <script>
     const VERSION = "os-lesados-html-unico-v2";
+    // Schema versionado de episódio (Fase 2): separa conteúdo narrativo de
+    // artefactos de produção. takes levam sv (versão da história que os gerou)
+    // e clipApproved independente de approved (still).
+    const EPISODE_SCHEMA = 2;
     let BIBLE_INFO = { source: "dados locais (embebidos)", count: 0, remote: false };
 
     const characters = [
@@ -497,6 +501,11 @@
         state.version = VERSION;
         try { localStorage.setItem("osLesados_html", JSON.stringify(state)); } catch (e) {}
       }
+      // Backfill idempotente do schema v2 (não reescreve conteúdo existente).
+      state.seasons.forEach(s => (s.episodes || []).forEach(ep => {
+        if (ep.schemaVersion == null) ep.schemaVersion = 1;
+        if (ep.storyVersion == null) ep.storyVersion = 1;
+      }));
       state.seasons.forEach(s => {
         if (!Array.isArray(s.episodes)) s.episodes = [];
         s.episodes.forEach(ep => {
@@ -518,6 +527,10 @@
             sc.variant = Number(sc.variant || 0);
             sc.approved = Boolean(sc.approved);
             sc.referenceCount = Number(sc.referenceCount || 0);
+          });
+          ep.scenes.forEach(sc => {
+            if (sc.clipApproved == null) sc.clipApproved = false;
+            if (sc.sv == null) sc.sv = ep.storyVersion || 1;
           });
           ep.audit = [...(ep.story ? auditStory(ep) : [{ type: "info", msg: "Episódio do motor antigo: só auditoria formal." }]), ...audit(ep)];
         });
@@ -928,9 +941,10 @@
       complication: ["MEDIUM SHOT", "TRACKING"], climax: ["MEDIUM SHOT", "DOLLY IN"],
       resolution: ["CLOSE-UP", "SLOW ZOOM IN"]
     };
-    function storyToScenes(story) {
+    function storyToScenes(story, sv) {
       const scenes = [];
       let t = 0;
+      const storyVersion = Number(sv) || 1;
       story.beats.forEach((b, i) => {
         const chars = b.with && b.with !== b.who ? [b.who, b.with] : [b.who];
         const [shot, camera] = SHOT_BY_KIND[b.kind] || SHOT_BY_KIND.setup;
@@ -952,6 +966,7 @@
             : b.kind === "climax" ? "RESOLUÇÃO"
             : b.kind === "resolution" ? "TAG FINAL" : null,
           imageUrl: null, model: null, variant: 0, approved: false, referenceCount: 0,
+          clipApproved: false, sv: storyVersion,
           prompt: null, alertMel: chars.includes("abelha")
         });
         const last = scenes[scenes.length - 1];
@@ -968,6 +983,7 @@
             timecode: `${fmt(t - rd)} - ${fmt(t)}`,
             actLabel: null,
             imageUrl: null, model: null, variant: 0, approved: false, referenceCount: 0,
+            clipApproved: false, sv: storyVersion,
             prompt: null, alertMel: who === "abelha"
           });
         }
@@ -1132,7 +1148,8 @@
         if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
         if (!data.story) throw new Error("Backend não devolveu história.");
         ep.story = normalizeAIStory(data.story, ep.premise, castIds);
-        ep.scenes = storyToScenes(ep.story);
+        ep.storyVersion = (ep.storyVersion || 1) + 1;
+        ep.scenes = storyToScenes(ep.story, ep.storyVersion);
         state.currentScene = ep.scenes[0]?.id || null;
         save();
         ep.audit = [...auditStory(ep), ...audit(ep)];
@@ -1256,7 +1273,8 @@
           id: `e${season.id}-${number}-${Date.now()}`,
           number, name: cleanName, premise: cleanPremise,
           season: state.seasons.indexOf(season) + 1,
-          story, scenes: storyToScenes(story),
+          schemaVersion: EPISODE_SCHEMA, storyVersion: 1,
+          story, scenes: storyToScenes(story, 1),
           narration: buildNarration(cleanName),
           tagScene: buildTagScene(castIds, cleanPremise),
           coldOpen: pickColdOpen(premise, number)
