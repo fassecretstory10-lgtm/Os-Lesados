@@ -211,15 +211,19 @@ test("Fase 5: cobertura por cena com teto + preserve de assets + staleness", () 
   const story = {
     stars: ["coxa", "claudio"], premise: "P",
     beats: [
-      { kind: "setup", who: "coxa", with: "claudio", loc: "Estúdio Central", want: "q", does: "A faz X", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: { char: "coxa", paren: "", line: "Olá." }, dur: 6 },
-      { kind: "resolution", who: "coxa", with: null, loc: "Estúdio Central", want: "q", does: "B fecha Y", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: null, dur: 5 },
+      { kind: "setup", who: "coxa", with: "claudio", loc: "Estúdio Central", want: "querer algo", does: "A faz X", obstacle: "trava", result: "muda", change: "a", link: "b", comic: "k", dialogue: { char: "coxa", paren: "", line: "Olá." }, dur: 6 },
+      { kind: "resolution", who: "coxa", with: null, loc: "Estúdio Central", want: "querer algo", does: "B fecha Y", obstacle: "trava", result: "muda", change: "a", link: "b", comic: "k", dialogue: null, dur: 5 },
     ],
   };
   const scenes = api.storyToScenes(story, 2);
   assert.ok(scenes.every((s) => s.sceneId === "s1"));
   assert.deepEqual(scenes.map((s) => s.function), ["master", "group"]);
   // teto de 4: forçar 5 takes na mesma cena dispara warning
-  const ep = { story: { ...story, stars: ["coxa", "claudio"], premise: "P barco", incident: "I" }, scenes: [...scenes, ...scenes.slice(0, 3).map((s, i) => ({ ...s, id: "x" + i }))] };
+  const clones = [0, 1, 2].map((i) => {
+    const base = scenes[i % scenes.length];
+    return { ...base, id: "x" + i, dialogue: null, action: base.action + " (variação " + i + ")" };
+  });
+  const ep = { story: { ...story, stars: ["coxa", "claudio"], premise: "P barco", incident: "I" }, scenes: [...scenes, ...clones] };
   const msgs = api.auditStory(ep).map((i) => i.msg).join(" | ");
   assert.match(msgs, /cobertura acima do teto/);
 });
