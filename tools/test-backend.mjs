@@ -82,8 +82,7 @@ test("showrunner: ordena, bónus absurdo, corte e teto", async () => {
   assert.ok(shortlist.length <= 5);
 });
 
-test("orchestrator: approveProposal muta shortlist e valida ids", () => {
-  const s = wr.newSession("teste");
+test("orchestrator: approveProposal muta shortlist e valida ids", () => {  const s = wr.newSession("teste");
   try {
     s.proposals = [{ id: "p1", state: "proposta" }];
     s.shortlist = [];
@@ -94,6 +93,40 @@ test("orchestrator: approveProposal muta shortlist e valida ids", () => {
     assert.equal(s.proposals[0].state, "rejeitada");
     assert.deepEqual(s.shortlist, []);
     assert.throws(() => wr.approveProposal(s, "zzz", "approve"), /inexistente/);
+  } finally {
+    try { fs.unlinkSync(path.join(ROOT, "server", "writers-room", "sessions", `${s.id}.json`)); } catch {}
+  }
+});
+
+test("Fase 6: continuity CRUD com validação + revisions com histórico", async () => {
+  const cont = await import("../server/continuity.mjs");
+  const before = cont.listNotes().length;
+  assert.throws(() => cont.addNote({ text: "   " }), /vazia/);
+  try { cont.addNote({ text: "x".repeat(500), kind: "invalido" }); } catch { assert.fail("não deve falhar"); }
+  const all = cont.listNotes();
+  const last = all[all.length - 1];
+  assert.equal(last.text.length, 280); // truncado
+  assert.equal(last.kind, "gancho"); // kind inválido -> default
+  assert.equal(last.status, "active");
+  assert.throws(() => cont.resolveNote("zzz-inexistente"), /inexistente/);
+  cont.resolveNote(last.id);
+  assert.equal(cont.listNotes().find((n) => n.id === last.id).status, "resolved");
+  assert.ok(cont.listNotes("active").every((n) => n.status === "active"));
+  // limpar notas de teste (só as criadas aqui: última)
+  const raw = JSON.parse(fs.readFileSync(path.join(ROOT, "context", "continuity.json"), "utf8"));
+  raw.notes = raw.notes.filter((n) => n.id !== last.id);
+  fs.writeFileSync(path.join(ROOT, "context", "continuity.json"), JSON.stringify(raw, null, 2));
+  assert.equal(before, cont.listNotes().length);
+
+  // revisions com histórico: simular applyRevisions via orchestrator
+  const s = wr.newSession("teste-hist");
+  try {
+    s.proposals = [{ id: "p1", title: "T", premise: "P", payoff: "F", state: "proposta" }];
+    s.shortlist = [];
+    wr.approveProposal(s, "p1", "approve");
+    assert.deepEqual(s.proposals[0].history, [{ at: s.proposals[0].history[0].at, verdict: "approve", from: "proposta" }].map((h) => ({ ...h, at: h.at })));
+    assert.equal(s.proposals[0].history[0].verdict, "approve");
+    assert.equal(s.proposals[0].history[0].from, "proposta");
   } finally {
     try { fs.unlinkSync(path.join(ROOT, "server", "writers-room", "sessions", `${s.id}.json`)); } catch {}
   }

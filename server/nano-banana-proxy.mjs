@@ -153,6 +153,35 @@ app.get("/", (_req, res) => {
   res.sendFile(path.join(ROOT, "index.html"));
 });
 
+// Continuidade seletiva: notas explícitas do autor, lidas pela Sala.
+app.get("/api/continuity", async (_req, res) => {
+  try {
+    const c = await import("./continuity.mjs");
+    res.json({ ok: true, notes: c.listNotes() });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message });
+  }
+});
+
+app.post("/api/continuity", async (req, res) => {
+  try {
+    const c = await import("./continuity.mjs");
+    const note = c.addNote(req.body || {});
+    res.json({ ok: true, note });
+  } catch (e) {
+    res.status(e?.httpStatus || 500).json({ ok: false, error: e.message });
+  }
+});
+
+app.post("/api/continuity/:id/resolve", async (req, res) => {
+  try {
+    const c = await import("./continuity.mjs");
+    res.json({ ok: true, note: c.resolveNote(req.params.id) });
+  } catch (e) {
+    res.status(e?.httpStatus || 500).json({ ok: false, error: e.message });
+  }
+});
+
 // Sala dos Argumentistas (multiagente). Sessões correm em background;
 // o frontend faz polling. Nada é simulado: cada etapa persiste no disco.
 app.post("/api/writers/start", async (req, res) => {

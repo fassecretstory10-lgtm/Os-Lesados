@@ -34,7 +34,7 @@ export function newSession(topic) {
     agents: Object.fromEntries(AGENTS.map((a) => [a.id, { state: "espera", detail: "" }])),
     messages: [], sources: [], sourceErrors: [], combos: [],
     proposals: [], twists: [], critiques: [], ranking: [], shortlist: [],
-    errors: [], stats: { aiCalls: 0, startedAt: Date.now() },
+    errors: [], warnings: [], stats: { aiCalls: 0, startedAt: Date.now() },
   };
   save(s);
   return s;
@@ -144,8 +144,13 @@ export async function run(s, { root, geminiText }) {
     if (!done.has("analyze")) {
       setAgent(s, "analista", "gerar", "cruza factos × canon");
       const bible = bibleOf(root);
+      let continuity = "";
+      try {
+        const c = await import("../continuity.mjs");
+        continuity = c.continuityBrief();
+      } catch {}
       const combos = await aiCall(s, geminiText,
-        () => runAnalista({ geminiText, sources: s.sources, bible, scenarios: scenariosOf(root) }),
+        () => runAnalista({ geminiText, sources: s.sources, bible, scenarios: scenariosOf(root), continuity }),
         "analista");
       if (!combos.length) throw new Error("Analista devolveu 0 combinações — resposta do modelo fora do formato.");
       s.combos = combos;
@@ -178,6 +183,7 @@ export async function run(s, { root, geminiText }) {
       setAgent(s, "improvisador", "gerar", "reviravoltas absurdas em paralelo");
       const twists = await aiCallBurst(s, geminiText, "improvisador");
       s.twists = twists;
+      if (!twists.length) (s.warnings ||= []).push("improvisador sem twists: showrunner pontua sem bónus absurdo");
       say(s, "improvisador", "critico", "twists prontos", `${twists.length} pacotes de twists.`);
       setAgent(s, "improvisador", "concluído", `${twists.length} pacotes`);
       mark("twists");
@@ -189,6 +195,7 @@ export async function run(s, { root, geminiText }) {
       setAgent(s, "critico", "criticar", "ataca as 5 melhores em paralelo");
       const critiques = await aiCallBurst(s, geminiText, "critico");
       s.critiques = critiques;
+      if (!critiques.length) (s.warnings ||= []).push("crítico sem críticas: showrunner pontua tudo com 5 base");
       say(s, "critico", "argumentista", "críticas prontas", `${critiques.length} críticas com defeito fatal + correção.`);
       setAgent(s, "critico", "concluído", `${critiques.length} críticas`);
       mark("critique");
@@ -283,6 +290,8 @@ function applyRevisions(s, revised) {
   for (const r of revised) {
     const p = s.proposals.find((x) => x.id === r.proposalId);
     if (!p) continue;
+    p.history = Array.isArray(p.history) ? p.history : [];
+    p.history.push({ at: new Date().toISOString(), title: p.title, premise: p.premise, payoff: p.payoff });
     p.title = r.title || p.title;
     p.premise = r.premise || p.premise;
     p.payoff = r.payoff || p.payoff;
@@ -295,6 +304,8 @@ function applyRevisions(s, revised) {
 export function approveProposal(s, proposalId, verdict) {
   const p = s.proposals.find((x) => x.id === proposalId);
   if (!p) throw new Error("Proposta inexistente.");
+  p.history = Array.isArray(p.history) ? p.history : [];
+  p.history.push({ at: new Date().toISOString(), verdict, from: p.state });
   p.state = verdict === "reject" ? "rejeitada" : "aprovada";
   if (verdict === "approve" && !s.shortlist.includes(p.id)) s.shortlist.push(p.id);
   if (verdict === "reject") s.shortlist = s.shortlist.filter((id) => id !== p.id);

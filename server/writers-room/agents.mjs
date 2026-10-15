@@ -77,12 +77,12 @@ export function investigatorQueries(topic) {
   return qs.slice(0, 7);
 }
 
-export async function runAnalista({ geminiText, sources, bible, scenarios }) {
+export async function runAnalista({ geminiText, sources, bible, scenarios, continuity = "" }) {
   const facts = sources.slice(0, 10).map((s) => `- ${s.title} (${s.source}): ${s.snippet.slice(0, 160)} [${s.url}]`).join("\n");
   const cast = bible.map((c) => `- ${c.name} (${c.id}): ${c.role}. Quer: ${(c.goals || []).join("; ")}`).join("\n");
   const { data } = await geminiText.generateJSON({
     system: `Analista de formatos. Recebes FACTOS REAIS e o ELENCO. Devolves combinações personagem×facto com conflito e motor cómico. Devolves EXATAMENTE um array JSON de 6 objetos com as chaves chars, fact, conflict, engine e sourceUrls. Responde APENAS JSON. Sem markdown.`,
-    user: `FACTOS:\n${facts}\n\nELENCO:\n${cast}\n\nCENÁRIOS DISPONÍVEIS: ${scenarios.join(", ")}.\nDevolve 6 combinações.`,
+    user: `FACTOS:\n${facts}\n\nELENCO:\n${cast}\n\nCENÁRIOS DISPONÍVEIS: ${scenarios.join(", ")}.\n${continuity ? continuity + "\n" : ""}Devolve 6 combinações.`,
     schemaName: "analise",
     schema: SCHEMAS.combos,
   });

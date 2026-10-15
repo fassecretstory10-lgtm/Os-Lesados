@@ -2023,6 +2023,7 @@
       ).join("") : '<div class="meta">Sem fontes ainda.</div>';
       if (s?.sourceErrors?.length) html += `<div class="meta">Falhas de pesquisa: ${esc(s.sourceErrors.slice(0, 3).join(" | "))}</div>`;
       html += `</div></div></div>`;
+      html += `<h3 style="color:var(--warning);margin:12px 0 10px;">🧵 Continuidade (só o que registares aqui conta)</h3><div id="salaNotes"><div class="meta">A carregar...</div></div>`;
     const SALA_THEMES = [
       ["poder", "🏛️ Poder", ["capitao", "gancho", "tininha", "diretora", "diretor", "veto", "grelha", "decis"]],
       ["bastidores", "🚪 Bastidores", ["camarim", "corredor", "esconderijo", "trono", "perpetua", "perpétua", "bastidor"]],
@@ -2121,6 +2122,51 @@
         `<div class="ep-item" style="margin-bottom:6px;"><span style="flex:1;">${esc(x.topic || x.id)} · ${esc(x.status)} · ${x.proposals} propostas${x.shortlist ? ` · ⭐${x.shortlist}` : ""}</span><button class="btn btn-sm btn-secondary" data-hview="${esc(x.id)}" style="width:auto;margin:0;">Ver</button></div>`
       ).join("") : '<div class="meta">Sem histórico.</div>';
       el.querySelectorAll("[data-hview]").forEach(b => b.addEventListener("click", () => salaView(b.dataset.hview)));
+      renderSalaNotes();
+    }
+    async function renderSalaNotes() {
+      const el = $("salaNotes");
+      if (!el) return;
+      if (location.protocol === "file:") { el.innerHTML = '<div class="meta">Precisa do backend.</div>'; return; }
+      try {
+        if ($("noteText") && document.activeElement === $("noteText") && $("noteText").value.trim()) return; // não interromper escrita
+      } catch {}
+      const draft = $("noteText") ? $("noteText").value : "";
+      const draftKind = $("noteKind") ? $("noteKind").value : "gancho";
+      try {
+        const res = await fetch(`${backendUrl()}/continuity`, { headers: { Accept: "application/json" } });
+        const data = await res.json();
+        const notes = data?.notes || [];
+        const act = notes.filter(n => n.status === "active");
+        const done = notes.filter(n => n.status !== "active");
+        el.innerHTML =
+          `<div class="field" style="display:flex;gap:8px;flex-wrap:wrap;"><input id="noteText" placeholder="Ex: Tininha deve um favor ao Capitão" style="flex:2;min-width:200px;"><select id="noteKind" style="flex:0 1 auto;"><option value="gancho">gancho</option><option value="rivalidade">rivalidade</option><option value="promessa">promessa</option><option value="piada">piada</option></select><button class="btn btn-sm" id="noteAddBtn" style="flex:0 1 auto;">Registar</button></div>` +
+          (act.length ? act.map(n =>
+            `<div class="ep-item" style="margin-bottom:6px;"><span style="flex:1;">[${esc(n.kind)}] ${esc(n.text)} <small style="color:#888">${esc(n.episode || "")}</small></span><button class="btn btn-sm btn-secondary" data-resolve="${esc(n.id)}" style="width:auto;margin:0;">Resolver</button></div>`
+          ).join("") : '<div class="meta">Sem notas ativas. Só isto alimenta a continuidade da Sala.</div>') +
+          (done.length ? `<div class="meta">Resolvidas: ${done.length}</div>` : "");
+        if (draft) { $("noteText").value = draft; $("noteKind").value = draftKind; }
+        $("noteAddBtn")?.addEventListener("click", async () => {
+          const text = ($("noteText").value || "").trim();
+          if (!text) return status("Escreve a nota primeiro.", "error");
+          try {
+            const res = await fetch(`${backendUrl()}/continuity`, {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text, kind: $("noteKind").value, episode: currentEpisode()?.name || "" })
+            });
+            const data = await res.json();
+            if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
+            renderSalaNotes();
+            status("Nota de continuidade registada.", "success");
+          } catch (e) { status("Continuity: " + e.message, "error"); }
+        });
+        el.querySelectorAll("[data-resolve]").forEach(b => b.addEventListener("click", async () => {
+          try {
+            await fetch(`${backendUrl()}/continuity/${encodeURIComponent(b.dataset.resolve)}/resolve`, { method: "POST" });
+            renderSalaNotes();
+          } catch (e) { status("Continuity: " + e.message, "error"); }
+        }));
+      } catch (e) { el.innerHTML = '<div class="meta">Falha a ler continuidade.</div>'; }
     }
     function activeTab() { const t = document.querySelector(".tab.active"); return (t && t.dataset.tab) || "script"; }
     function refreshAll() {
