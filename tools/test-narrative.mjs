@@ -50,6 +50,7 @@ function loadApp({ search = "", protocol = "http:" } = {}, presetStore = null) {
     detectCast, normalizeAIStory, storyToScenes, auditStory, audit, currentEpisode,
     sanitize, normalize, buildTagScene, pickColdOpen, validateImported,
     classifyFormat, estimateDuration, FORMATS, EP_MAX_SECONDS,
+    touchTake, pushRevision, restoreRevision, approveScript,
     get state() { return state; }, setState(v) { state = v; },
     charById, VERSION, EPISODE_SCHEMA
   };`);
@@ -162,6 +163,48 @@ test("Fase 3: classifyFormat explica + estimateDuration por conteúdo + teto", (
   const long = api.estimateDuration(new Array(40).fill(scenes[0]));
   assert.equal(long.over, true);
   assert.equal(long.ceiling, api.EP_MAX_SECONDS);
+});
+test("Fase 4: edição localizada só toca no take; revisões guardam/restauram com imagens", () => {
+  const { api } = loadApp();
+  const ep = {
+    id: "e1", number: 1, name: "T", premise: "P", schemaVersion: 2, storyVersion: 1,
+    scriptApproved: false, revisions: [],
+    story: {
+      premise: "P", incident: "I", stars: ["coxa", "claudio"],
+      beats: [
+        { kind: "setup", who: "coxa", with: "claudio", loc: "Estúdio Central", want: "q", does: "A faz X", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: { char: "coxa", paren: "", line: "Olá." }, dur: 6 },
+        { kind: "resolution", who: "coxa", with: null, loc: "Estúdio Central", want: "q", does: "B fecha Y", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: null, dur: 5 },
+      ],
+      resolution: "fecha Y",
+    },
+    scenes: api.storyToScenes({
+      stars: ["coxa", "claudio"], premise: "P",
+      beats: [
+        { kind: "setup", who: "coxa", with: "claudio", loc: "Estúdio Central", want: "q", does: "A faz X", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: { char: "coxa", paren: "", line: "Olá." }, dur: 6 },
+        { kind: "resolution", who: "coxa", with: null, loc: "Estúdio Central", want: "q", does: "B fecha Y", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: null, dur: 5 },
+      ],
+    }, 1),
+  };
+  const before = ep.scenes[1].action;
+  // usa a função real de toque localizado
+  ep.scenes[1].action = "B fecha Z de outra maneira";
+  api.touchTake(ep, ep.scenes[1]);
+  assert.ok(ep.scenes[0].action.includes("A faz X"));
+  assert.notEqual(ep.scenes[1].action, before);
+  assert.ok(Array.isArray(ep.audit) && ep.audit.length > 0); // revalidado
+  // revisão guarda e restaura preservando imagens por id
+  ep.scenes[0].imageUrl = "data:image/png;base64,AAA";
+  ep.scenes[0].approved = true;
+  api.pushRevision(ep, "teste");
+  assert.equal(ep.revisions.length, 1);
+  ep.scenes[0].action = "DESTRUÍDO";
+  ep.scenes[0].imageUrl = null;
+  assert.equal(api.restoreRevision(ep, 0), true);
+  assert.ok(ep.scenes[0].action.includes("A faz X"));
+  assert.equal(ep.scenes[0].imageUrl, "data:image/png;base64,AAA"); // imagem preservada
+  assert.equal(ep.scenes[0].approved, true);
+  assert.equal(ep.revisions.length, 2); // restauro guarda snapshot primeiro
+  assert.equal(api.restoreRevision(ep, 99), false);
 });
 test("Fase 2: takes levam sv + clipApproved; migração preenche sem reescrever", () => {
   const { api, store } = loadApp();

@@ -505,6 +505,8 @@
       state.seasons.forEach(s => (s.episodes || []).forEach(ep => {
         if (ep.schemaVersion == null) ep.schemaVersion = 1;
         if (ep.storyVersion == null) ep.storyVersion = 1;
+        if (typeof ep.scriptApproved !== "boolean") ep.scriptApproved = false;
+        if (!Array.isArray(ep.revisions)) ep.revisions = [];
       }));
       state.seasons.forEach(s => {
         if (!Array.isArray(s.episodes)) s.episodes = [];
@@ -1177,6 +1179,7 @@
       }
       if (!ep) return status("Gera um episódio primeiro.", "error");
       if (ep.scenes.some(s => s.approved) && !confirm("Isto substitui takes (inclui aprovados). Continuar?")) return;
+      pushRevision(ep, "antes de reescrever com IA");
       const btn = $("aiStoryBtn");
       btn.disabled = true;
       btn.innerHTML = '<span class="loading"></span> IA a escrever...';
@@ -1401,6 +1404,10 @@
       if (!ep) return $("scriptContent").innerHTML = '<div class="empty"><h3>Guião</h3><p>Gera um episódio.</p></div>';
       let html = `<div class="script"><div class="script-head"><h2>OS LESADOS</h2><p>"${esc(ep.name)}"</p><p>Season 1 · Episódio ${ep.number} · ${ep.scenes.length} takes${ep.format ? ` · ${esc(ep.format.label)}` : ""}${ep.runtime ? ` · ~${ep.runtime.seconds}s estimados` : ""}</p>${ep.hook ? `<p style="color:var(--canon);font-size:.85em;">🧵 Fio de temporada: ${esc(ep.hook)}</p>` : ""}</div>`;
       if (ep.narration?.open) html += `<div class="narr"><strong>ABELHA MAIA (V.O.) — ABERTURA:</strong> ${esc(ep.narration.open)}</div>`;
+      html += `<div class="buttons" style="max-width:520px;"><button class="btn btn-sm ${ep.scriptApproved ? "btn-success" : "btn-warning"}" id="approveScriptBtn">${ep.scriptApproved ? "Guião aprovado ✓" : "Aprovar guião"}</button></div>`;
+      if (Array.isArray(ep.revisions) && ep.revisions.length) {
+        html += `<div class="field" style="max-width:520px;"><label>Revisões (${ep.revisions.length})</label><div class="buttons"><select id="revSel">${ep.revisions.map((r, i) => `<option value="${i}">#${i + 1} ${esc(r.at.slice(0, 16).replace("T", " "))} — ${esc(r.note).slice(0, 40)}</option>`).join("")}</select><button class="btn btn-sm btn-secondary" id="revRestoreBtn" style="flex:0 1 auto;">Restaurar</button></div></div>`;
+      }
       if (ep.coldOpen) html += `<div class="slug">EXT. ${esc(ep.coldOpen.location).toUpperCase()} - DIA [0:00 - 0:0${esc(String(ep.coldOpen.duration))}]</div><div class="camera">🎥 WIDE SHOT · ${esc(ep.coldOpen.camera)}</div><div class="take">▶ COLD OPEN · ${esc(String(ep.coldOpen.duration))}s · ESTABLISHING</div><div class="action">${esc(ep.coldOpen.action)}</div>`;
       ep.scenes.forEach((s, i) => {
         if (i > 0) {
@@ -1437,6 +1444,81 @@
       if (ep.narration?.close) html = html.replace('<div class="end">', `<div class="narr"><strong>ABELHA MAIA (V.O.) — FECHO:</strong> ${esc(ep.narration.close)}</div><div class="end">`);
       if (ep.tagScene) html = html.replace('<div class="end">', `<div class="slug">TAG — ${esc(ep.tagScene.location).toUpperCase()}</div><div class="action">${esc(ep.tagScene.action)}</div>${ep.tagScene.dialogue ? `<div class="char">${esc(charById[ep.tagScene.dialogue.char]?.name || ep.tagScene.dialogue.char)}</div><div class="paren">${esc(ep.tagScene.dialogue.paren)}</div><div class="dialogue">${esc(ep.tagScene.dialogue.line)}</div>` : ""}<div class="end">`);
       $("scriptContent").innerHTML = html;
+      $("approveScriptBtn")?.addEventListener("click", approveScript);
+      $("revRestoreBtn")?.addEventListener("click", () => {
+        const ep2 = currentEpisode();
+        const idx = Number($("revSel")?.value ?? -1);
+        if (!ep2 || !(idx >= 0)) return;
+        if (!confirm("Restaurar esta revisão? Os takes atuais são guardados primeiro.")) return;
+        if (restoreRevision(ep2, idx)) {
+          renderAudit(ep2.audit);
+          renderScript();
+          renderPipeline();
+          renderHeaderNav();
+          status("Revisão restaurada (imagens preservadas por take).", "success");
+        } else status("Falha ao restaurar.", "error");
+      });
+    }
+    function touchTake(ep, scene, retime) {
+      if (retime) {
+        let t = 0;
+        for (const s of ep.scenes) {
+          const start = t; t += Number(s.duration) || 6;
+          s.timecode = `${fmt(start)} - ${fmt(t)}`;
+        }
+      }
+      scene.prompt = buildPrompt(scene);
+      ep.runtime = estimateDuration(ep.scenes);
+      ep.audit = [...(ep.story ? auditStory(ep) : []), ...audit(ep)];
+      save();
+    }
+    // Revisões: snapshot antes de mudanças destrutivas; restauro preserva
+    // imagens aprovadas por id de take. Máx 10 por episódio.
+    function pushRevision(ep, note) {
+      if (!ep) return;
+      ep.revisions = Array.isArray(ep.revisions) ? ep.revisions : [];
+      ep.revisions.push({
+        at: new Date().toISOString(), note: String(note || "snapshot"),
+        storyVersion: ep.storyVersion || 1,
+        story: JSON.parse(JSON.stringify(ep.story || null)),
+        scenes: JSON.parse(JSON.stringify(ep.scenes || [])),
+      });
+      while (ep.revisions.length > 10) ep.revisions.shift();
+      save();
+    }
+    function restoreRevision(ep, idx) {
+      const rev = ep?.revisions?.[idx];
+      if (!rev) return false;
+      pushRevision(ep, "auto: antes de restaurar revisão");
+      const keepImg = Object.fromEntries((ep.scenes || []).map(s => [s.id, s]));
+      ep.story = JSON.parse(JSON.stringify(rev.story));
+      ep.scenes = JSON.parse(JSON.stringify(rev.scenes));
+      for (const s of ep.scenes) {
+        const old = keepImg[s.id];
+        if (old && old.imageUrl) {
+          s.imageUrl = old.imageUrl; s.model = old.model;
+          s.variant = old.variant; s.approved = old.approved;
+          s.referenceCount = old.referenceCount;
+        }
+      }
+      ep.audit = [...(ep.story ? auditStory(ep) : []), ...audit(ep)];
+      ep.runtime = estimateDuration(ep.scenes);
+      state.currentScene = ep.scenes[0]?.id || null;
+      save();
+      return true;
+    }
+    function approveScript() {
+      const ep = currentEpisode();
+      if (!ep) return status("Gera um episódio primeiro.", "error");
+      if (ep.scriptApproved) {
+        if (!confirm("Retirar a aprovação do guião?")) return;
+        ep.scriptApproved = false;
+        save(); renderScript();
+        return status("Aprovação do guião retirada.", "success");
+      }
+      ep.scriptApproved = true;
+      save(); renderScript();
+      status("Guião aprovado. Podes gerar imagens.", "success");
     }
     function renderPipeline() {
       const ep = currentEpisode();
@@ -1470,6 +1552,9 @@
           <h3>🎨 ${scene ? esc(scene.title) : "Seleciona um take"} ${scene?.approved ? '<span class="badge-ok">APROVADA</span>' : ""}</h3>
           ${scene ? `<div class="meta">Modelo: ${esc(scene.model || "sem geração")} · Variante: v${scene.variant || 0} · Refs: ${scene.referenceCount || 0}</div>` : ""}
           <textarea class="prompt" id="promptInput">${scene ? esc(scene.prompt || "") : ""}</textarea>
+          ${scene ? `<div class="field"><label>Ação do take</label><textarea class="prompt" id="actionInput" style="min-height:60px;">${esc(scene.action || "")}</textarea></div>
+          <div class="field"><label>Fala (vazia = take visual)</label><input id="lineInput" value="${esc(scene.dialogue?.line || "")}"></div>
+          <div class="field"><label>Duração (s, 2–12)</label><input id="durInput" type="number" min="2" max="12" value="${Number(scene.duration || 6)}" style="max-width:90px;"></div>` : ""}
           <div class="buttons">
             <button class="btn" id="generateImageBtn" ${scene ? "" : "disabled"}>Gerar imagem</button>
             <button class="btn btn-warning" id="regenerateBtn" ${scene ? "" : "disabled"}>Regenerar</button>
@@ -1507,8 +1592,29 @@
         save();
         renderPipeline();
       }));
+    // Toque localizado num take (Fase 4): recalcula auditoria+runtime do episódio
+    // sem re-render e sem tocar nos outros takes. Revalida timecodes em cadeia.
       const pi = $("promptInput");
       if (pi && scene) pi.addEventListener("input", () => { scene.prompt = pi.value; save(); });
+      // Edição localizada do take (Fase 4): só este take muda; auditoria e
+      // runtime recalculados sem re-render para não perder o foco.
+      const ai = $("actionInput");
+      if (ai && scene) ai.addEventListener("input", () => { scene.action = ai.value; touchTake(ep, scene); });
+      const li = $("lineInput");
+      if (li && scene) li.addEventListener("input", () => {
+        const v = li.value.trim();
+        if (!v) { scene.dialogue = null; }
+        else if (scene.dialogue) { scene.dialogue.line = v; }
+        else { scene.dialogue = { char: (scene.characters || [])[0] || "coxa", paren: "", line: v }; }
+        touchTake(ep, scene);
+      });
+      const di = $("durInput");
+      if (di && scene) di.addEventListener("change", () => {
+        const v = Math.min(12, Math.max(2, Number(di.value) || 6));
+        di.value = v;
+        scene.duration = v;
+        touchTake(ep, scene, true);
+      });
       $("generateImageBtn")?.addEventListener("click", generateImage);
       $("regenerateBtn")?.addEventListener("click", () => { if (confirm("Regenerar?")) generateImage(); });
       $("approveBtn")?.addEventListener("click", approveImage);
@@ -2135,6 +2241,7 @@
       if (!ep) return status("Gera um episódio primeiro.", "error");
       const scene = ep.scenes.find(s => s.id === state.currentScene);
       if (!scene) return status("Seleciona um take.", "error");
+      if (!ep.scriptApproved && !confirm("O guião ainda não foi aprovado. Gerar imagem mesmo assim?")) return;
       const prompt = ($("promptInput")?.value || scene.prompt || "").trim();
       if (!prompt) return status("Prompt vazio.", "error");
       if (scene.approved && !confirm("Esta imagem está aprovada. Substituir?")) return;
