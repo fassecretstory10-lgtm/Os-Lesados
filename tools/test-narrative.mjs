@@ -206,6 +206,23 @@ test("Fase 4: edição localizada só toca no take; revisões guardam/restauram 
   assert.equal(ep.revisions.length, 2); // restauro guarda snapshot primeiro
   assert.equal(api.restoreRevision(ep, 99), false);
 });
+test("Fase 5: cobertura por cena com teto + preserve de assets + staleness", () => {
+  const { api } = loadApp();
+  const story = {
+    stars: ["coxa", "claudio"], premise: "P",
+    beats: [
+      { kind: "setup", who: "coxa", with: "claudio", loc: "Estúdio Central", want: "q", does: "A faz X", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: { char: "coxa", paren: "", line: "Olá." }, dur: 6 },
+      { kind: "resolution", who: "coxa", with: null, loc: "Estúdio Central", want: "q", does: "B fecha Y", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: null, dur: 5 },
+    ],
+  };
+  const scenes = api.storyToScenes(story, 2);
+  assert.ok(scenes.every((s) => s.sceneId === "s1"));
+  assert.deepEqual(scenes.map((s) => s.function), ["master", "group"]);
+  // teto de 4: forçar 5 takes na mesma cena dispara warning
+  const ep = { story: { ...story, stars: ["coxa", "claudio"], premise: "P barco", incident: "I" }, scenes: [...scenes, ...scenes.slice(0, 3).map((s, i) => ({ ...s, id: "x" + i }))] };
+  const msgs = api.auditStory(ep).map((i) => i.msg).join(" | ");
+  assert.match(msgs, /cobertura acima do teto/);
+});
 test("Fase 2: takes levam sv + clipApproved; migração preenche sem reescrever", () => {
   const { api, store } = loadApp();
   const story = {

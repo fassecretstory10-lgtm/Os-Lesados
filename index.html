@@ -1037,6 +1037,15 @@
         if (rf !== last) rf.prompt = buildPrompt(rf);
       });
       scenes.forEach(s => { resolveOfficeSide(s); s.prompt = buildPrompt(s); s.alertMel = s.characters.includes("abelha"); });
+      // Cobertura por função (Fase 5): agrupa takes consecutivos do mesmo cenário
+      // em cenas (sceneId) e etiqueta a função de cada take. Teto: 4 takes/cena.
+      let seq = 0, cur = null;
+      for (const s of scenes) {
+        const base = locBase(s.location);
+        if (base !== cur) { cur = base; seq += 1; }
+        s.sceneId = `s${seq}`;
+        s.function = s.reframeOf ? "reaction" : (s.type === "INSERT" ? "insert" : (s === scenes.find(x => x.sceneId === s.sceneId) ? "master" : "group"));
+      }
       return scenes;
     }
     // Auditoria narrativa (determinística; assinalada como tal no relatório).
@@ -1091,6 +1100,13 @@
           issues.push({ type: "warning", msg: `Take ${s.id}: prompt visual sem o cenário.` });
         }
       });
+      const byScene = {};
+      for (const s of ep.scenes) { (byScene[s.sceneId || "?"] ||= []).push(s.id); }
+      for (const [sid, ids] of Object.entries(byScene)) {
+        if (sid !== "?" && ids.length > 4) {
+          issues.push({ type: "warning", msg: `Cena ${sid} com ${ids.length} takes (${ids.join(", ")}) — cobertura acima do teto de 4.` });
+        }
+      }
       if (ep.runtime?.over) {
         issues.push({ type: "warning", msg: `Duração estimada ~${ep.runtime.seconds}s excede o teto de ${ep.runtime.ceiling}s — apertar sem cortar setup, escalada ou payoff.` });
       }
@@ -1198,7 +1214,19 @@
         if (!data.story) throw new Error("Backend não devolveu história.");
         ep.story = normalizeAIStory(data.story, ep.premise, castIds);
         ep.storyVersion = (ep.storyVersion || 1) + 1;
+        // Preserva imagens aprovadas quando o take sobrevive intacto (mesmo id,
+        // mesma ação e mesmo diálogo): o resto é regenerado de raiz.
+        const keepAssets = Object.fromEntries((ep.scenes || []).map(s => [s.id, s]));
         ep.scenes = storyToScenes(ep.story, ep.storyVersion);
+        for (const s of ep.scenes) {
+          const old = keepAssets[s.id];
+          if (old && old.imageUrl && old.action === s.action &&
+              (old.dialogue?.line || null) === (s.dialogue?.line || null)) {
+            s.imageUrl = old.imageUrl; s.model = old.model;
+            s.variant = old.variant; s.approved = old.approved;
+            s.referenceCount = old.referenceCount;
+          }
+        }
         ep.format = classifyFormat(ep.premise, castIds);
         ep.runtime = estimateDuration(ep.scenes);
         state.currentScene = ep.scenes[0]?.id || null;
@@ -2242,6 +2270,7 @@
       const scene = ep.scenes.find(s => s.id === state.currentScene);
       if (!scene) return status("Seleciona um take.", "error");
       if (!ep.scriptApproved && !confirm("O guião ainda não foi aprovado. Gerar imagem mesmo assim?")) return;
+      if ((scene.sv || 1) !== (ep.storyVersion || 1) && !confirm(`Este take é da história v${scene.sv || 1} e o episódio vai na v${ep.storyVersion || 1}. Gerar imagem mesmo assim?`)) return;
       const prompt = ($("promptInput")?.value || scene.prompt || "").trim();
       if (!prompt) return status("Prompt vazio.", "error");
       if (scene.approved && !confirm("Esta imagem está aprovada. Substituir?")) return;
