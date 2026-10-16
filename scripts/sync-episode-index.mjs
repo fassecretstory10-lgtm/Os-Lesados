@@ -46,7 +46,7 @@ function validateDecoupage(file) {
     scenes: sceneCount >= 3,
     imagePrompts: /prompt de imagem/i.test(content),
     animationPrompts: /prompt de anima[cç][aã]o/i.test(content),
-    continuity: /CONTROLO DE CONTINUIDADE/i.test(content)
+    continuity: /(?:CONTROLO|REGRAS?|REGRA) DE CONTINUIDADE/i.test(content)
   };
   return { complete: Object.values(checks).every(Boolean), checks, sceneCount };
 }
