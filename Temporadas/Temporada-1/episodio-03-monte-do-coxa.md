@@ -2,75 +2,82 @@
 
 ## Ficha de produção
 
-- **Formato:** Sitcom animada narrativa; humor de situação e escalada caricatural
-- **Duração prevista:** Estimativa inicial: 1–2 minutos; confirmar após decupagem
-- **Estado do guião:** História-base aprovada; duração e decupagem por definir
-- **Personagens:** Coxa, Capitão Gancho, caseiro
-- **Cenários/localizações:** Monte alentejano, sala com secretária, entrada/propriedade, Mercedes preto
-- **Estado do texto:** História e diálogo-chave escritos; expandir apenas se necessário para o ritmo
-- **Som e efeitos:** Ambiente rural, motor do Mercedes, porta da mala a fechar
-- **Nota de produção:** A captura de Coxa deve ser caricatural e não gráfica. Não inventar biografia nem características vocais para Coxa.
-
-> A duração é uma estimativa de trabalho, não uma duração final medida. Atualizar após fechar o guião e aprovar a decupagem.
-
-
-**Estado:** Aprovado como história-base  
-**Formato:** Sitcom animada, humor de situação e escalada caricatural.
+- **Formato:** sitcom animada narrativa, comédia visual e física.
+- **Duração-alvo:** 1–2 minutos; confirmar após montagem.
+- **Estado:** decupagem completa para produção.
+- **Personagens:** Coxa, Capitão Gancho e caseiro (apenas na chegada).
+- **Cenários:** escritório do Monte do Coxa, entrada e caminhos rurais, Mercedes preto.
+- **Idioma:** português europeu (PT-PT).
+- **Regra de câmara:** plano-mestre primeiro; reframes apenas quando necessários para uma fala, reação ou gag física.
 
 ## Premissa
 
-Coxa refugia-se no seu monte alentejano para escapar à televisão e ficar em paz. Está na sala, sentado à secretária, a ler papéis, quando o Capitão Gancho chega num Mercedes preto para o levar de volta. O caseiro é uma personagem secundária e trata o Capitão por «Doutor». Coxa recusa-se a regressar e ameaça ir para a SIC. O Capitão, que precisa de audiências, acaba por o meter amarrado na mala do carro.
+Coxa aproveita as férias no escritório do seu monte alentejano, longe da televisão. A tranquilidade termina quando Capitão Gancho chega num Mercedes preto para o convencer a regressar mais cedo à TVI. Coxa recusa, foge pelo monte e desencadeia uma sequência rápida de gags físicas com galinhas, um cavalo e um balde de milho. Gancho não perde a calma. Coxa ameaça ir para a SIC apenas para o provocar. A cena final começa com Coxa já dentro da mala do Mercedes, a gritar, enquanto Gancho justifica a decisão com a necessidade de ter audiências.
 
-## Sequência narrativa
+## Sequência narrativa aprovada
 
-### 1. O monte alentejano
+### 1. A tranquilidade
 
-Estabelecer o ambiente rural e tranquilo. Coxa está na sala do monte, sentado à secretária a ler papéis, como se estivesse finalmente dedicado à sua vida longe dos estúdios.
+Coxa está sozinho no escritório do monte, a aproveitar as férias. Uma única voz off feminina, doce e irónica, abre o episódio:
 
-### 2. A chegada do Capitão
+**VOZ OFF:** «Coxa aproveita a tranquilidade do monte. Finalmente, uns dias sem reuniões, sem diretos e sem ninguém a pedir-lhe audiências.»
 
-Um Mercedes preto entra na propriedade. O caseiro recebe o visitante e trata-o por **«Doutor»**. O Capitão não veio fazer uma visita social: veio buscar Coxa.
+Não há narração recorrente nem participação automática da Abelha Maia.
 
-### 3. A recusa
+### 2. A chegada do Mercedes
 
-Coxa não quer abandonar o monte. Quer ficar ali e recusa-se a voltar à televisão. A tensão cresce à medida que o Capitão deixa claro que precisa de o levar de volta.
+Um Mercedes preto entra na propriedade e é obrigado a parar porque as galinhas atravessam o caminho. Capitão Gancho está ao volante. O caseiro aproxima-se e trata-o por «Doutor».
 
-### 4. O desfecho
+**CASEIRO:** «Bom dia, Doutor.»  
+**CAPITÃO GANCHO:** «Bom dia. O Coxa está?»  
+**CASEIRO:** «Está no escritório, Doutor.»
 
-Coxa insiste que não vai com ele e ameaça ir para a SIC. O Capitão acaba por o meter, amarrado, na mala do Mercedes. A ação é caricatural e deve ser encenada como humor negro de desenho animado, sem realismo gráfico.
+### 3. O encontro e a recusa
 
-## Diálogo-chave aprovado
+Coxa sai do escritório e encontra Gancho no exterior.
 
-**COXA:** Eu não vou consigo! Fico aqui no meu monte!
+**CAPITÃO GANCHO:** «Coxa. Preciso que regresse mais cedo.»  
+**COXA:** «Mais cedo? Ainda agora comecei as férias.»  
+**CAPITÃO GANCHO:** «A sua presença faz falta na TVI.»  
+**COXA:** «Então a TVI vai ter de aprender a viver sem mim durante uns dias.»  
+**CAPITÃO GANCHO:** «Não vim pedir-lhe uma opinião. Vim buscá-lo.»
 
-**CAPITÃO GANCHO:** Preciso que volte.
+### 4. A fuga pelo monte
 
-**COXA:** Então arranje outro! Eu vou para a SIC!
+Coxa foge. As galinhas atravessam-lhe o caminho, um cavalo bloqueia a passagem e, ao olhar para trás, Coxa não vê um balde cheio de milho e cai lá dentro.
 
-**CAPITÃO GANCHO:** Você vai para onde eu o levar. Eu preciso de ter audiências.
+**COXA:** «Isto é um pesadelo!»  
+**CAPITÃO GANCHO:** «Vejo que está a aproveitar bem as férias.»  
+**COXA:** «Nem uma palavra!»
 
-Quando o Capitão se prepara para partir, o caseiro pergunta:
+### 5. A decisão de Gancho
 
-**CASEIRO:** Doutor… quer que lhe prepare alguma coisa para a viagem?
+Coxa consegue sair do balde, coberto de milho, e recusa-se a regressar.
 
-**CAPITÃO GANCHO:** Não. Trate do monte.
+**COXA:** «Eu não vou consigo. Estou de férias.»  
+**CAPITÃO GANCHO:** «Compreendo.»  
+**COXA:** «E, se continuar com isto, ainda me convence a ir para a SIC!»  
+**CAPITÃO GANCHO:** «Vamos.»
 
-A mala fecha-se e o Mercedes arranca. O caseiro fica sozinho à entrada da propriedade.
+Gancho decide pessoalmente levar Coxa, sem explicar o que vai fazer e sem perder a calma. Não mostrar como Coxa vai parar à mala.
 
-**FIM.**
+### 6. A mala
+
+A cena começa com Coxa já dentro da mala aberta do Mercedes.
+
+**COXA:** «TIREM-ME DAQUI!»  
+**CAPITÃO GANCHO:** «Preciso de ter audiências.»
+
+O Mercedes afasta-se enquanto Coxa continua a gritar. Corte para preto.
 
 ## Regras de continuidade
 
-- O monte deve parecer uma propriedade rural alentejana.
-- A cena da sala inclui a secretária e os papéis que Coxa está a ler.
-- O Capitão chega num Mercedes preto.
-- O caseiro é secundário e trata o Capitão exclusivamente por «Doutor» nesta interação.
-- A ameaça de Coxa ir para a SIC e a frase do Capitão sobre precisar de audiências são elementos essenciais do episódio.
-- Não inventar biografia nem características vocais para Coxa.
-- A história está aprovada; storyboard, prompts de imagem e vídeo serão preparados numa fase posterior.
-
-
----
-
-**Estado editorial no arquivo:** História-base aprovada
-**Tipo de documento:** Guião / história escrita
+- Coxa continua a ser funcionário da TVI e está apenas de férias.
+- A ameaça de ir para a SIC é uma provocação, não uma decisão real.
+- Capitão Gancho é calmo, frio e burocrático; não grita nem perde a compostura.
+- O caseiro só aparece na chegada e trata Gancho por «Doutor».
+- Coxa e Gancho usam tratamento formal.
+- O final começa com Coxa já dentro da mala; não mostrar como foi colocado lá.
+- Não acrescentar a Abelha Maia nem uma voz off recorrente.
+- Não inventar biografia, roupa ou características vocais para Coxa.
+- A decupagem completa, com prompts de imagem e animação, está em `docs/episodios/T1E03-monte-do-coxa-decupagem.md`.
