@@ -9,6 +9,7 @@ Arquivo de desenvolvimento dos episódios, separado da aplicação e dos assets 
 - **Guiões de origem:** texto narrativo e diálogos completos, incluindo documentos ainda em desenvolvimento.
 - **Pipeline:** estrutura visual editável, cena a cena. Cada cena tem o seu próprio prompt e estado de aprovação de imagem.
 - **Video:** só deve disponibilizar prompts de animação para imagens aprovadas no Pipeline.
+- **Abelha Maia:** não é narradora automática. Só aparece em episódios e cenas em que a sua presença esteja justificada.
 - **Canon e contexto de personagens:** fonte separada para personalidade, história, voz, relações e continuidade. A informação de contexto ajuda a escrever, mas não deve alterar silenciosamente o canon.
 
 ## Próxima evolução prevista
