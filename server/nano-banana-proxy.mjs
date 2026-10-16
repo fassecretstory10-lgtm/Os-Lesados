@@ -149,6 +149,26 @@ app.post("/api/generate-image", async (req, res) => {
   }
 });
 
+// Arquivo editorial da Temporada 1. Os Markdown em /Temporadas são a fonte de verdade.
+app.get("/api/episodes", async (_req, res) => {
+  try {
+    const { default: fs } = await import("node:fs");
+    const manifestPath = path.join(ROOT, "Temporadas", "Temporada-1", "manifest.json");
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    const episodes = (manifest.episodes || []).map((episode) => {
+      const relative = String(episode.path || "");
+      if (!relative.startsWith("Temporadas/Temporada-1/") || !relative.endsWith(".md")) {
+        throw new Error("Caminho de episódio inválido no manifest: " + relative);
+      }
+      const content = fs.readFileSync(path.join(ROOT, relative), "utf8");
+      return { ...episode, content };
+    });
+    res.json({ ok: true, season: manifest.season, episodes });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: "Não foi possível carregar os guiões da Temporada 1: " + e.message });
+  }
+});
+
 // Servir o frontend (index.html já existe na raiz — não tocar)
 app.get("/", (_req, res) => {
   res.sendFile(path.join(ROOT, "index.html"));
