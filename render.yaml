@@ -1,0 +1,31 @@
+# OS LESADOS — deploy no Render (Blueprint).
+# 1. Vai a https://dashboard.render.com → New → Blueprint → escolhe este repo.
+# 2. Preenche as chaves marcadas com sync: false no dashboard.
+# 3. O frontend é servido pelo próprio backend em / (backendUrl = /api já vem por defeito).
+services:
+  - type: web
+    name: os-lesados
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: IMAGE_PROVIDER
+        value: gemini
+      - key: IMAGE_SIZE
+        value: 1K
+      - key: TEXT_PROVIDER
+        value: auto
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: HF_TOKEN
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
