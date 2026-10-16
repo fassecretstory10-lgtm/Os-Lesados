@@ -1,5 +1,19 @@
 # Episódio 1 — A Rainha dos Reality-Shows
 
+## Ficha de produção
+
+- **Formato:** Sitcom animada narrativa
+- **Duração prevista:** Por fechar; estimativa inicial: 2–3 minutos
+- **Estado do guião:** Guião em desenvolvimento; diálogo do gabinete por fechar
+- **Personagens:** Teresa Guilhermina I de Portugal, Capitão Gancho, Tininha, rececionista, segurança (voz/menção), fã
+- **Cenários/localizações:** Receção da TVI, torniquetes, corredor, gabinete do Capitão Gancho
+- **Estado do texto:** Parcialmente escrito; abertura e final aprovados, confronto central incompleto
+- **Som e efeitos:** Ambiente de receção e corredor; salto dos torniquetes; reação do fã no final
+- **Nota de produção:** Não avançar para decupagem final até fechar o diálogo do gabinete.
+
+> A duração é uma estimativa de trabalho, não uma duração final medida. Atualizar após fechar o guião e aprovar a decupagem.
+
+
 **Estado:** Em desenvolvimento  
 **Aprovado:** abertura nos torniquetes; frase central de Teresa; saída com reconhecimento de um fã.  
 **Pendente:** fechar e aprovar o diálogo completo do gabinete, incluindo a entrada da Tininha.
