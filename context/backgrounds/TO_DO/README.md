@@ -165,3 +165,133 @@ A listagem atual do GitHub mostra que o manifest.json referencia alguns ficheiro
 4. Criar e aprovar o casting room, caso não exista um equivalente.
 5. Criar o master frame exterior do barco e só depois o interior/deck.
 6. Só após os guiões estarem aprovados, criar reframes e variações de ação.
+
+
+---
+
+## REGRA NOVA — CADA TAREFA TEM DE TER UM PROMPT DE IDEIAS
+
+Antes de gerar um background novo, ou uma variação de um background existente, começar por explorar opções. Não saltar diretamente para a geração final.
+
+### Prompt para gerar ideias de cenário (usar no generator de texto/brainstorming)
+
+**Prompt (EN)**
+> You are the visual development artist for OS LESADOS, a 2D Portuguese television-industry satire sitcom. Based on the attached approved background references, character references, episode premise and location requirements, propose 5 distinct but production-practical visual ideas for this environment. Preserve the established OS LESADOS art style, architecture, palette, TVI/Secret Story branding and character canon. For each idea, provide: (1) a short concept name, (2) what makes it visually funny or useful for staging, (3) the main wide-shot composition, (4) two useful alternate camera angles, (5) continuity risks, (6) which existing references must be attached, and (7) a suggested asset filename and exact human-readable generator label. Do not invent logos, legible brand text, new canon locations or details that contradict the references. Prefer reusing existing sets and creating camera angles/reframes over designing new environments. Do not generate an image yet. Present options for approval first.
+
+**Quando usar:** antes de criar qualquer cenário novo, prop importante ou novo ângulo. Escolher uma proposta e só depois executar o prompt de imagem.
+
+---
+
+## PROMPTS PARA NOVOS ÂNGULOS DOS BACKGROUNDS EXISTENTES
+
+Criar novos ângulos só quando o guião precisar deles. Anexar sempre o background master aprovado como referência principal; anexar também um segundo ângulo existente do mesmo espaço, se houver, para explicar a geografia. O objetivo é mostrar outra câmara no mesmo espaço, não redesenhar o espaço.
+
+### Prompt-base para gerar um novo ângulo (EN)
+
+> Using the attached approved OS LESADOS background as the strict master reference, create a new camera angle of the exact same location for a 2D animated sitcom. This must be the same physical room, not a redesign. Preserve the architecture, wall colours, furniture, doors, windows, lighting direction, prop placement, materials, proportions and established art style. Move only the virtual camera to the requested angle: [INSERT CAMERA ANGLE AND SHOT SIZE]. Maintain screen direction and spatial continuity with the master frame. Keep the environment empty, with no characters or human silhouettes. Preserve all supplied logos exactly as they appear in the reference; do not redraw them. Do not generate new text, signs, logos or extra props. 16:9 horizontal, clean animation-ready background. Before finalising, compare the result against the master reference and correct any continuity mismatch.
+
+### Prompt-base para reframe/crop, sem inventar novo ângulo (EN)
+
+> Create a tighter reframe of the attached approved OS LESADOS background. Keep the exact same camera perspective and physical scene; only adjust framing and crop to [INSERT SHOT SIZE: medium / close-up / insert]. Preserve all visible geometry and the relative positions of furniture, doors, windows and props. Do not add, remove or move set elements. No characters, no new text or logos. Match the original 2D sitcom style. 16:9 horizontal unless the project explicitly requires another aspect ratio.
+
+### Ângulos recomendados por background existente
+
+#### Gabinete do Capitão Gancho
+Já existem: gabinete-diretor-secretaria.jpg (Gancho atrás da secretária) e gabinete-diretor-corporativo.jpg (ângulo corporativo para visitas/confrontos).
+
+- Não criar outro gabinete. Usar os dois existentes e gerar reframes dos mesmos.
+- Para diálogo Teresa/Gancho, alternar entre: master de Gancho atrás da secretária; master corporativo de visita; reframe médio de Gancho; reframe médio de Teresa; close-up de reações; insert dos documentos ou do telefone.
+- Para os reframes de personagens, anexar o background correspondente e as referências oficiais das personagens. Gerar as personagens como elementos separados quando esse for o pipeline do projeto; não incorporar personagens no background.
+- Para o insert da placa, usar o prompt 1.1 e o corredor existente.
+
+**Prompt para ângulo de visita, se o existente não cobrir o plano necessário (EN)**
+> Using gabinete-diretor-corporativo.jpg as the primary reference and gabinete-diretor-secretaria.jpg as the spatial continuity reference, create only the missing camera angle needed for a dialogue scene. Preserve the exact same executive office, desk, chair, TV wall, doors, lighting and palette. Camera angle requested: [INSERT ANGLE]. Do not create a different room or alter the furniture layout. Empty set, no characters, no new text or logos, 16:9 horizontal, OS LESADOS 2D sitcom style.
+
+#### Hall TVI / receção
+Master existente: hall-tvi.jpg.
+
+Ângulos possíveis, apenas se necessários:
+- hall-tvi-wide — plano geral da receção e torniquetes.
+- hall-tvi-turnstiles — plano médio dos torniquetes, com espaço de aterragem.
+- hall-tvi-reception — plano médio do balcão da rececionista.
+- hall-tvi-exit-corridor — ângulo do hall em direção ao corredor interior.
+
+**Prompt (EN)**
+> Using hall-tvi.jpg as the strict master reference, create the requested alternate camera angle: [INSERT ONE ANGLE FROM THE LIST]. Keep the same TVI reception, entrance, desk, turnstiles, floor, lighting, colours and exact supplied logo placement. This is a new view of the same location, not a redesign. Leave clear staging space for the action. No people, no new lettering, no invented branding, no 3D or photorealism. 16:9 horizontal, OS LESADOS 2D sitcom style.
+
+#### Corredor de bastidores
+Master existente: corredor-bastidores.jpg.
+
+Ângulos possíveis:
+- corredor-bastidores-wide — plano geral que estabelece a geografia.
+- corredor-bastidores-door-cg — porta do gabinete de Gancho.
+- corredor-bastidores-towards-offices — vista em direção às portas dos gabinetes.
+
+Para o close-up da placa, usar a tarefa 1.1 em vez de gerar outro corredor completo.
+
+#### Camarim
+Masters existentes: camarim.jpg e camarim-espelho.jpg. Confirmar os nomes e ficheiros reais antes de usar; o manifest atual contém ambos.
+
+Ângulos possíveis:
+- camarim-wide — plano geral do camarim.
+- camarim-mirror-medium — plano médio em direção ao espelho.
+- camarim-mirror-closeup — close-up do espelho/lâmpadas e zona de maquilhagem.
+- camarim-ac-unit — insert do aparelho de ar condicionado, apenas se não existir no cenário atual.
+
+**Prompt (EN)**
+> Using the approved OS LESADOS dressing-room master as the strict reference, create the requested shot: [INSERT ANGLE]. Preserve the same vanity mirror, bulbs, chair, countertop, cosmetics, wall details, air-conditioning unit if present, lighting and layout. The shot must belong to the exact same room. No characters, no additional furniture, no new text or logos. 2D sitcom cartoon, 16:9 horizontal, animation-ready.
+
+#### Sala de reuniões Secret Story
+Master existente: sala-reunioes.jpg.
+
+Ângulos possíveis:
+- sala-reunioes-wide — plano geral com toda a mesa e a equipa.
+- sala-reunioes-capitao-end — vista a partir da cabeceira de Capitão Gancho.
+- sala-reunioes-team-side — vista lateral da equipa.
+- sala-reunioes-intern-closeup — reframe para o lugar do estagiário; não gerar personagem dentro do background.
+- sala-reunioes-table-insert — insert da mesa com papéis, copos de café e portátil, se esses props forem necessários.
+
+**Prompt (EN)**
+> Using sala-reunioes.jpg as the strict master reference, create the requested alternate angle: [INSERT ANGLE]. Preserve the same production meeting room, table shape, chair positions, wall details, lighting, Secret Story visual identity and room geography. This is a room for a production team meeting, not a control room or broadcast gallery. Keep the set empty. Do not add people, random screens, invented logos or readable generated text. 2D OS LESADOS sitcom style, 16:9 horizontal.
+
+#### Escritório secreto da Teresa
+Master existente: escritorio-secreto-guilhermina.jpg.
+
+Ângulos possíveis:
+- escritorio-secreto-wide — plano geral do espaço e do trono.
+- escritorio-secreto-monitors — ângulo dos monitores de vigilância.
+- escritorio-secreto-phone — insert da secretária/telefone para a chamada.
+- escritorio-secreto-reaction — reframe para a zona onde Teresa reage, mantendo o cenário vazio.
+
+**Prompt (EN)**
+> Using escritorio-secreto-guilhermina.jpg as the strict master reference, create the requested alternate angle: [INSERT ANGLE]. Preserve the same secret office, throne, monitor wall, desk, props, lighting and palette. Do not add new rooms or change the layout. Keep monitors consistent with the supplied reference and avoid legible generated text. Empty background, no characters, no new logos, 2D OS LESADOS sitcom style, 16:9 horizontal.
+
+---
+
+## NOMES DOS FICHEIROS E COMO O GENERATOR OS ENCONTRA
+
+O generator usa as entradas do context/backgrounds/manifest.json para apresentar/identificar backgrounds. Por isso, um ficheiro dentro de TO_DO não passa automaticamente a ser um background disponível no generator.
+
+### Regras de nome
+1. Guardar os backgrounds finais aprovados diretamente em context/backgrounds/, salvo se a aplicação tiver uma convenção diferente para assets gerados.
+2. Usar nomes curtos, descritivos, sem acentos nem espaços, por exemplo monte-do-coxa-exterior.jpg, casting-room.jpg, barco-tvi-exterior.jpg.
+3. Para ângulos do mesmo espaço, manter um prefixo comum: gabinete-diretor-reframe-teresa.jpg, hall-tvi-turnstiles.jpg, sala-reunioes-team-side.jpg.
+4. O nome apresentado ao utilizador no generator deve ser um rótulo claro em português. Exemplos:
+   - Monte do Coxa — Exterior (master)
+   - Sala de Casting — Plano Geral
+   - Barco da TVI — Exterior (master)
+   - Gabinete do Diretor — Reframe Teresa
+5. Depois de o ficheiro final existir e estar aprovado, adicionar o respetivo rótulo e filename ao context/backgrounds/manifest.json. Não adicionar assets planeados ao manifest antes de existirem, porque isso pode criar referências partidas.
+6. Não alterar nomes nem substituir backgrounds existentes sem atualizar e verificar as referências no manifest.
+
+### Prompt para pedir ao generator ideias de novos ângulos (EN)
+
+> Review the available OS LESADOS backgrounds and the episode scene requirements. Recommend only camera angles that are genuinely missing and would improve the edit. For each suggested angle, provide: the existing master filename, the exact camera position and shot size, what story beat it supports, whether it is a crop/reframe or a genuinely new view, the required image references, a generation prompt, a proposed filename, and the exact Portuguese label to add to context/backgrounds/manifest.json after approval. Do not recommend duplicates of existing angles. Do not generate images yet; return a shortlist for approval.
+
+### Checklist antes de marcar um asset como concluído
+- [ ] A ideia foi proposta e aprovada antes da geração final.
+- [ ] Foram anexadas as referências de background, personagem e logos relevantes.
+- [ ] O novo asset corresponde ao mesmo espaço e ao estilo visual da série.
+- [ ] Foi comparado com o master frame para detetar diferenças de continuidade.
+- [ ] O ficheiro foi guardado com nome descritivo.
+- [ ] Só depois de existir, foi acrescentado ao manifest.json com um rótulo português claro.
