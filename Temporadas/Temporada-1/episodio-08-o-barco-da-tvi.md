@@ -1,5 +1,19 @@
 # Episódio 8 — O Barco da TVI
 
+## Ficha de produção
+
+- **Formato:** Sitcom animada narrativa; comédia de escalada visual
+- **Duração prevista:** Estimativa inicial: 2–3 minutos; confirmar após escrita
+- **Estado do guião:** Rascunho de história; guião por fechar
+- **Personagens:** Mário Galático, Capitão Gancho; restantes personagens por definir
+- **Cenários/localizações:** Tejo junto à Ponte 25 de Abril, barco da Dourito Blue, zona de produção por definir
+- **Estado do texto:** Premissa e diálogo-base existentes; ainda não é guião integral
+- **Som e efeitos:** Buzina marítima, ruídos do barco e sinais de alarme a definir na decupagem
+- **Nota de produção:** A marca escreve-se sempre Dourito Blue. Confirmar a sequência do barco a afundar no guião completo.
+
+> A duração é uma estimativa de trabalho, não uma duração final medida. Atualizar após fechar o guião e aprovar a decupagem.
+
+
 **Estado:** rascunho de história; falta fechar o guião.
 
 ## Premissa
