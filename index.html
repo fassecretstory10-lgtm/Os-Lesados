@@ -1354,7 +1354,7 @@
       const source = REPO_EPISODES.find(item => item.number === Number(number));
       if (!source) return status("Episódio não encontrado no arquivo.", "error");
       if (!state.seasons.length) state.seasons.push({ id: "s1", name: "Temporada 1", episodes: [] });
-      let season = state.seasons.find(item => item.id === state.currentSeason) || state.seasons.find(item => item.id === "s1") || state.seasons[0];
+      let season = state.seasons.find(item => item.id === "s1") || state.seasons.find(item => item.id === state.currentSeason) || state.seasons[0];
       if (!season) { season = { id: "s1", name: "Temporada 1", episodes: [] }; state.seasons.push(season); }
       if (!Array.isArray(season.episodes)) season.episodes = [];
       const existing = season.episodes.find(item => Number(item.repoEpisodeNumber) === Number(number));
