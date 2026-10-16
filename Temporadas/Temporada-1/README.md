@@ -4,9 +4,10 @@ Arquivo editorial da temporada, organizado por episódio. Cada episódio tem o s
 
 ## Estados editoriais
 
-- **Guião em desenvolvimento / por aprovar:** pode ser enviado para o Pipeline como ponto de partida, mas continua a precisar de aprovação narrativa.
-- **História-base / conceito / ficha:** é material de desenvolvimento, não um guião final. Ao enviar para o Pipeline, será criada uma estrutura visual inicial editável.
-- **Aprovação visual:** cada cena gera uma imagem separada. A imagem só fica disponível na aba **Video** depois de ser aprovada no Pipeline. A aprovação da imagem não equivale à aprovação do guião.
+- **Guião em desenvolvimento / por aprovar:** pode ser preparado na Decupagem como ponto de partida, mas continua a precisar de aprovação narrativa.
+- **História-base / conceito / ficha:** é material de desenvolvimento, não um guião final. A estrutura visual inicial é apenas um rascunho para rever na Decupagem.
+- **Decupagem obrigatória:** cada episódio tem de passar por revisão e aprovação de cenas/planos antes de desbloquear o Pipeline.
+- **Aprovação visual:** cada plano gera uma imagem separada. A imagem só fica disponível na aba **Video** depois de ser aprovada no Pipeline. A aprovação visual é independente da aprovação narrativa e da decupagem.
 
 ## Episódios
 
