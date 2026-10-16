@@ -7,10 +7,21 @@ Arquivo de desenvolvimento dos episódios, separado da aplicação e dos assets 
 ## Separação de responsabilidades
 
 - **Guiões de origem:** texto narrativo e diálogos completos, incluindo documentos ainda em desenvolvimento.
-- **Pipeline:** estrutura visual editável, cena a cena. Cada cena tem o seu próprio prompt e estado de aprovação de imagem.
-- **Video:** só deve disponibilizar prompts de animação para imagens aprovadas no Pipeline.
+- **Decupagem:** etapa obrigatória entre o Guião e a produção. Cada cena é dividida em planos numerados (por exemplo, 01A, 01B, 01C), com ação, localização, enquadramento, movimento de câmara, duração e diálogo. A decupagem tem de ser aprovada explicitamente antes de desbloquear o Pipeline.
+- **Pipeline:** produção visual dos planos aprovados na decupagem. Cada plano tem prompt e aprovação de imagem próprios. Alterações à decupagem anulam a aprovação anterior e exigem nova validação.
+- **Video:** só disponibiliza prompts de animação quando a decupagem está aprovada e as imagens correspondentes foram aprovadas no Pipeline.
 - **Abelha Maia:** não é narradora automática. Só aparece em episódios e cenas em que a sua presença esteja justificada.
 - **Canon e contexto de personagens:** fonte separada para personalidade, história, voz, relações e continuidade. A informação de contexto ajuda a escrever, mas não deve alterar silenciosamente o canon.
+
+## Fluxo de produção obrigatório
+
+1. **Guião:** escrever e aprovar a história e os diálogos.
+2. **Decupagem:** transformar a história em cenas e planos filmáveis, revendo continuidade, enquadramentos, ações, falas e durações.
+3. **Aprovação da decupagem:** confirmar a estrutura antes de gerar imagens.
+4. **Pipeline:** gerar e aprovar os stills, plano a plano.
+5. **Video:** animar apenas os stills aprovados.
+
+O importador do Arquivo cria apenas uma estrutura inicial. Não a considera uma decupagem final nem desbloqueia diretamente a produção.
 
 ## Próxima evolução prevista
 
