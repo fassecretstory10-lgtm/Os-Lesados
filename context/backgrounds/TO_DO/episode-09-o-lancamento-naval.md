@@ -7,7 +7,7 @@
 **Documento de produção:** [episode-09-o-lancamento-naval.md](episode-09-o-lancamento-naval.md)
 
 ### Regra de marca e continuidade
-O nome da empresa de Mário Galático é sempre **Dourito Blue**. Não escrever “Douro Azul” em guiões, adereços, ecrãs ou prompts futuros. Se aparecer texto de marca, gerar a superfície limpa e aplicar “Dourito Blue” na pós-produção. A marca não deve ser confundida com logótipos reais.
+O nome da empresa de Mário Galático é sempre **Dourito Blue**. Não escrever “Dourito Blue” em guiões, adereços, ecrãs ou prompts futuros. Se aparecer texto de marca, gerar a superfície limpa e aplicar “Dourito Blue” na pós-produção. A marca não deve ser confundida com logótipos reais.
 
 ### 5.1 Abertura aérea da TVI — reutilizar, não regenerar
 **Assets existentes no manifest:** `exterior-tvi-aerea.jpg` e `exterior-tvi-transicao.jpg`.
@@ -83,7 +83,7 @@ O nome da empresa de Mário Galático é sempre **Dourito Blue**. Não escrever 
 > Create a 2D animated sitcom background for the main TV studio inside the existing fictional TVI headquarters in OS LESADOS. Use the supplied approved studio image as the strict style and production-design reference. Preserve the established studio architecture, lighting language, colour palette, camera-facing stage layout and supplied branding. Adapt only the central stage area to accommodate a ridiculous corporate launch presentation for fictional Dourito Blue: a clean presentation platform, a large blank LED screen, a few elegant blue-and-white display lights and enough clear floor space for a ship scale model. The set must still read as the same TV studio, not a marina or ship interior. No people, no ship model in this background, no generated lettering, no invented logos, no extra screens beyond what is needed, no photorealism, no 3D. Clean 2D sitcom background, 16:9 horizontal, animation-ready.
 
 ### 5.6 Plano final — navio enorme à entrada de serviço
-**Estado:** gerar apenas depois de o guião e a geografia visual estarem aprovados. Deve ser um plano de revelação, não um cenário recorrente.
+**Estado:** variação específica do episódio, a gerar só depois da aprovação do guião e dos masters-base. Não faz parte da biblioteca de cenários reutilizáveis.
 
 **Referências**
 - Exterior TVI aprovado: `exterior-tvi-transicao.jpg` e/ou `exterior-tvi-aerea.jpg`.
