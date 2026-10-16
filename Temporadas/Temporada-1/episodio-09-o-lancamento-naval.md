@@ -1,4 +1,18 @@
 # OS LESADOS — Temporada 1, Episódio 9
+
+## Ficha de produção
+
+- **Formato:** Sitcom animada narrativa; sátira à repetição de formatos e edições especiais
+- **Duração prevista:** 3–4 minutos (duração-alvo existente)
+- **Estado do guião:** Primeira versão do guião; por aprovar
+- **Personagens:** Mário Galático, Capitão Gancho, Tininha, produtor de continuidade, assistente(s)
+- **Cenários/localizações:** Exterior da TVI, corredor de bastidores, gabinete do Capitão, estúdio principal, entrada de serviço vista no monitor
+- **Estado do texto:** Guião completo em primeira versão; falta aprovação narrativa
+- **Som e efeitos:** Buzina marítima, ruído de bastidores, luzes do estúdio, impacto da maquete, buzina final
+- **Nota de produção:** Reutilizar a abertura/transição exterior TVI existente. Não gerar grafismos com texto aleatório. A marca escreve-se sempre Dourito Blue.
+
+> A duração é uma estimativa de trabalho, não uma duração final medida. Atualizar após fechar o guião e aprovar a decupagem.
+
 # O Lançamento Naval
 
 **Estado:** primeira versão do guião, por aprovar  
