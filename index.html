@@ -1340,7 +1340,7 @@
       const root = $("archiveContent");
       if (!root) return;
       const ordered = REPO_EPISODES.slice().sort((a, b) => a.number - b.number);
-      root.innerHTML = "<div class=\"summary\"><h3>Guiões da Temporada 1</h3><p>Consulta os documentos completos e as fichas de desenvolvimento. Usa <strong>Enviar para Pipeline</strong> para criar uma versão visual editável; fichas e conceitos continuam identificados como material incompleto.</p><div class=\"grid-summary\" style=\"margin-top:12px;\">" + ordered.map(ep => "<div class=\"card-mini\"><div class=\"label\">Episódio " + ep.number + "</div><div class=\"value\"><strong>" + esc(ep.title) + "</strong><br>" + esc(ep.status) + "</div><div class=\"buttons\" style=\"margin-top:10px;\"><button class=\"btn btn-sm btn-secondary archive-open\" data-ep=\"" + ep.number + "\">Ler documento</button><button class=\"btn btn-sm btn-warning archive-send\" data-ep=\"" + ep.number + "\">Enviar para Pipeline</button></div></div>").join("") + "</div></div><div id=\"archiveScriptView\" class=\"archive-script-view\"><div class=\"empty\"><h3>Arquivo de guiões</h3><p>Escolhe um episódio para ler ou enviar para o Pipeline.</p></div></div>";
+      root.innerHTML = "<div class=\"summary\"><h3>Guiões da Temporada 1</h3><p>Consulta os documentos completos e as fichas de desenvolvimento. Usa <strong>Enviar para Pipeline</strong> para criar uma versão visual editável; fichas e conceitos continuam identificados como material incompleto.</p><div class=\"grid-summary\" style=\"margin-top:12px;\">" + ordered.map(ep => "<div class=\"card-mini\"><div class=\"label\">Episódio " + ep.number + "</div><div class=\"value\"><strong>" + esc(ep.title) + "</strong><br>" + esc(ep.status) + "</div><div class=\"buttons\" style=\"margin-top:10px;\"><button class=\"btn btn-sm btn-secondary archive-open\" data-ep=\"" + ep.number + "\">Ler documento</button><button class=\"btn btn-sm btn-warning archive-send\" data-ep=\"" + ep.number + "\">Preparar no Guião</button></div></div>").join("") + "</div></div><div id=\"archiveScriptView\" class=\"archive-script-view\"><div class=\"empty\"><h3>Arquivo de guiões</h3><p>Escolhe um episódio para ler ou enviar para o Pipeline.</p></div></div>";
       root.querySelectorAll(".archive-open").forEach(btn => btn.addEventListener("click", () => {
         const ep = ordered.find(item => item.number === Number(btn.dataset.ep));
         if (!ep) return;
@@ -1362,8 +1362,8 @@
         state.currentSeason = season.id;
         state.currentEpisode = existing.id;
         state.currentScene = existing.scenes && existing.scenes[0] ? existing.scenes[0].id : null;
-        save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("pipeline");
-        return status("Este episódio já está no Pipeline. Abri a versão existente para preservares as tuas alterações.", "success");
+        save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("script");
+        return status("Este episódio já está preparado no Guião. Podes rever o documento e seguir para o Pipeline.", "success");
       }
       const clean = value => String(value || "").replace(/\r/g, "").trim();
       const headingMatches = [...source.content.matchAll(/^(#{2,3})\s+(.+)$/gm)];
@@ -1456,10 +1456,10 @@
       state.currentSeason = season.id;
       state.currentEpisode = episode.id;
       state.currentScene = scenes[0] ? scenes[0].id : null;
-      save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("pipeline");
+      save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("script");
       status(source.kind === "guião"
-        ? "Guião enviado para o Pipeline. Revê cada cena antes de gerar e aprovar as imagens."
-        : "Ficha enviada como estrutura visual inicial. O guião continua incompleto e deve ser desenvolvido antes de considerar as cenas finais.", "success");
+        ? "Documento preparado no Guião. Revê o texto e usa «Enviar cenas para Pipeline» quando estiveres pronto."
+        : "Ficha preparada no Guião como ponto de partida. Continua incompleta; revê a estrutura antes de a enviar para o Pipeline.", "success");
     }
     function renderScript() {
       const ep = currentEpisode();
@@ -1501,7 +1501,18 @@
       html += '<div class="end">— FIM DO EPISÓDIO —</div></div>';
       if (ep.narration?.close) html = html.replace('<div class="end">', `<div class="narr"><strong>ABELHA MAIA (V.O.) — FECHO:</strong> ${esc(ep.narration.close)}</div><div class="end">`);
       if (ep.tagScene) html = html.replace('<div class="end">', `<div class="slug">TAG — ${esc(ep.tagScene.location).toUpperCase()}</div><div class="action">${esc(ep.tagScene.action)}</div>${ep.tagScene.dialogue ? `<div class="char">${esc(charById[ep.tagScene.dialogue.char]?.name || ep.tagScene.dialogue.char)}</div><div class="paren">${esc(ep.tagScene.dialogue.paren)}</div><div class="dialogue">${esc(ep.tagScene.dialogue.line)}</div>` : ""}<div class="end">`);
-      $("scriptContent").innerHTML = html;
+      if (ep.importedFromArchive && ep.sourceScript) {
+        const incomplete = ep.sourceKind !== "guião";
+        const note = incomplete
+          ? "Esta ficha ainda não é um guião completo. As cenas abaixo são apenas uma estrutura visual inicial e precisam de desenvolvimento."
+          : "Texto de origem preservado. As cenas abaixo são a estrutura inicial que será usada no Pipeline.";
+        const sourcePanel = "<div class=\"box\"><div class=\"label\">Documento de origem · Episódio " + ep.repoEpisodeNumber + "</div><h3 style=\"color:var(--canon);margin:6px 0 10px;\">" + esc(ep.name) + "</h3><p>" + note + "</p><div class=\"buttons\" style=\"margin-top:12px;\"><button class=\"btn btn-sm btn-warning\" id=\"sendScriptToPipeline\">Enviar cenas para Pipeline</button></div><details open style=\"margin-top:12px;\"><summary style=\"cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;\">Ler documento completo</summary><pre class=\"archive-script\">" + esc(ep.sourceScript) + "</pre></details></div>";
+        $("scriptContent").innerHTML = sourcePanel + html;
+        const sendBtn = $("sendScriptToPipeline");
+        if (sendBtn) sendBtn.addEventListener("click", () => { renderPipeline(); switchTab("pipeline"); status("Estrutura enviada para o Pipeline. Gera e aprova cada imagem individualmente.", "success"); });
+      } else {
+        $("scriptContent").innerHTML = html;
+      }
     }
     function renderPipeline() {
       const ep = currentEpisode();
