@@ -149,7 +149,7 @@ app.post("/api/generate-image", async (req, res) => {
   }
 });
 
-// Arquivo editorial da Temporada 1. Os Markdown em /Temporadas são a fonte de verdade.
+// Arquivo editorial da Temporada 1. As fichas e decupagens são ficheiros versionados.
 app.get("/api/episodes", async (_req, res) => {
   try {
     const { default: fs } = await import("node:fs");
@@ -161,7 +161,16 @@ app.get("/api/episodes", async (_req, res) => {
         throw new Error("Caminho de episódio inválido no manifest: " + relative);
       }
       const content = fs.readFileSync(path.join(ROOT, relative), "utf8");
-      return { ...episode, content };
+      let decoupageContent = null;
+      const decoupagePath = String(episode.decoupagePath || "");
+      if (decoupagePath) {
+        if (!decoupagePath.startsWith("docs/episodios/") || !decoupagePath.endsWith(".md") || decoupagePath.includes("..")) {
+          throw new Error("Caminho de decupagem inválido no manifest: " + decoupagePath);
+        }
+        const absoluteDecoupagePath = path.join(ROOT, decoupagePath);
+        if (fs.existsSync(absoluteDecoupagePath)) decoupageContent = fs.readFileSync(absoluteDecoupagePath, "utf8");
+      }
+      return { ...episode, content, decoupageContent };
     });
     res.json({ ok: true, season: manifest.season, episodes });
   } catch (e) {
