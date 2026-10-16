@@ -77,7 +77,7 @@ convidados que se odeiam; Teresa nomeia-se mediadora régia.
 
 **Elenco:** Teresa (mediação como coroação), os dois convidados (rotativos —
 bons papéis para estrear novatos do casting), Coxa (perde o controlo do
-painel), Capitão ("Está decidido." — corta o direto).
+painel), Capitão (silêncio; pousa o gancho — corta o direto).
 
 **Motor cómico:** mediação da Teresa escala cada queixa a "questão de
 Estado"; o lower-third da Abelha toma partido (errado); Cláudio tenta
@@ -165,7 +165,7 @@ desmaiar de pé. Visual: polo amarrotada, crachá ao contrário, ténis
 descalsos? Não — ténis apertados a correr. Voz por definir em sala.
 
 **Elenco:** Vasco (colapsa de pé em cada ato), Tininha (pede mais uma
-edição sorrindo), Capitão ("Está decidido." — carimba três grelhas sem
+edição sorrindo), Capitão (silêncio; pousa o gancho — carimba três grelhas sem
 olhar), Abelha (cobre o caos como "semana mais ambiciosa de sempre").
 
 **Motor:** caos administrativo em crescendo — cada solução do Vasco cria

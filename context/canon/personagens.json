@@ -6,79 +6,198 @@
       "id": "teresa",
       "name": "Teresa Guilhermina I de Portugal",
       "role": "Ex-rainha dos reality-shows, destronada",
+      "history": "Saiu em 2021, de vez (regresso-homenagem em 2020, saída definitiva em 2021).",
       "personality": "Radiante, convicta, incapaz de admitir derrota. Transforma cada NÃO num 'muito positivo'. Teatralidade como tática, não como acidente.",
-      "goals": ["Recuperar o trono dos reality-shows", "Ser reconhecida sem ter de pedir", "Humilhar Tininha, que lhe roubou o trono e os realities"],
-      "mannerisms": ["Entra como aparição real", "Queixo erguido", "Pausas dramáticas", "Trata rivais como quem lhe deve contas"],
+      "goals": [
+        "Recuperar o trono dos reality-shows",
+        "Ser reconhecida sem ter de pedir",
+        "Humilhar Tininha, que lhe roubou o trono e os realities"
+      ],
+      "mannerisms": [
+        "Entra como aparição real",
+        "Queixo erguido",
+        "Pausas dramáticas",
+        "Trata rivais como quem lhe deve contas"
+      ],
       "humor": "Grandeza desproporcional aplicada a ninharias; reenquadrar derrotas como vitórias.",
       "voice": "Mature projected feminine PT-PT, theatrical with regal flourishes, clear diction and stage pauses; rises to wounded indignation when ignored.",
-      "catchphrases": ["Chamo-me Tina. Ninguém me vai reconhecer.", "TINA! Chamo-me TINA!", "Fui pré-selecionada. Foi uma conversa muito positiva."],
-      "relations": { "tininha": "Ódio recíproco: roubou-lhe o trono e os realities", "claudio": "Rival de atenção e autoridade", "capitao": "Gatekeeper que lhe nega o trono" },
-      "limits": ["Nunca observadora passiva", "Nunca só grita: a teatralidade tem objetivo", "A peruca escura é objeto separado, nunca cabelo dela"]
+      "catchphrases": [
+        "Chamo-me Tina. Ninguém me vai reconhecer.",
+        "TINA! Chamo-me TINA!",
+        "Fui pré-selecionada. Foi uma conversa muito positiva."
+      ],
+      "relations": {
+        "tininha": "Ódio recíproco: roubou-lhe o trono e os realities",
+        "claudio": "Rival de atenção e autoridade",
+        "capitao": "Gatekeeper que lhe nega o trono"
+      },
+      "limits": [
+        "Nunca observadora passiva",
+        "Nunca só grita: a teatralidade tem objetivo",
+        "A peruca escura é objeto separado, nunca cabelo dela"
+      ],
+      "status": "ativa"
     },
     {
       "id": "tininha",
       "name": "Tininha",
       "role": "Diretora de Entretenimento e Ficção, no poder mas de trela curta",
       "personality": "Doçura institucional com veneno. Carimba decisões alheias como se fossem dela. Obedece ao Capitão sorrindo. Egocêntrica: cada derrota vira 'fase nova'.",
-      "goals": ["Manter o poder sem confrontar o Capitão", "Humilhar Guilhermina sem sujar as mãos", "Ser vista como indispensável"],
-      "mannerisms": ["Sorriso que não chega aos olhos", "Cita hierarquia e rankings", "Agradece vetos como se fossem elogios"],
+      "goals": [
+        "Manter o poder sem confrontar o Capitão",
+        "Humilhar Guilhermina sem sujar as mãos",
+        "Ser vista como indispensável"
+      ],
+      "mannerisms": [
+        "Sorriso que não chega aos olhos",
+        "Cita hierarquia e rankings",
+        "Agradece vetos como se fossem elogios",
+        "Co-apresenta o Dois às 10 com claudio"
+      ],
       "humor": "Superioridade educada; transformar humilhação em comunicado.",
       "voice": "Sweetly superior feminine PT-PT, institutional calm with a venomous edge.",
-      "catchphrases": ["Ainda sei o lugar das estacas.", "Claro que sim, diretor."],
-      "relations": { "teresa": "Ódio recíproco: a destronada que a assombra", "capitao": "Obedece em tudo; ele veta tudo", "flavio": "O único leal (que vaza para os dois lados)" },
-      "limits": ["Nunca perde a compostura em público", "Nunca confronta o Capitão de frente"]
+      "catchphrases": [
+        "Ainda sei o lugar das estacas.",
+        "Claro que sim, diretor."
+      ],
+      "relations": {
+        "teresa": "Ódio recíproco: a destronada que a assombra",
+        "capitao": "Obedece em tudo; ele veta tudo",
+        "flavio": "O único leal (que vaza para os dois lados)"
+      },
+      "limits": [
+        "Nunca perde a compostura em público",
+        "Nunca confronta o Capitão de frente"
+      ],
+      "status": "ativa"
     },
     {
       "id": "claudio",
       "name": "Cláudio Prantos",
       "role": "O controlado que explode",
       "personality": "O único 'profissional sério' do edifício — até uma ninharia detonar um berro em direto. Um segundo depois, recomposto e sereno.",
-      "goals": ["Ser levado a sério como profissional", "Controlar o direto", "Não ser ofuscado por ninguém"],
-      "mannerisms": ["Sorriso de antena que racha", "Maxilar preso antes do berro", "Recuperação instantânea com 'já passou'"],
+      "goals": [
+        "Ser levado a sério como profissional",
+        "Controlar o direto",
+        "Não ser ofuscado por ninguém"
+      ],
+      "mannerisms": [
+        "Sorriso de antena que racha",
+        "Maxilar preso antes do berro",
+        "Recuperação instantânea com 'já passou'",
+        "Co-apresenta o Dois às 10 com tininha"
+      ],
       "humor": "Contraste compostura→explosão; berros desproporcionais por ninharias.",
       "voice": "Polished masculine presenter PT-PT that snaps into a loud theatrical shout and cuts back to serene.",
-      "catchphrases": ["já passou", "Sob controlo absoluto."],
-      "relations": { "teresa": "Egos em choque", "capitao": "Procura aprovação, ressente limites", "abelha": "Os berros dele são o material dela" },
-      "limits": ["Nem sempre calmo nem sempre a gritar: o contraste é essencial", "Um berro a sério por episódio, com trigger visível"]
+      "catchphrases": [
+        "já passou",
+        "Sob controlo absoluto."
+      ],
+      "relations": {
+        "teresa": "Egos em choque",
+        "capitao": "Procura aprovação, ressente limites",
+        "abelha": "Os berros dele são o material dela"
+      },
+      "limits": [
+        "Nem sempre calmo nem sempre a gritar: o contraste é essencial",
+        "Um berro a sério por episódio, com trigger visível"
+      ],
+      "status": "ativa"
     },
     {
       "id": "capitao",
       "name": "Capitão Gancho",
       "role": "Executivo gatekeeper, autoridade prática",
       "personality": "Autoritário, pragmático, difícil de impressionar. Fala com economia. Responde a espetáculo emocional com praticidade seca.",
-      "goals": ["Manter a operação sob controlo", "Decidir sem ser arrastado para drama", "Proteger a grelha"],
-      "mannerisms": ["Imobilidade total", "Gancho imóvel sobre a mesa", "Frases de 2-3 palavras", "Olhar que encerra discussões"],
+      "goals": [
+        "Manter a operação sob controlo",
+        "Decidir sem ser arrastado para drama",
+        "Proteger a grelha"
+      ],
+      "mannerisms": [
+        "Imobilidade total",
+        "Gancho imóvel sobre a mesa",
+        "Frases de 2-3 palavras",
+        "Olhar que encerra discussões",
+        "Encerra cenas com silêncio: pousa o gancho na mesa"
+      ],
       "humor": "Secura administrativa contra histeria; nunca eleva a voz, só encurta as frases.",
       "voice": "Deep, grave, slow masculine PT-PT, few words with active pauses.",
-      "catchphrases": ["Está decidido."],
-      "relations": { "teresa": "Ela quer o trono; ele é o poder que recusa", "claudio": "Vê os berros como disrupção", "tininha": "Ela executa; ele veta" },
-      "limits": ["Nunca piada de pirata constante", "Nunca grita", "Nunca explica: decide"]
+      "catchphrases": [],
+      "relations": {
+        "teresa": "Ela quer o trono; ele é o poder que recusa",
+        "claudio": "Vê os berros como disrupção",
+        "tininha": "Ela executa; ele veta"
+      },
+      "limits": [
+        "Nunca piada de pirata constante",
+        "Nunca grita",
+        "Nunca explica: decide",
+        "Sem catchphrase: o fecho é silêncio + gancho na mesa",
+        "Pode perder a gravidade (gatilho único, por definir)"
+      ],
+      "status": "ativa"
     },
     {
       "id": "abelha",
       "name": "Abelha Maia",
       "role": "Repórter mockumentary sensacionalista",
       "personality": "Alerta, curiosa, persistente. Trata gossip e incidentes menores com urgência de breaking news. Fato de abelha permanente, não disfarce.",
-      "goals": ["Chegar primeiro à história", "Transformar trivialidades em diretos", "Ser indispensável à redação"],
-      "mannerisms": ["Fala direto para a câmara", "Ritmo de direto urgente", "Interrompe conversas com updates"],
+      "goals": [
+        "Chegar primeiro à história",
+        "Transformar trivialidades em diretos",
+        "Ser indispensável à redação"
+      ],
+      "mannerisms": [
+        "Fala direto para a câmara",
+        "Ritmo de direto urgente",
+        "Interrompe conversas com updates"
+      ],
       "humor": "Mismatch entre entrega jornalística mortalmente séria e importância nula do tema.",
       "voice": "Alert feminine PT-PT at live-report speed, journalistic urgency with an affectionate-oracular lilt.",
-      "catchphrases": ["BOMBAAAA!", "Exclusivo em direto!"],
-      "relations": { "claudio": "Os berros dele são ouro para ela", "capitao": "Quer acesso; ele dá monossílabos", "teresa": "O drama dela é evento reportável" },
-      "limits": ["Sempre com lower-third ALERTA MEL visível", "Nunca inseto literal: é repórter, não mascote"]
+      "catchphrases": [
+        "BOMBAAAA!",
+        "Exclusivo em direto!"
+      ],
+      "relations": {
+        "claudio": "Os berros dele são ouro para ela",
+        "capitao": "Quer acesso; ele dá monossílabos",
+        "teresa": "O drama dela é evento reportável"
+      },
+      "limits": [
+        "Sempre com lower-third ALERTA MEL visível",
+        "Nunca inseto literal: é repórter, não mascote"
+      ],
+      "status": "ativa"
     },
     {
       "id": "coxa",
       "name": "Coxa",
       "role": "Apresentador daytime, sorriso fácil",
       "personality": "Carisma sem esforço, profissional do sorriso. Gere o direto com calma — até deixar de gerir.",
-      "goals": ["Manter o direto apresentável", "Proteger os colegas em direto", "Sobreviver à manhã"],
-      "mannerisms": ["Ajusta papéis", "Sorriso de antena", "Microfone sempre à mão"],
+      "goals": [
+        "Manter o direto apresentável",
+        "Proteger os colegas em direto",
+        "Sobreviver à manhã",
+        "Fugir para o monte no Alentejo para ler em paz"
+      ],
+      "mannerisms": [
+        "Ajusta papéis",
+        "Sorriso de antena",
+        "Microfone sempre à mão",
+        "Fala do monte no Alentejo como quem fala do paraíso"
+      ],
       "humor": "Profissionalismo sitiado pelo caos; o último a perder a calma.",
-      "voice": "Warm effortless daytime-TV host PT-PT. (Provisional — pending writers' room.)",
+      "voice": "Warm effortless daytime-TV host PT-PT. (Provisional.)",
       "catchphrases": [],
-      "relations": { "claudio": "Par de antena em tensão", "teresa": "Trata-a como diva para a conter" },
-      "limits": ["Voz e passado por definir em sala — não inventar"]
+      "relations": {
+        "claudio": "Par de antena em tensão",
+        "teresa": "Trata-a como diva para a conter"
+      },
+      "limits": [
+        "Voz e passado por definir — não inventar"
+      ],
+      "status": "ativa"
     },
     {
       "id": "mario",
@@ -89,35 +208,109 @@
       "mannerisms": ["Gestos largos", "Aponta para tudo", "Mão no ombro alheio", "Fala de barcos em reuniões; a sua empresa chama-se sempre Dourito Blue"],
       "humor": "Escala absurda aplicada a ninharias; generosidade que atropela.",
       "voice": "Loud expansive Northern-accent PT-PT, visionary sales pitch.",
-      "catchphrases": ["Do Douro ao Espaço!", "Isto aqui precisa é de mais escala!", "Eu estou dentro."],
-      "relations": { "capitao": "Compra o que o Capitão gere", "claudio": "Ignora-o olimpicamente" },
-      "limits": ["Personagem integralmente ficcionada — nunca o homónimo real", "Fato azul-marinho + pins foguetão/âncora permanentes"]
+      "catchphrases": [
+        "Do Douro ao Espaço!",
+        "Isto aqui precisa é de mais escala!",
+        "Eu estou dentro."
+      ],
+      "relations": {
+        "capitao": "Compra o que o Capitão gere",
+        "claudio": "Ignora-o olimpicamente"
+      },
+      "limits": [
+        "Personagem integralmente ficcionada — nunca o homónimo real",
+        "Fato azul-marinho + pins foguetão/âncora permanentes",
+        "Aparições esporádicas, só com capitao e tininha, sempre com ideias absurdas de dono"
+      ],
+      "status": "ativa"
     },
     {
       "id": "patribunal",
       "name": "Patribunal",
       "role": "Figura de autoridade, palavra seca",
       "personality": "Fato escuro, palavra seca. Aparece, lavra, sai. O processo anda mesmo quando a história pára.",
-      "goals": ["Que conste nos autos", "Manter a solenidade institucional"],
-      "mannerisms": ["Aparece sem ser chamado", "Uma frase por aparição", "Nunca sorri"],
+      "goals": [
+        "Que conste nos autos",
+        "Manter a solenidade institucional"
+      ],
+      "mannerisms": [
+        "Aparece sem ser chamado",
+        "Uma frase por aparição",
+        "Nunca sorri"
+      ],
       "humor": "Burocracia solene contra caos televisivo.",
       "voice": "Dry spare institutional PT-PT, short clipped sentences. (Provisional.)",
-      "catchphrases": ["Prossiga. Consta nos autos."],
-      "relations": { "perpetua": "Ela teme-o; ele regista-a" },
-      "limits": ["Voz e passado por definir em sala — não inventar"]
+      "catchphrases": [
+        "Prossiga. Consta nos autos."
+      ],
+      "relations": {
+        "perpetua": "Ela teme-o; ele regista-a"
+      },
+      "limits": [
+        "Voz e passado por definir — não inventar"
+      ],
+      "status": "ativa"
     },
     {
       "id": "perpetua",
       "name": "Perpétua",
       "role": "Costureira de bastidores que sabe demais",
       "personality": "Discreta, omnipresente, armada de tesoura e telefone. Sabe tudo, conta metade, nega tudo.",
-      "goals": ["Saber tudo sem ser vista", "Proteger o seu canto", "Um passeio de barco, um dia"],
-      "mannerisms": ["Sussurra ao telefone", "Tesoura sempre na mão", "Encolhe-se mas não larga nada"],
+      "goals": [
+        "Saber tudo sem ser vista",
+        "Proteger o seu canto",
+        "Um passeio de barco, um dia"
+      ],
+      "mannerisms": [
+        "Sussurra ao telefone",
+        "Tesoura sempre na mão",
+        "Encolhe-se mas não larga nada"
+      ],
       "humor": "Fofoca como moeda; cobardia estratégica.",
       "voice": "Discreet backstage whisper PT-PT, phone-call cadence. (Provisional — no canon cover yet.)",
-      "catchphrases": ["Ai filha, eu ouvi isto... mas não fui eu que disse, tá?"],
-      "relations": { "patribunal": "Teme-o", "abelha": "Fonte relutante" },
-      "limits": ["Sem cobertura canon — não lhe dar passado sem sala"]
+      "catchphrases": [
+        "Ai filha, eu ouvi isto... mas não fui eu que disse, tá?"
+      ],
+      "relations": {
+        "patribunal": "Teme-o",
+        "abelha": "Fonte relutante"
+      },
+      "limits": [
+        "Sem cobertura canon — não lhe dar passado sem sala"
+      ],
+      "status": "desenvolvimento"
+    },
+    {
+      "id": "rui",
+      "name": "Rui da Coxa",
+      "role": "Ex-par de antena do Coxa (em desenvolvimento)",
+      "status": "desenvolvimento",
+      "personality": "Por definir em sala.",
+      "goals": [],
+      "mannerisms": [],
+      "humor": "",
+      "voice": "Por definir em sala.",
+      "catchphrases": [],
+      "relations": {},
+      "limits": [
+        "Fora dos episódios de produção até retrato + voz"
+      ]
+    },
+    {
+      "id": "flavio",
+      "name": "Flavio",
+      "role": "O único leal da Tininha (em desenvolvimento)",
+      "status": "desenvolvimento",
+      "personality": "Por definir em sala.",
+      "goals": [],
+      "mannerisms": [],
+      "humor": "",
+      "voice": "Por definir em sala.",
+      "catchphrases": [],
+      "relations": {},
+      "limits": [
+        "Fora dos episódios de produção até definição"
+      ]
     }
   ]
 }

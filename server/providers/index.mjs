@@ -5,7 +5,7 @@
 //   2. Variável de ambiente IMAGE_PROVIDER no .env
 //   3. Default: "gemini"
 //
-// Valores válidos: "gemini" | "openai" | "huggingface"
+// Valores válidos: "gemini" | "openai" | "huggingface" | "cloudflare"
 // Para adicionar um fornecedor novo: criar server/providers/<nome>.mjs com a
 // mesma interface (id, label, keyEnvVar, isConfigured(), generate()) e
 // registá-lo no PROVIDERS abaixo. Nada mais precisa de mudar.

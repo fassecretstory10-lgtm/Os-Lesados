@@ -88,18 +88,26 @@ app.post("/api/story/generate", async (req, res) => {
     }
     const { default: fs } = await import("node:fs");
     const bible = JSON.parse(fs.readFileSync(path.join(ROOT, "context", "canon", "personagens.json"), "utf8"));
+    const byId = Object.fromEntries((bible.characters || []).map((c) => [c.id, c]));
+    const blocked = (Array.isArray(castIds) ? castIds : []).filter((id) => byId[id] && byId[id].status !== "ativa");
+    if (blocked.length) {
+      return res.status(400).json({ ok: false, error: `Elenco indisponível (em desenvolvimento/pausa): ${blocked.join(", ")}. Escolhe personagens ativas.` });
+    }
     const wanted = Array.isArray(castIds) && castIds.length ? castIds : null;
     const cards = (bible.characters || []).filter((c) => !wanted || wanted.includes(c.id));
     if (!cards.length) {
       return res.status(400).json({ ok: false, error: "Elenco vazio: castIds desconhecidos." });
     }
     const { storySystemPrompt } = await import("./text-providers/gemini-text.mjs");
+    const target = Number(req.body?.targetDuration) || 75;
+    const nBeats = Math.min(9, Math.max(4, Math.round(target / 10)));
     const out = await textRouter.generateJSON({
       system: storySystemPrompt(cards),
-      user: `Premissa do episódio (PT-PT): ${String(premise).slice(0, 800)}\nElenco obrigatório (usa estes IDs): ${cards.map((c) => c.id).join(", ")}. Escreve ${Math.min(7, Math.max(4, cards.length + 2))} beats causais com diálogos curtos na voz de cada um.`,
-      validate: validateStory,
+      user: `Premissa do episódio (PT-PT): ${String(premise).slice(0, 800)}\nElenco obrigatório (usa estes IDs): ${cards.map((c) => c.id).join(", ")}. Escreve ${nBeats} beats causais com diálogos curtos na voz de cada um (cada beat ≈10s: ação + fala + reação). Duração total alvo: ~${target}s (diálogos + ações + pausas + tag).\n\nFORMATO JSON OBRIGATÓRIO (todas as chaves, sem exceção):\n{"comicIdea": "frase (10+ chars)", "protagonist": "nome", "protagonistGoal": "objetivo (10+)", "incident": "incidente (10+)", "conflict": "conflito (10+)", "climax": "clímax (10+)", "resolution": "resolução decorrente (10+)", "punchline": "remate (10+)", "beats": [{"who": "id do elenco", "want": "quer", "does": "faz", "obstacle": "obstáculo", "result": "resultado", "change": "mudança de estado", "link": "ligação ao próximo", "comic": "piada", "dialogue": "NOME: fala curta"}]}`,
+      validate: (parsed) => validateStory(parsed, target),
     });
-    res.json({ ok: true, provider: out.provider, model: out.model, story: out.data });
+    const { estimateDuration } = await import("./text-providers/gemini-text.mjs");
+    res.json({ ok: true, provider: out.provider, model: out.model, story: out.data, targetDuration: target, estimatedDuration: estimateDuration(out.data) });
   } catch (e) {
     console.error("[story/generate]", e.message);
     res.status(e?.httpStatus || 500).json({ ok: false, error: e.message || "Falha na geração narrativa." });
@@ -154,90 +162,8 @@ app.get("/", (_req, res) => {
   res.sendFile(path.join(ROOT, "index.html"));
 });
 
-// Sala dos Argumentistas (multiagente). Sessões correm em background;
-// o frontend faz polling. Nada é simulado: cada etapa persiste no disco.
-app.post("/api/writers/start", async (req, res) => {
-  try {
-    const wr = await import("./writers-room/orchestrator.mjs");
-    const geminiText = await import("./text-providers/index.mjs"); // router texto (openai->gemini)
-    if (!geminiText.isConfigured()) {
-      return res.status(503).json({ ok: false, error: "Sala indisponível: GEMINI_API_KEY em falta no .env." });
-    }
-    const s = wr.newSession(req.body?.topic);
-    res.json({ ok: true, id: s.id, status: s.status });
-    wr.run(s, { root: ROOT, geminiText }).catch(() => {});
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
-});
-
-app.get("/api/writers/sessions", async (_req, res) => {
-  try {
-    const wr = await import("./writers-room/orchestrator.mjs");
-    res.json({ ok: true, sessions: wr.list() });
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
-});
-
-app.get("/api/writers/session/:id", async (req, res) => {
-  try {
-    const wr = await import("./writers-room/orchestrator.mjs");
-    const s = wr.load(req.params.id);
-    if (!s) return res.status(404).json({ ok: false, error: "Sessão inexistente." });
-    // Sessões presas em "running" há +15min (ex. restart do servidor) = interrompidas.
-    if (s.status === "running" && Date.now() - new Date(s.updatedAt).getTime() > 15 * 60 * 1000) {
-      s.status = "interrupted";
-    }
-    res.json({ ok: true, session: s, agents: (await import("./writers-room/agents.mjs")).AGENTS });
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
-});
-
-app.post("/api/writers/session/:id/stop", async (req, res) => {
-  try {
-    const wr = await import("./writers-room/orchestrator.mjs");
-    const s = wr.load(req.params.id);
-    if (!s) return res.status(404).json({ ok: false, error: "Sessão inexistente." });
-    s.stopped = true;
-    if (s.status === "running") s.status = "stopped";
-    const fs = (await import("node:fs")).default;
-    fs.writeFileSync(path.join(ROOT, "server", "writers-room", "sessions", `${s.id}.json`), JSON.stringify(s, null, 1));
-    res.json({ ok: true, status: s.status });
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
-});
-
-app.post("/api/writers/session/:id/continue", async (req, res) => {
-  try {
-    const wr = await import("./writers-room/orchestrator.mjs");
-    const geminiText = await import("./text-providers/index.mjs"); // router texto (openai->gemini)
-    const s = wr.load(req.params.id);
-    if (!s) return res.status(404).json({ ok: false, error: "Sessão inexistente." });
-    if (s.status === "done") return res.json({ ok: true, id: s.id, status: "done" });
-    s.stopped = false;
-    s.status = "running";
-    s.errors.push("retomada pelo utilizador");
-    res.json({ ok: true, id: s.id, status: "running" });
-    wr.run(s, { root: ROOT, geminiText }).catch(() => {});
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
-});
-
-app.post("/api/writers/session/:id/approve", async (req, res) => {
-  try {
-    const wr = await import("./writers-room/orchestrator.mjs");
-    const s = wr.load(req.params.id);
-    if (!s) return res.status(404).json({ ok: false, error: "Sessão inexistente." });
-    const p = wr.approveProposal(s, req.body?.proposalId, req.body?.verdict === "reject" ? "reject" : "approve");
-    res.json({ ok: true, proposal: p, shortlist: s.shortlist });
-  } catch (e) {
-    res.status(400).json({ ok: false, error: e.message });
-  }
-});
+// Retratos do canon (fotos das personagens, fundo branco via CSS no frontend).
+app.use("/characters", express.static(path.join(ROOT, "context", "characters")));
 
 app.listen(PORT, "0.0.0.0", () => {
   const providers = providerStatus();

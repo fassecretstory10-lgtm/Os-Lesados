@@ -23,5 +23,5 @@ Fonte: https://sites.google.com/site/tvwriting/us-animation/bobs-burgers
 ## Adaptação OS LESADOS
 
 - 6a com elenco junto = finale em festa (manter sempre 2–3 personagens).
-- Catchphrase em coro antes do clímax (ex. todos a dizerem "Está decidido"
-  ao mesmo tempo, cada um a pensar noutra coisa).
+- Fecho seco antes do clímax (ex. silêncio do Capitão com o gancho na mesa
+  enquanto todos falam ao mesmo tempo, cada um a pensar noutra coisa).

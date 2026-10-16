@@ -17,4 +17,4 @@ nada é canon até aprovação explícita do autor.
 ## Ficheiros
 
 - `storylines.md` — possibilidades de histórias por episódio, com elenco e motor cómico.
-- `figures.md` — figuras públicas polémicas como matéria-prima → propostas de ficcionação.
+- `pessoas-e-referencias.md` — pessoas reais → personagens + tabelas de programas/novelas/eventos para piadas (substitui o antigo `figures.md`, eliminado em out-2026).

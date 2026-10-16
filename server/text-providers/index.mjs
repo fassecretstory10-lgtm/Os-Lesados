@@ -1,23 +1,45 @@
-// Router de texto narrativo: escolhe o provider por TEXT_PROVIDER=openai|gemini
-// (default: openai se configurado, senão gemini). Em falha, tenta o outro
-// antes de desistir — mas o erro final lista sempre o que aconteceu em cada um.
+// Router de texto narrativo.
+// Seleção por TEXT_PROVIDERS (lista separada por vírgulas, ex. "openrouter").
+// Só os providers listados são usados — é assim que se desativa os pagos.
+// Sem TEXT_PROVIDERS, vale TEXT_PROVIDER (preferência única) ou auto (todos
+// os configurados, por ordem openai > anthropic > gemini > openrouter).
 
 import * as geminiText from "./gemini-text.mjs";
 import * as openaiText from "./openai-text.mjs";
 import * as anthropicText from "./anthropic-text.mjs";
+import * as openrouterText from "./openrouter-text.mjs";
+import * as cloudflareText from "./cloudflare-text.mjs";
 
 export const DEFAULT_MODEL = process.env.TEXT_MODEL || "gemini-2.5-flash";
 
+const ALL = ["openai", "anthropic", "gemini", "openrouter", "cloudflare"];
+
 function order() {
+  const allow = String(process.env.TEXT_PROVIDERS || "").trim().toLowerCase();
+  if (allow) {
+    const wanted = allow.split(",").map((x) => x.trim()).filter((x) => ALL.includes(x));
+    return wanted.filter((p) => isProviderConfigured(p));
+  }
   const pref = String(process.env.TEXT_PROVIDER || "auto").trim().toLowerCase();
   const avail = [];
   if (openaiText.isConfigured()) avail.push("openai");
   if (anthropicText.isConfigured()) avail.push("anthropic");
   if (geminiText.isConfigured()) avail.push("gemini");
-  if (pref === "openai" || pref === "anthropic" || pref === "gemini") {
+  if (openrouterText.isConfigured()) avail.push("openrouter");
+  if (cloudflareText.isConfigured()) avail.push("cloudflare");
+  if (ALL.includes(pref)) {
     return [pref, ...avail.filter((p) => p !== pref)];
   }
   return avail;
+}
+
+function isProviderConfigured(name) {
+  if (name === "openai") return openaiText.isConfigured();
+  if (name === "anthropic") return anthropicText.isConfigured();
+  if (name === "gemini") return geminiText.isConfigured();
+  if (name === "openrouter") return openrouterText.isConfigured();
+  if (name === "cloudflare") return cloudflareText.isConfigured();
+  return false;
 }
 
 export function isConfigured() {
@@ -44,6 +66,14 @@ export async function generateJSON({ system, user, schema = null, schemaName = "
         const out = await anthropicText.generateJSON({ system, user, validate });
         return { data: out, provider: "anthropic-text", model: anthropicText.DEFAULT_MODEL };
       }
+      if (name === "openrouter") {
+        const out = await openrouterText.generateJSON({ system, user, validate });
+        return { data: out, provider: "openrouter-text", model: openrouterText.DEFAULT_MODEL };
+      }
+      if (name === "cloudflare") {
+        const out = await cloudflareText.generateJSON({ system, user, validate });
+        return { data: out, provider: "cloudflare-text", model: cloudflareText.DEFAULT_MODEL };
+      }
       const out = await geminiText.generateJSON({ system, user, schemaName, schema });
       return { data: out, provider: "gemini-text", model: geminiText.DEFAULT_MODEL };
     } catch (e) {
@@ -52,7 +82,7 @@ export async function generateJSON({ system, user, schema = null, schemaName = "
     }
   }
   if (!tried.length) {
-    const err = new Error("Texto indisponível: sem chaves (OPENAI_API_KEY / GEMINI_API_KEY) no .env.");
+    const err = new Error("Texto indisponível: sem chaves (OPENAI_API_KEY / ANTHROPIC_API_KEY / GEMINI_API_KEY / OPENROUTER_API_KEY) no .env.");
     err.httpStatus = 503;
     throw err;
   }
