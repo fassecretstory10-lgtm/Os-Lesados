@@ -151,12 +151,20 @@ Lista de ambientes e assets a criar ou validar para a Temporada 1. **Não gerar 
 
 ---
 
+
+
+---
+
+## BIBLIOTECA COMUM — CENÁRIOS E ADEREÇOS REUTILIZÁVEIS
+
+A lista transversal de assets-base para vários episódios está em [shared-reusable-assets.md](shared-reusable-assets.md). Usar esse documento como fonte principal para decidir o que criar, o que reutilizar e que prompts de ideias preparar antes da geração final. Não tratar revelações ou acidentes de um episódio como cenários-base.
+
 ## PRIORIDADE 5 — Episódio 9: O Lançamento Naval (Dourito Blue)
 
 **Documento de produção:** [episode-09-o-lancamento-naval.md](episode-09-o-lancamento-naval.md)
 
 ### Regra de marca e continuidade
-O nome da empresa de Mário Galático é sempre **Dourito Blue**. Não escrever “Dourito Blue” em guiões, adereços, ecrãs ou prompts futuros. Se aparecer texto de marca, gerar a superfície limpa e aplicar “Dourito Blue” na pós-produção. A marca não deve ser confundida com logótipos reais.
+O nome da empresa de Mário Galático é sempre **Dourito Blue**. Não escrever “Douro Azul” em guiões, adereços, ecrãs ou prompts futuros. Se aparecer texto de marca, gerar a superfície limpa e aplicar “Dourito Blue” na pós-produção. A marca não deve ser confundida com logótipos reais.
 
 ### 5.1 Abertura aérea da TVI — reutilizar, não regenerar
 **Assets existentes no manifest:** `exterior-tvi-aerea.jpg` e `exterior-tvi-transicao.jpg`.
