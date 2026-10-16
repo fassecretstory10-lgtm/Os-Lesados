@@ -1,3 +1,4 @@
+<!-- OS_LESADOS_DECOUPAGE_STATUS: COMPLETE -->
 # OS LESADOS
 ## Temporada 1 · Episódio 1 — A Rainha dos Reality-Shows
 ### Guião técnico e decupagem com master frames, reframes e prompts de animação
