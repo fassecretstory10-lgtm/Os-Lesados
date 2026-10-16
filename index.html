@@ -295,6 +295,7 @@
       <main class="content">
         <div class="tabs">
           <button class="tab active" data-tab="script">Guião</button>
+          <button class="tab" data-tab="decoupage">Decupagem</button>
           <button class="tab" data-tab="pipeline">Pipeline</button>
           <button class="tab" data-tab="canon">Canon</button>
           <button class="tab" data-tab="video">Video</button>
@@ -304,6 +305,10 @@
 
         <section id="script" class="pane active">
           <div id="scriptContent" class="empty"><h3>Guião</h3><p>Gera um episódio.</p></div>
+        </section>
+
+        <section id="decoupage" class="pane">
+          <div id="decoupageContent" class="empty"><h3>Decupagem</h3><p>Define e aprova as cenas e os planos antes de produzir imagens.</p></div>
         </section>
 
         <section id="pipeline" class="pane">
@@ -330,7 +335,7 @@
   </div>
 
   <script>
-    const VERSION = "os-lesados-html-unico-v2";
+    const VERSION = "os-lesados-html-unico-v3";
     let BIBLE_INFO = { source: "dados locais (embebidos)", count: 0, remote: false };
 
     const characters = [
@@ -502,6 +507,7 @@
         // a renderizar pelo motor clássico, sem corrupção.
         state.seasons.forEach(s => (s.episodes || []).forEach(ep => {
           if (!("story" in ep)) ep.story = null;
+          if (!("decoupageApproved" in ep)) ep.decoupageApproved = false;
         }));
         state.version = VERSION;
         try { localStorage.setItem("osLesados_html", JSON.stringify(state)); } catch (e) {}
@@ -513,6 +519,7 @@
           ep.number = Number(ep.number || 1);
           ep.name = sanitize(ep.name || "O Grande Plano");
           ep.premise = sanitize(ep.premise || "");
+          ep.decoupageApproved = Boolean(ep.decoupageApproved);
           if (!ep.narration) ep.narration = buildNarration(ep.name);
           if (!ep.narration.approvedVoiceOver) {
             ep.narration.open = null;
@@ -540,6 +547,7 @@
       document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
       document.querySelectorAll(".pane").forEach(p => p.classList.toggle("active", p.id === tab));
       if (tab === "script") renderScript();
+      if (tab === "decoupage") renderDecoupage();
       if (tab === "pipeline") renderPipeline();
       if (tab === "canon") renderCanon();
       if (tab === "video") renderVideo();
@@ -1383,7 +1391,7 @@
         state.currentEpisode = existing.id;
         state.currentScene = existing.scenes && existing.scenes[0] ? existing.scenes[0].id : null;
         save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("script");
-        return status("Este episódio já está preparado no Guião. Podes rever o documento e seguir para o Pipeline.", "success");
+        return status("Este episódio já está preparado no Guião. Revê a decupagem antes de desbloquear o Pipeline.", "success");
       }
       const clean = value => String(value || "").replace(/\r/g, "").trim();
       const headingMatches = [...source.content.matchAll(/^(#{2,3})\s+(.+)$/gm)];
@@ -1478,8 +1486,8 @@
       state.currentScene = scenes[0] ? scenes[0].id : null;
       save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("script");
       status(source.kind === "guião"
-        ? "Documento preparado no Guião. Revê o texto e usa «Enviar cenas para Pipeline» quando estiveres pronto."
-        : "Ficha preparada no Guião como ponto de partida. Continua incompleta; revê a estrutura antes de a enviar para o Pipeline.", "success");
+        ? "Documento preparado no Guião. Revê o texto e abre a Decupagem para definir os planos antes da produção."
+        : "Ficha preparada no Guião como ponto de partida. Continua incompleta; desenvolve a história e a Decupagem antes da produção.", "success");
     }
     function renderScript() {
       const ep = currentEpisode();
@@ -1526,17 +1534,50 @@
         const note = incomplete
           ? "Esta ficha ainda não é um guião completo. As cenas abaixo são apenas uma estrutura visual inicial e precisam de desenvolvimento."
           : "Texto de origem preservado. As cenas abaixo são a estrutura inicial que será usada no Pipeline.";
-        const sourcePanel = "<div class=\"box\"><div class=\"label\">Documento de origem · Episódio " + ep.repoEpisodeNumber + "</div><h3 style=\"color:var(--canon);margin:6px 0 10px;\">" + esc(ep.name) + "</h3><p>" + note + "</p><div class=\"buttons\" style=\"margin-top:12px;\"><button class=\"btn btn-sm btn-warning\" id=\"sendScriptToPipeline\">Enviar cenas para Pipeline</button></div><details open style=\"margin-top:12px;\"><summary style=\"cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;\">Ler documento completo</summary><pre class=\"archive-script\">" + esc(ep.sourceScript) + "</pre></details></div>";
+        const sourcePanel = "<div class=\"box\"><div class=\"label\">Documento de origem · Episódio " + ep.repoEpisodeNumber + "</div><h3 style=\"color:var(--canon);margin:6px 0 10px;\">" + esc(ep.name) + "</h3><p>" + note + "</p><div class=\"buttons\" style=\"margin-top:12px;\"><button class=\"btn btn-sm btn-warning\" id=\"sendScriptToPipeline\">Preparar decupagem</button></div><details open style=\"margin-top:12px;\"><summary style=\"cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;\">Ler documento completo</summary><pre class=\"archive-script\">" + esc(ep.sourceScript) + "</pre></details></div>";
         $("scriptContent").innerHTML = sourcePanel + html;
         const sendBtn = $("sendScriptToPipeline");
-        if (sendBtn) sendBtn.addEventListener("click", () => { renderPipeline(); switchTab("pipeline"); status("Estrutura enviada para o Pipeline. Gera e aprova cada imagem individualmente.", "success"); });
+        if (sendBtn) sendBtn.addEventListener("click", () => { switchTab("decoupage"); status("Revê e aprova os planos na Decupagem antes de gerar imagens.", "success"); });
       } else {
         $("scriptContent").innerHTML = html;
       }
     }
+    function renderDecoupage() {
+      const ep = currentEpisode();
+      if (!ep) return $("decoupageContent").innerHTML = '<div class="empty"><h3>Decupagem</h3><p>Importa ou cria um episódio primeiro.</p></div>';
+      const scenes = ep.scenes || [];
+      const labelFor = (s, i) => { const m = String(s?.id || "").match(/^(\\d+)([a-z])$/i); return m ? String(m[1]).padStart(2, "0") + m[2].toUpperCase() : "PLANO " + String(i + 1).padStart(2, "0"); };
+      const ready = scenes.length > 0 && scenes.every(s => String(s.location || "").trim() && String(s.action || "").trim() && String(s.shot || "").trim() && String(s.camera || "").trim() && Number(s.duration || 0) > 0 && Number(s.duration || 0) <= 8);
+      let html = `<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história numa sequência de cenas e planos filmáveis. Revê cada enquadramento, ação, fala e duração. A aprovação desbloqueia o Pipeline.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, todos os planos precisam de localização, ação, enquadramento, movimento de câmara e duração entre 1 e 8 segundos.</p>' : ""}</div>`;
+      if (!scenes.length) html += '<div class="empty">Ainda não existem planos para decupar.</div>';
+      scenes.forEach((s, i) => {
+        const code = labelFor(s, i);
+        html += `<div class="box" style="margin-top:14px;"><h3 style="color:var(--canon);margin-bottom:10px;">CENA ${String(i+1).padStart(2,"0")} · PLANO ${code}</h3><div class="grid-summary"><div class="field"><label>Nome do plano</label><input data-shot-field="title" data-shot-id="${esc(s.id)}" value="${esc(s.title||"")}" /></div><div class="field"><label>Localização</label><input data-shot-field="location" data-shot-id="${esc(s.id)}" value="${esc(s.location||"")}" /></div><div class="field"><label>Enquadramento</label><input data-shot-field="shot" data-shot-id="${esc(s.id)}" value="${esc(s.shot||"")}" placeholder="Plano geral, médio, close-up..." /></div><div class="field"><label>Movimento de câmara</label><input data-shot-field="camera" data-shot-id="${esc(s.id)}" value="${esc(s.camera||"")}" placeholder="STATIC, DOLLY IN, PAN..." /></div><div class="field"><label>Duração (segundos)</label><input type="number" min="1" max="8" data-shot-field="duration" data-shot-id="${esc(s.id)}" value="${Number(s.duration||6)}" /></div></div><div class="field"><label>Ação visual e continuidade</label><textarea data-shot-field="action" data-shot-id="${esc(s.id)}">${esc(s.action||"")}</textarea></div>${s.dialogue ? `<div class="field"><label>Diálogo · ${esc(charById[s.dialogue.char]?.name || s.dialogue.char)}</label><textarea data-dialogue-field="line" data-shot-id="${esc(s.id)}">${esc(s.dialogue.line||"")}</textarea><label>Intenção / expressão</label><input data-dialogue-field="paren" data-shot-id="${esc(s.id)}" value="${esc(s.dialogue.paren||"")}" /></div>` : '<p class="meta">Sem diálogo associado a este plano.</p>'}<div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}</div></div>`;
+      });
+      $("decoupageContent").innerHTML = html;
+      $("decoupageContent").querySelectorAll("[data-shot-field],[data-dialogue-field]").forEach(input => input.addEventListener("change", () => {
+        const scene = ep.scenes.find(s => s.id === input.dataset.shotId); if (!scene) return;
+        if (input.dataset.shotField) { const field = input.dataset.shotField; scene[field] = field === "duration" ? Math.max(1, Math.min(8, Number(input.value)||1)) : input.value.trim(); if (["location","action","shot","camera","title"].includes(field)) scene.prompt = buildPrompt(scene); }
+        else if (scene.dialogue) scene.dialogue[input.dataset.dialogueField] = input.value.trim();
+        ep.decoupageApproved = false; ep.scenes.forEach(s => { s.approved = false; });
+        save(); renderDecoupage(); updateVideoTab();
+        status("Alteração guardada. A decupagem tem de voltar a ser aprovada antes da produção.", "info");
+      }));
+      $("approveDecoupageBtn")?.addEventListener("click", () => {
+        const valid = ep.scenes.length > 0 && ep.scenes.every(s => String(s.location||"").trim() && String(s.action||"").trim() && String(s.shot||"").trim() && String(s.camera||"").trim() && Number(s.duration||0)>0 && Number(s.duration||0)<=8);
+        if (!valid) return status("Há planos incompletos. Preenche localização, ação, enquadramento, câmara e duração (1–8 s).", "error");
+        ep.decoupageApproved = true; save(); renderDecoupage(); renderPipeline(); status("Decupagem aprovada. O Pipeline está desbloqueado.", "success");
+      });
+      $("openSourceScriptBtn")?.addEventListener("click", () => switchTab("script"));
+    }
     function renderPipeline() {
       const ep = currentEpisode();
       if (!ep) return $("pipelineContent").innerHTML = '<div class="empty"><h3>Pipeline</h3><p>Gera um episódio.</p></div>';
+      if (!ep.decoupageApproved) {
+        $("pipelineContent").innerHTML = `<div class="empty"><h3>🔒 Pipeline bloqueado</h3><p>Antes de gerar imagens, tens de rever e aprovar a decupagem do episódio <strong>${esc(ep.name)}</strong>.</p><button class="btn btn-warning" id="goDecoupageBtn" style="max-width:360px;margin-top:12px;">Abrir decupagem</button></div>`;
+        $("goDecoupageBtn")?.addEventListener("click", () => switchTab("decoupage"));
+        return;
+      }
       const season = state.seasons.find(s => s.id === state.currentSeason) || state.seasons[0];
       if (!state.currentScene) state.currentScene = ep.scenes[0]?.id || null;
       const scene = ep.scenes.find(s => s.id === state.currentScene) || ep.scenes[0];
@@ -1731,6 +1772,7 @@
     function renderVideo() {
       const { ep, list } = approvedScenes();
       if (!ep) return $("videoContent").innerHTML = '<div class="empty"><h3>Video</h3><p>Gera um episódio.</p></div>';
+      if (!ep.decoupageApproved) return $("videoContent").innerHTML = '<div class="empty"><h3>🔒 Video bloqueado</h3><p>Aprova primeiro a decupagem e, depois, as imagens no Pipeline.</p></div>';
       if (!list.length) return $("videoContent").innerHTML = '<div class="empty"><h3>Video</h3><p>Aprova imagens no Pipeline para gerar prompts de vídeo OMNI FLASH.</p></div>';
       let html = '<div class="buttons" style="margin-bottom:12px;"><button class="btn btn-sm btn-secondary" id="copyAllVideoBtn" style="max-width:240px;">Copiar todos</button></div>';
       html += "<table class=\"vtable\"><tr><th>Take</th><th>Still aprovado</th><th>Prompt imagem aprovado</th><th>Animar em vídeo (OMNI FLASH)</th><th></th></tr>";
