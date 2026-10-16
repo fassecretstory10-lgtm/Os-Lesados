@@ -16,4 +16,4 @@ Arquivo de desenvolvimento dos episódios, separado da aplicação e dos assets 
 
 Uma área de escrita/consulta pode usar os guiões completos e o contexto das personagens para propor revisões, novas cenas ou episódios. Essas sugestões devem permanecer separadas do texto canónico até aprovação humana. O fluxo visual começa apenas depois de existir material narrativo suficiente.
 
-O importador atual envia um episódio do Arquivo para o Pipeline, preserva a origem e evita duplicar o mesmo episódio quando já foi importado. Fichas e conceitos geram uma estrutura visual inicial editável, mas continuam marcados como incompletos.
+O `manifest.json` lista os episódios e os seus estados; o backend lê os Markdown diretamente da pasta `Temporadas/Temporada-1/`, e a aba Arquivo usa esses documentos como fonte de verdade. Existe um snapshot embebido de reserva caso o endpoint não esteja disponível. O importador prepara um episódio na aba Guião, preserva o texto de origem e evita duplicar o mesmo episódio quando já foi importado. Fichas e conceitos geram uma estrutura visual inicial editável, mas continuam marcados como incompletos.
