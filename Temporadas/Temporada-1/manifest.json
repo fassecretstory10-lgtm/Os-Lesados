@@ -7,7 +7,8 @@
       "title": "A Rainha dos Reality-Shows",
       "status": "Em desenvolvimento",
       "path": "Temporadas/Temporada-1/episodio-01-a-rainha-dos-reality-shows.md",
-      "kind": "guião"
+      "kind": "guião",
+      "decoupageStatus": "Por concluir"
     },
     {
       "number": 2,
@@ -19,9 +20,11 @@
     {
       "number": 3,
       "title": "Monte do Coxa",
-      "status": "História-base aprovada",
+      "status": "Decupagem completa para produção",
       "path": "Temporadas/Temporada-1/episodio-03-monte-do-coxa.md",
-      "kind": "guião"
+      "kind": "guião",
+      "decoupagePath": "docs/episodios/T1E03-monte-do-coxa-decupagem.md",
+      "decoupageStatus": "Completa"
     },
     {
       "number": 4,
