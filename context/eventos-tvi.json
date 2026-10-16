@@ -1,0 +1,81 @@
+{
+  "$schema": "arquivo-eventos-tvi",
+  "source": "Arquivo de eventos TVI (out-2026). Só entra aqui o que tem fonte + data. Nada inventado.",
+  "version": 1,
+  "updatedAt": "2026-10-15",
+  "events": [
+    {
+      "id": "gala-tvi-31-anos",
+      "nome": "Gala de Aniversário TVI — 31 anos",
+      "contexto": "Cerimónia oficial de aniversário da estação, no Casino Estoril, conduzida por Cristina Ferreira e Manuel Luís Goucha.",
+      "periodo": "2024-02-18",
+      "figuras": ["Cristina Ferreira", "Manuel Luís Goucha"],
+      "factos": [
+        { "texto": "Gala dos 31 anos da TVI no Casino Estoril com Cristina Ferreira e Manuel Luís Goucha.", "fonte": "TVI Player", "data": "2024-02-18", "url": "https://tviplayer.iol.pt/programa/gala-de-aniversario-tvi-31-anos/65cdedf20cf2c7ad0a546467" }
+      ],
+      "ideiasSatira": ["Cerimónia que celebra a si própria; prémio que ninguém pediu; discurso que nunca acaba."],
+      "status": "documentado"
+    },
+    {
+      "id": "cristina-erc-3000-queixas",
+      "nome": "Caso ERC — 3000 queixas após entrevista no Jornal Nacional",
+      "contexto": "Entrevista de Cristina Ferreira na TVI gerou milhares de participações à ERC; recusou pedir desculpa e falou em instrumentalização.",
+      "periodo": "2026-04",
+      "figuras": ["Cristina Ferreira"],
+      "factos": [
+        { "texto": "ERC recebeu cerca de 3000 queixas após a entrevista.", "fonte": "Plataforma Media", "data": "2026-04", "url": "https://plataformamedia.com/2026/04/24/cristina-ferreira-e-as-3-000-queixas-na-erc-fui-instrumentalizada/" },
+        { "texto": "Cristina Ferreira recusa pedir desculpa: 'Peço desculpa a quem, e de quê?'", "fonte": "Público", "data": "2026-04-28", "url": "https://www.publico.pt/2026/04/28/culturaipsilon/noticia/cristina-ferreira-recusa-pedir-desculpa-peco-desculpa-quem-deque-2130842" }
+      ],
+      "ideiasSatira": ["Diretora que responde a 3000 queixas com mais uma entrevista; o pedido de desculpa que nunca chega."],
+      "status": "documentado"
+    },
+    {
+      "id": "bb-all-stars-dupla-apresentacao",
+      "nome": "Big Brother All Stars — apresentação em duas fases",
+      "contexto": "Reality com primeira fase apresentada por Cristina Ferreira e segunda fase por Maria Botelho Moniz.",
+      "periodo": "2026-08",
+      "figuras": ["Cristina Ferreira", "Maria Botelho Moniz"],
+      "factos": [
+        { "texto": "BB All Stars: Cristina Ferreira na primeira fase, Maria Botelho Moniz na segunda.", "fonte": "SAPO", "data": "2026-08-10", "url": "https://lifestyle.sapo.pt/tv-e-cinema/artigos/big-brother-all-stars-ja-tem-duas-apresentadoras-cristina-ferreira-num-primeira-fase-e-maria-botelho-moniz-na-segunda" }
+      ],
+      "ideiasSatira": ["Passagem de testemunho em direto que corre mal; duas apresentadoras, um trono."],
+      "status": "documentado"
+    },
+    {
+      "id": "claudiotecnico-doias10",
+      "nome": "Berro com técnico de som no Dois às 10",
+      "contexto": "Momento insólito no daytime da TVI: Cláudio Ramos perde a paciência em direto com falha técnica.",
+      "periodo": "2026-05",
+      "figuras": ["Cláudio Ramos"],
+      "factos": [
+        { "texto": "Cláudio Ramos berra com técnico de som em pleno direto do Dois às 10.", "fonte": "O Dibiz", "data": "2026-05-27", "url": "https://blogodibiz.com/2026/05/27/claudio-ramos-nao-se-calou-e-berrou-com-tecnico-de-som-em-pleno-direto-no-dois-as-10-veja-o-momento/" }
+      ],
+      "ideiasSatira": ["O técnico invisível que finalmente responde; o microfone que se vinga."],
+      "status": "documentado"
+    },
+    {
+      "id": "rui-oliveira-saida-cmtv",
+      "nome": "Saga da saída de Rui Oliveira da CMTV",
+      "contexto": "Troca pública de versões sobre a saída do comentador da CMTV, com bastidores expostos na imprensa.",
+      "periodo": "2026-08",
+      "figuras": ["Rui Oliveira"],
+      "factos": [
+        { "texto": "Bastidores da saída de Rui Oliveira da CMTV expostos.", "fonte": "Caras", "data": "2026-08-03", "url": "https://caras.pt/entretenimento/2026-08-03-bastidores-da-saida-de-rui-oliveira-da-cmtv-expostos/" }
+      ],
+      "ideiasSatira": ["Comentador que comenta a própria saída em direto; duas versões, zero acordo."],
+      "status": "documentado"
+    },
+    {
+      "id": "catarina-leo-podes-sair",
+      "nome": "'Podes sair' — confronto em direto na CMTV",
+      "contexto": "Confronto entre Catarina Miranda e Léo Caeiro no programa Olá Bom Dia, com frase viral.",
+      "periodo": "2026-07",
+      "figuras": ["Catarina Miranda", "Léo Caeiro"],
+      "factos": [
+        { "texto": "Catarina Miranda a Léo Caeiro em direto: 'Podes sair'.", "fonte": "Nova Gente", "data": "2026-07-25", "url": "https://www.novagente.pt/catarina-miranda-a-leo-caeiro-podes-sair" }
+      ],
+      "ideiasSatira": ["A frase de expulsão que vira botão de estúdio; toda a gente a poder sair, ninguém a sair."],
+      "status": "documentado"
+    }
+  ]
+}

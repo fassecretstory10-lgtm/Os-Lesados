@@ -149,13 +149,50 @@ export function storySchema() {
       resolution: { type: "string" },
       punchline: { type: "string" },
       guestLines: strArr,
+      // Entradas tardias: [{who, fromBeat (1-based), where}] — a personagem
+      // NÃO pode aparecer (who/diálogo) nos beats anteriores.
+      lateEntries: {
+        type: "array",
+        items: { type: "object", properties: { who: S(), fromBeat: { type: "number" }, where: S() }, required: ["who", "fromBeat"] },
+      },
+      // Tag final opcional (cena extra integrada, com duração contada).
+      tag: {
+        type: "object",
+        properties: { where: S(), setup: S(), payoff: S(), dialogue: S() },
+      },
+      // Voice-over opcional de abertura/fecho (conta na duração).
+      voiceOver: {
+        type: "object",
+        properties: { open: S(), close: S() },
+      },
     },
     required: ["comicIdea", "protagonist", "protagonistGoal", "incident", "conflict", "beats", "climax", "resolution", "punchline"],
   };
 }
 
+const S = () => ({ type: "string" });
+
+// Estimativa de duração (segundos), calibrada para comédia (não leitura de
+// notícias): diálogo PT ~11 chars/s; cada beat tem 3s base de ação; pausas e
+// silêncios +1,5s; transições 1,5s; tag e voice-overs contabilizados.
+// Tolerância do validador: ±15s.
+export function estimateDuration(s) {
+  const CPS = 11;
+  const secs = (t) => (t && typeof t === "string" ? t.length / CPS : 0);
+  let total = 0;
+  const beats = Array.isArray(s?.beats) ? s.beats : [];
+  beats.forEach((b) => {
+    total += 3 + secs(b?.dialogue);
+    if (/pausa|silêncio|silencio|freeze|congel/i.test(`${b?.does || ""} ${b?.dialogue || ""}`)) total += 1.5;
+  });
+  if (beats.length > 1) total += (beats.length - 1) * 1.5;
+  if (s?.tag && typeof s.tag === "object") total += 3 + secs(s.tag.dialogue) + secs(s.tag.setup) * 0.3;
+  if (s?.voiceOver && typeof s.voiceOver === "object") total += secs(s.voiceOver.open) + secs(s.voiceOver.close);
+  return Math.round(total);
+}
+
 // Validação server-side (não confia só no schema da API).
-export function validateStory(s) {
+export function validateStory(s, target = 75) {
   const problems = [];
   if (!s || typeof s !== "object") return ["resposta não é objeto"];
   if (!s.protagonist || typeof s.protagonist !== "string" || s.protagonist.length < 2) {
@@ -179,6 +216,24 @@ export function validateStory(s) {
       seen.add(l);
     }
   }
+  // Entradas tardias: who não pode aparecer (who/diálogo) antes de fromBeat.
+  if (Array.isArray(s.lateEntries)) {
+    for (const le of s.lateEntries) {
+      const who = String(le?.who || "").toLowerCase();
+      const from = Number(le?.fromBeat || 1);
+      if (!who || !(Number.isFinite(from) && from > 1)) continue;
+      const beats = Array.isArray(s.beats) ? s.beats : [];
+      beats.slice(0, from - 1).forEach((b, i) => {
+        const hay = `${b?.who || ""} ${b?.dialogue || ""}`.toLowerCase();
+        if (hay.includes(who)) problems.push(`${who} aparece no beat ${i + 1} mas só entra no beat ${from} (lateEntries)`);
+      });
+    }
+  }
+  // Duração: estimativa vs alvo (tolerância ±15s).
+  const est = estimateDuration(s);
+  if (Math.abs(est - target) > 15) {
+    problems.push(`duração estimada ${est}s fora do alvo ${target}s ±15 (beats+tag+VOs contabilizados)`);
+  }
   return problems;
 }
 
@@ -196,5 +251,13 @@ REGRAS ABSOLUTAS:
 - Diálogos curtos (1-2 frases), na voz de cada um; NUNCA repetir a mesma fala.
 - resolution decorre obrigatoriamente de incident+beats (causa→efeito).
 - punchline inverte ou faz callback (nunca moral séria).
-- locations: escolhe entre Estúdio Central, Corredor de Bastidores, Gabinete do Diretor, Camarim, Hall TVI, Exterior da Estação.`;
+- locations: escolhe entre Estúdio Central, Corredor de Bastidores, Gabinete do Diretor, Camarim, Hall TVI, Exterior da Estação.
+ESTRUTURA E ELENCO:
+- Presença serve a estrutura: personagens só entram nos beats onde a história precisa delas. Revelações tardias usam lateEntries [{who, fromBeat, where}] e NÃO aparecem antes.
+- Abelha Maia é OCASIONAL: só entra se tiver função narrativa ou cómica própria. Sem voice-over obrigatório; o episódio pode abrir a frio (cena/ação/conflito) e fechar em reação, payoff visual ou consequência.
+- Diálogo natural e específico da personagem; nada de jargão corporativo genérico ("pivot para nicho premium").
+- Números de audiência: só com métrica explícita (rating/share) ou formulação claramente ficcional; nunca misturar conceitos.
+- Decisões importantes (sobretudo do Capitão) em linguagem clara com consequência compreensível; conciso não é críptico. Capitão decide e veta recursos; Patribunal processa e sentencia — não confundir.
+- Ações filmáveis: o que se vê e ouve (expressões, gestos, objetos, reações), nunca instruções abstratas ("narrativa desmontada").
+- Tag final opcional em tag {where, setup, payoff, dialogue} — integrada e contada na duração.`;
 }

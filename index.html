@@ -54,9 +54,6 @@
     .live-badge { position: absolute; top: 14px; right: 16px; display: flex; align-items: center; gap: 7px; background: #000; border: 1px solid var(--danger); color: #fff; font-weight: 800; font-size: .72em; letter-spacing: 2px; padding: 6px 12px; border-radius: 20px; box-shadow: 0 0 14px rgba(255,23,68,.7); z-index: 2; }
     .live-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--danger); animation: blink 1.2s ease-in-out infinite; }
     @keyframes blink { 0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--danger); } 50% { opacity: .25; box-shadow: none; } }
-    .ticker { margin: 14px -20px 0; background: #000; border-top: 1px solid var(--canon); border-bottom: 1px solid var(--canon); overflow: hidden; white-space: nowrap; position: relative; }
-    .ticker-inner { display: inline-block; padding: 7px 0; font-family: "Courier New", monospace; font-size: .78em; font-weight: 700; letter-spacing: 1px; color: var(--canon); animation: tick 28s linear infinite; }
-    @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     .epnav { position: relative; display: flex; gap: 14px; align-items: stretch; justify-content: center; flex-wrap: wrap; margin: 12px auto 14px; padding: 10px 18px; width: fit-content; max-width: 96%; background: rgba(0,0,0,.5); border: 1px solid rgba(255,215,0,.4); border-radius: 14px; box-shadow: 0 0 18px rgba(255,215,0,.15), inset 0 1px 0 rgba(255,255,255,.06); backdrop-filter: blur(4px); }
     .epnav-group { display: flex; align-items: center; gap: 9px; }
     .epnav-kicker { font-size: .62em; letter-spacing: 2.5px; color: var(--canon); font-weight: 800; text-transform: uppercase; text-shadow: 0 0 8px rgba(255,215,0,.5); }
@@ -190,23 +187,6 @@
     .prop .kw { color: var(--warning); font-weight: 800; font-size: .72em; text-transform: uppercase; }
     .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
-    .habbo-room { position: relative; height: 230px; border-radius: 10px; overflow: hidden; margin-bottom: 14px;
-      background: linear-gradient(180deg, #2b1a4e 0 38%, #3d2b63 38% 40%, #4a3670 40% 100%);
-      border: 1px solid var(--border); }
-    .habbo-room::before { content: ""; position: absolute; inset: 40% 0 0 0;
-      background: repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 24px, transparent 24px 48px),
-                  repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 24px); }
-    .habbo-room .door { position: absolute; left: 46%; top: 8%; width: 60px; height: 74px; background: #12071f; border: 2px solid var(--canon); border-radius: 30px 30px 4px 4px; }
-    .habbo { position: absolute; --px: 4px; width: calc(var(--px) * 10); height: calc(var(--px) * 15); animation: habboBob 2.4s ease-in-out infinite; }
-    .habbo .px { position: absolute; left: 0; top: 0; width: var(--px); height: var(--px); }
-    .habbo .tag { position: absolute; top: calc(var(--px) * -7); left: 50%; transform: translateX(-50%); white-space: nowrap;
-      font-size: .62em; font-weight: 800; background: rgba(0,0,0,.65); color: #fff; padding: 1px 7px; border-radius: 8px; }
-    .habbo .bub { position: absolute; top: calc(var(--px) * -13); left: 60%; font-size: 1em; animation: habboBob 1s ease-in-out infinite; }
-    .habbo.work { animation-duration: 1s; }
-    .habbo.done .px { filter: drop-shadow(0 0 5px #00c853); }
-    .habbo.failed .px { filter: drop-shadow(0 0 5px #ff1744); }
-    @keyframes habboBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-    @media (max-width: 600px) { .habbo { --px: 3px; } .habbo-room { height: 190px; } }
     .vtable th, .vtable td { border: 1px solid var(--border); padding: 10px; vertical-align: top; text-align: left; }
     .vtable th { background: #151525; color: var(--canon); text-transform: uppercase; font-size: .75em; }
     .vtable td.thumb img { width: 160px; border-radius: 4px; }
@@ -217,6 +197,11 @@
     .char-card h3 { color: var(--canon); margin-bottom: 8px; font-size: 1em; }
     .char-card p { font-size: .86em; line-height: 1.45; margin: 6px 0; color: #c0c0e0; }
     .char-card strong { color: var(--warning); }
+    .char-body { display: flex; gap: 14px; align-items: flex-start; }
+    .char-photo { flex: 0 0 120px; background: #fff; border-radius: 8px; padding: 6px; display: flex; align-items: center; justify-content: center; min-height: 120px; }
+    .char-photo img { width: 100%; border-radius: 4px; display: block; }
+    .char-photo .no-photo { color: #888; font-size: 2em; font-weight: 800; }
+    .char-text { flex: 1; min-width: 0; }
     .loading { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 6px; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
     @media (max-width: 1024px) {
@@ -233,7 +218,6 @@
     <div class="header">
       <div class="live-badge"><span class="live-dot"></span> NO AR</div>
       <h1>OS LESADOS</h1>
-      <div class="ticker"><span class="ticker-inner" id="tickerText"></span></div>
       <div class="epnav" id="epNav"></div>
     </div>
 
@@ -301,7 +285,6 @@
           <button class="tab" data-tab="pipeline">Pipeline</button>
           <button class="tab" data-tab="canon">Canon</button>
           <button class="tab" data-tab="video">Video</button>
-          <button class="tab" data-tab="sala">Sala</button>
         </div>
 
         <section id="script" class="pane active">
@@ -319,10 +302,6 @@
         <section id="video" class="pane">
           <div id="videoContent"></div>
         </section>
-
-        <section id="sala" class="pane">
-          <div id="salaContent"></div>
-        </section>
       </main>
     </div>
   </div>
@@ -339,12 +318,12 @@
       { id: "teresa", name: "Teresa Guilhermina I de Portugal", visual: "Voluptuous middle-aged woman with blonde wavy hair, golden crown, radiant theatrical smile. She wears a red dress. Loud warm daytime-TV presence, chin high.", voice: "Mature projected feminine PT-PT, theatrical with regal flourishes, clear diction and stage pauses; rises to wounded indignation when ignored. Despises Tininha, who stole her throne and her realities — calls her 'a diretora' with venom." },
       { id: "tininha", name: "Tininha", visual: "Poised blonde executive woman with long straight honey-blonde hair, sharp tailored power suit, statement earrings, camera-ready smile that never reaches the eyes. Controlled institutional authority.", voice: "Sweetly superior feminine PT-PT, institutional calm with a venomous edge; quotes hierarchy and rankings. Obeys the Capitão with a smile. Catchphrase: 'Ainda sei o lugar das estacas.'" },
       { id: "claudio", name: "Cláudio Prantos", visual: "Middle-aged man with short graying hair, gray stubble, heavy eyebrows, intense stare. Dark blue buttoned shirt. Tense calm that snaps into shout and back to serene smile.", voice: "Polished masculine presenter PT-PT that snaps into a loud theatrical shout and cuts back to serene; recovery catchphrase 'já passou'." },
-      { id: "capitao", name: "Capitão Gancho", visual: "Dark combed hair, heavy eyebrows, deep-set solemn eyes, steel hook left hand. Dark suit, white shirt, dark tie. Motionless gravity.", voice: "Deep, grave, slow masculine PT-PT, few words with active pauses; never raises volume, only gets more concise. Catchphrase 'Está decidido.'" },
+      { id: "capitao", name: "Capitão Gancho", visual: "Dark combed hair, heavy eyebrows, deep-set solemn eyes, steel hook left hand. Dark suit, white shirt, dark tie. Motionless gravity.", voice: "Deep, grave, slow masculine PT-PT, few words with active pauses; never raises volume, only gets more concise. Closes scenes with silence: lays the hook on the table." },
       { id: "abelha", name: "Abelha Maia", visual: "Short brown hair, bee antennae headband, translucent wings, yellow-and-black striped body. Affectionate oracular presence.", voice: "Alert feminine PT-PT at live-report speed, journalistic urgency with an affectionate-oracular lilt." },
-      { id: "coxa", name: "Coxa", visual: "Bald charismatic daytime TV host with round glasses and gray beard, coral three-piece suit, orange tie, lapel mic. Warm ready smile, relaxed confidence.", voice: "Warm effortless daytime-TV host PT-PT, easy smile in the voice. (Provisional — voice pending writers' room.)" },
+      { id: "coxa", name: "Coxa", visual: "Bald charismatic daytime TV host with round glasses and gray beard, coral three-piece suit, orange tie, lapel mic. Warm ready smile, relaxed confidence.", voice: "Warm effortless daytime-TV host PT-PT, easy smile in the voice." },
       { id: "mario", name: "Doutor Mário Galático", visual: "Middle-aged Portuguese man, dark hair with silver at temples, broad shoulders, confident posture. Navy blue suit, white shirt open at collar, gold lapel pin with rocket and anchor crossed. Expansive gestures, visionary intensity.", voice: "Loud expansive Northern-accent PT-PT, visionary sales pitch; demands to be called Doutor. Catchphrases 'Do Douro ao Espaço!', 'Eu estou dentro.'" },
-      { id: "patribunal", name: "Patribunal", visual: "Older authority figure with gray hair and gray beard, measured stern gaze. Black double-breasted suit, white shirt, black tie, solemn composure, formal posture.", voice: "Dry spare institutional PT-PT, short clipped sentences. (Provisional — voice pending writers' room.)" },
-      { id: "perpetua", name: "Perpétua", visual: "Middle-aged woman, faded pink coat, scissors always in hand, perfect curls on own head, knowing eyes, discreet backstage presence.", voice: "Discreet backstage whisper PT-PT, knowing undertone, phone-call cadence. (Provisional — no canon cover yet.)" }
+      { id: "patribunal", name: "Patribunal", visual: "Older authority figure with gray hair and gray beard, measured stern gaze. Black double-breasted suit, white shirt, black tie, solemn composure, formal posture.", voice: "Dry spare institutional PT-PT, short clipped sentences." },
+      { id: "perpetua", name: "Perpétua", visual: "Middle-aged woman, faded pink coat, scissors always in hand, perfect curls on own head, knowing eyes, discreet backstage presence.", voice: "Discreet backstage whisper PT-PT, knowing undertone, phone-call cadence." }
     ];
 
     const charById = Object.fromEntries(characters.map(c => [c.id, c]));
@@ -438,24 +417,30 @@
     }
 
     const suggestions = [
-      { title: "Iates no Direto das 20h", premise: "Mário Galático impõe iates no direto das 20h e o Capitão Gancho tenta conter o caos." },
+      { title: "Iates no Direto das 20h", premise: "Mário Galático propõe iates no direto das 20h; Tininha aceita na hora para mostrar que concretiza tudo; o Capitão faz contas em silêncio." },
       { title: "O Trono dos Reality-Shows", premise: "Teresa Guilhermina I exige o trono dos reality-shows, mas o Capitão Gancho responde com uma decisão seca." },
       { title: "Presos no Camarim", premise: "Coxa e Cláudio ficam presos no camarim durante uma falha técnica." },
-      { title: "Queda nas Audiências", premise: "Abelha Maia lê as cartas em direto e anuncia uma queda nas audiências." },
+      { title: "Queda nas Audiências", premise: "Os gráficos despencam e Abelha Maia cobre a queda como breaking news nacional: BOMBAAAA!" },
       { title: "O Passeio de Barco", premise: "Perpétua tenta pedir um passeio de barco, mas confunde o pedido com um reality show." },
       { title: "O Ar Condicionado", premise: "O ar condicionado do estúdio falha em pleno direto e Cláudio tenta manter o sorriso enquanto derrete." },
       { title: "Audiências em Queda Livre", premise: "Os gráficos despencam na sala de controlo e o Capitão Gancho tem dois minutos para salvar o direto." },
       { title: "A Entrevista Impossível", premise: "Teresa Guilhermina I invade uma entrevista de Coxa e transforma-a numa coroação improvisada." },
       { title: "Escândalo no Catering", premise: "Desaparece o bolo do aniversário da estação e Abelha Maia cobre o 'crime' como breaking news." },
-      { title: "Do Douro ao Espaço", premise: "Mário Galático anuncia uma gala espacial em direto e ninguém na redação sabe se é a sério." },
-      { title: "O Iate do Doutor", premise: "Perpétua pede boleia no iate do Doutor Mário Galático para ver o mar, mas o iate é insuflável e está num stand." },
+      { title: "Do Douro ao Espaço", premise: "Mário Galático anuncia uma gala espacial em direto; Tininha carimba como ideia dela; o Capitão calcula o custo por segundo." },
+      { title: "Fuga para o Alentejo", premise: "Coxa foge para o monte no Alentejo para ler em paz, mas o Capitão aparece com uma pilha de grelhas por aprovar." },
       { title: "A Placa Trocada", premise: "Alguém troca a placa do camarim por 'ESTACAS às 10' e Tininha exige uma investigação em direto; no final, Guilhermina aparece no esconderijo a rir-se malevolamente: A placa certa para a diretora errada." },
-      { title: "Trancadas no Camarim", premise: "Tininha e Guilhermina ficam trancadas juntas no camarim a minutos do direto e têm de fingir união." },
+      { title: "Trancadas no Camarim", premise: "Tininha e Guilhermina ficam trancadas juntas no camarim a minutos do direto; nenhuma cede um milímetro e o direto começa sem elas." },
       { title: "O Espelho Diz", premise: "Cláudio ensaia serenidade ao espelho do camarim enquanto Abelha Maia o filma por trás sem ele saber." },
-      { title: "Torre em Direto", premise: "Mário Galático quer apresentar o direto do topo da torre e toda a estação descobre quem tem vertigens." },
+      { title: "Torre em Direto", premise: "Mário Galático quer o direto do topo da torre; Tininha organiza a subida; o Capitão descobre quem tem vertigens." },
       { title: "O Trono Ocupado", premise: "Guilhermina encontra Perpétua sentada no trono do esconderijo a experimentar a coroa." },
       { title: "O Lugar das Estacas", premise: "Tininha carimba em direto uma decisão do Capitão como se fosse dela, e Guilhermina invade o estúdio a reclamar o trono." },
-      { title: "Obedece Sorrindo", premise: "O Capitão veta a grelha da Tininha com duas palavras e ela agradece em direto; Guilhermina assiste da régie a rir." }
+      { title: "Obedece Sorrindo", premise: "O Capitão veta a grelha da Tininha com duas palavras e ela agradece em direto; Guilhermina assiste da régie a rir." },
+      { title: "Big Brother num Barco", premise: "Mário aparece com a ideia: o próximo reality é num navio; Tininha aceita na hora e o Capitão faz contas ao combustível." },
+      { title: "Manhã de Guerra", premise: "Dois às 10 em direto com Prantos e Tininha a fingir harmonia enquanto os bastidores ardem." },
+      { title: "A Pausa Roubada", premise: "Teresa, no gabinete secreto, vê Tininha fazer 'a pausa dela' na gala e murmura: Essa pausa era minha. Ela jura que não vê o programa." },
+      { title: "A Especialista", premise: "Tininha declara as técnicas antigas ultrapassadas numa reunião e usa uma na gala seguinte; Perpétua corrige um detalhe e disfarça." },
+      { title: "A Negociação Errada", premise: "Teresa prepara uma apresentação para convencer o Capitão a deixá-la regressar; ele só fala de horários e orçamento; ela ouve um sim em tudo." },
+      { title: "Navios no Jornal das 8", premise: "Mário quer meter os navios dele no genérico do Jornal das 8 e ninguém sabe se é publicidade ou delírio." }
     ];
 
     let state = {
@@ -515,7 +500,14 @@
           ep.number = Number(ep.number || 1);
           ep.name = sanitize(ep.name || "O Grande Plano");
           ep.premise = sanitize(ep.premise || "");
-          if (!ep.narration || !ep.narration.open) ep.narration = buildNarration(ep.name);
+          if (!ep.narration || !ep.narration.open) {
+            // Backfill só para episódios onde a Abelha está no elenco.
+            // Episódios antigos com narração mantêm-na (histórico preservado).
+            const cast = new Set();
+            (ep.scenes || []).forEach(sc => (sc.characters || []).forEach(c => cast.add(c)));
+            if (cast.has("abelha")) ep.narration = buildNarration(ep.name);
+            else if (!ep.narration) ep.narration = null;
+          }
           if (!ep.hook && ep.number) ep.hook = pickSeasonHook(ep.number);
           if (!ep.format) ep.format = classifyFormat(ep.premise || "", (ep.story?.stars || []));
           if (!ep.runtime) ep.runtime = estimateDuration(ep.scenes || []);
@@ -547,10 +539,10 @@
       if (tab === "pipeline") renderPipeline();
       if (tab === "canon") renderCanon();
       if (tab === "video") renderVideo();
-      if (tab === "sala") { enterSala(); }
     }
-    function suggestion() {
-      const idea = suggestions[Math.floor(Math.random() * suggestions.length)];
+    async function suggestion() {
+      const pool = suggestions;
+      const idea = pool[Math.floor(Math.random() * pool.length)];
       $("suggestionTitle").textContent = "“" + idea.title + "”";
       $("suggestionText").textContent = idea.premise;
       $("episodeName").value = idea.title;
@@ -593,7 +585,7 @@
     // Falas-assinatura por personagem (diálogos dos takes adaptados).
     const SIG_LINES = {
       tininha: { paren: "(sorrindo, veneno doce)", line: "Claro que sim, diretor. Ainda sei o lugar das estacas." },
-      capitao: { paren: "(olhar imóvel)", line: "Está decidido." },
+      capitao: { paren: "(silêncio; pousa o gancho na mesa)", line: "…" },
       teresa: { paren: "(pose régia)", line: "Eu sou a rainha dos reality-shows! E exijo o meu lugar." },
       claudio: { paren: "(sério, à beira do berro)", line: "Compostura. Profissionalismo. Já passou… ou vai passar." },
       coxa: { paren: "(sorriso de antena)", line: "Estamos em direto e está tudo sob controlo, não é?" },
@@ -622,10 +614,10 @@
         { c: "button", paren: "(triunfante)", line: "Vês? O trono estava só a arejar. Voltei." }
       ],
       capitao: [
-        { c: "open", paren: "(olhar imóvel)", line: "Está decidido." },
+        { c: "open", paren: "(silêncio; pousa o gancho na mesa)", line: "…" },
         { c: "clash", paren: "(seco)", line: "Não. Próximo assunto." },
         { c: "pressure", paren: "(ainda mais conciso)", line: "Duas palavras: não insistam. Eram três. Acabou." },
-        { c: "button", paren: "(a sair)", line: "Consta que está decidido. Consta duas vezes." }
+        { c: "button", paren: "(a sair)", line: "Consta. E o que consta, cumpre-se." }
       ],
       claudio: [
         { c: "open", paren: "(sorriso forçado, tenso)", line: "Sob controlo absoluto. Apenas... um pouco de calor." },
@@ -1266,7 +1258,7 @@
         { id:"2c", title:"Cena 2c", type:"REACTION", location:"Estúdio Central", duration:5, shot:"CLOSE-UP", camera:"STATIC", characters:["claudio"], action:"MESMA CENA DO 2a. CLOSE-UP de Cláudio. A compostura estala por um segundo.", dialogue:null, reversal:"Mário mostra um plano já escrito. Não veio propor. Veio impor.", reframeOf:"2a" },
         { id:"3a", title:"Cena 3a", type:"MASTER SHOT", location:"Corredor de Bastidores", duration:6, shot:"WIDE SHOT", camera:"TRACKING", characters:["coxa","claudio"], action:"TRACKING SHOT. Coxa segue Cláudio pelo corredor com o alinhamento na mão, a tentar reler a ordem das falas.", dialogue:{char:"coxa",paren:"(a andar depressa)",line:"Espera, espera — a ordem era esta? Ou era a outra?"}, reversal:null, reframeOf:null },
         { id:"3b", title:"Cena 3b", type:"REFRAME", location:"Corredor de Bastidores", duration:5, shot:"OVER-SHOULDER", camera:"STATIC", characters:["coxa","claudio"], action:"MESMA CENA DO 3a. Por cima do ombro de Cláudio, Coxa mostra o papel com ar de quem pede ajuda.", dialogue:{char:"claudio",paren:"(sem parar)",line:"Anda. E não me faças perguntas."}, reversal:null, reframeOf:"3a" },
-        { id:"4a", title:"Cena 4a", type:"MASTER SHOT", location:"Gabinete do Diretor", duration:6, shot:"MEDIUM SHOT", camera:"STATIC", characters:["capitao"], action:"Gabinete do diretor. Capitão Gancho sentado à secretária, de olhos no muro de televisores. O gancho repousa imóvel. Os gráficos descem.", dialogue:{char:"capitao",paren:"(olhar imóvel)",line:"Está decidido."}, reversal:"No ecrã: NO AR EM DOIS MINUTOS.", reframeOf:null },
+        { id:"4a", title:"Cena 4a", type:"MASTER SHOT", location:"Gabinete do Diretor", duration:6, shot:"MEDIUM SHOT", camera:"STATIC", characters:["capitao"], action:"Gabinete do diretor. Capitão Gancho sentado à secretária, de olhos no muro de televisores. O gancho repousa imóvel. Os gráficos descem.", dialogue:{char:"capitao",paren:"(silêncio; pousa o gancho na mesa)",line:"…"}, reversal:"No ecrã: NO AR EM DOIS MINUTOS.", reframeOf:null },
         { id:"4b", title:"Cena 4b", type:"REFRAME", location:"Gabinete do Diretor", duration:5, shot:"OVER-SHOULDER", camera:"STATIC", characters:["capitao","claudio"], action:"MESMO GABINETE, lado corporativo. Cláudio entra sem bater e exige uma decisão. Capitão sentado, imóvel, nem levanta os olhos.", dialogue:{char:"claudio",paren:"(a entrar, exaltado)",line:"Isto não pode esperar pela sua solenidade!"}, reversal:null, reframeOf:"4a" },
         { id:"5a", title:"Cena 5a", type:"MASTER SHOT", location:"Corredor de Bastidores", duration:6, shot:"MEDIUM CLOSE-UP", camera:"STATIC", characters:["perpetua"], action:"Perpétua sussurra ao telefone, escondida atrás de um cenário. Olha em redor com ar de quem sabe demais.", dialogue:{char:"perpetua",paren:"(sussurrando)",line:"Ai filha, eu ouvi isto... mas não fui eu que disse, tá?"}, reversal:null, reframeOf:null },
         { id:"5b", title:"Cena 5b", type:"REFRAME", location:"Corredor de Bastidores", duration:5, shot:"MEDIUM SHOT", camera:"STATIC", characters:["perpetua","patribunal"], action:"MESMA CENA DO 5a. Patribunal aparece no corredor. Perpétua encolhe-se, mas não larga o telefone.", dialogue:{char:"patribunal",paren:"(neutro, formal)",line:"Prossiga. Consta nos autos."}, reversal:null, reframeOf:"5a" },
@@ -1355,7 +1347,9 @@
           schemaVersion: EPISODE_SCHEMA, storyVersion: 1,
           story, scenes: storyToScenes(story, 1),
           format: classifyFormat(cleanPremise, castIds),
-          narration: buildNarration(cleanName),
+          // Abelha ocasional: narração só quando ela está no elenco com
+          // função narrativa. Sem VO automática, sem fórmula fixa.
+          narration: (castIds || []).includes("abelha") ? buildNarration(cleanName) : null,
           tagScene: buildTagScene(castIds, cleanPremise),
           coldOpen: pickColdOpen(premise, number)
         };
@@ -1648,14 +1642,35 @@
       $("approveBtn")?.addEventListener("click", approveImage);
     }
     function renderCanon() {
+      // Retratos em context/characters (servidos em /characters). Perpétua e
+      // Tininha ainda não têm foto — mostram iniciais até existir ficheiro.
+      const PHOTOS = {
+        teresa: "teresa-guilhermina-i-de-portugal.jpg",
+        claudio: "claudio-prantos.jpg",
+        capitao: "capitao-gancho.jpg",
+        abelha: "abelha-maia.jpg",
+        coxa: "coxa.jpg",
+        mario: "mario-galatico.jpg",
+        patribunal: "patribunal.jpg",
+        perpetua: "perpetua.jpg",
+        tininha: "tininha.jpg"
+      };
       let html = '<div class="bible">';
       characters.forEach(c => {
+        const file = PHOTOS[c.id];
+        const initials = esc((c.name || c.id || "?").split(" ").map(w => w[0]).slice(0, 2).join(""));
         html += `
           <div class="char-card">
             <h3>${esc(c.name)} ${c.id === "abelha" ? '<span class="badge">ALERTA MEL</span>' : ""}</h3>
-            <p><strong>ID:</strong> ${esc(c.id)}</p>
-            <p><strong>Visual:</strong> ${esc(c.visual)}</p>
-            <p><strong>Voice:</strong> ${esc(c.voice || "—")}</p>
+            <div class="char-body">
+              <div class="char-photo">${file
+                ? `<img src="/characters/${esc(file)}" alt="${esc(c.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'no-photo\\'>${initials}</span>'">`
+                : `<span class="no-photo">${initials}</span>`}</div>
+              <div class="char-text">
+                <p><strong>Visual:</strong> ${esc(c.visual)}</p>
+                <p><strong>Voice:</strong> ${esc(c.voice || "—")}</p>
+              </div>
+            </div>
           </div>
         `;
       });
@@ -1671,7 +1686,6 @@
       save();
       renderPipeline();
       updateVideoTab();
-      updateTicker();
       status("Imagem aprovada. Vê a aba VIDEO para o prompt de animação.", "success");
     }
     // Técnica adaptada de src/cinematic/omniAdapter.js (V2): guião curto por
@@ -1720,6 +1734,35 @@
       }
       return "";
     }
+    // Acting & shot grammar (destilados em context/craft/): cada take leva
+    // função de plano + arco antecipação→ação→follow-through. Sem schema novo:
+    // deriva-se do paren do diálogo + tipo de take; desconhecido = sem linha.
+    function actingBeat(scene) {
+      const paren = String(scene.dialogue?.paren || "").toLowerCase();
+      const act = String(scene.action || "").toLowerCase();
+      const rules = [
+        [/berro|grit|explod/, "jaw clench 0.5s (anticipation), shout with overshoot gesture (action), shoulders drop + instant serene smile (follow-through)"],
+        [/seren|calm|control/, "frozen smile 1s, slow blink, step sideways out of frame edge"],
+        [/silêncio|silencio|imóvel|imov/, "total freeze 1.5s, then single deliberate move (hook laid on table)"],
+        [/chor|lágrima|lagrim/, "lip tremble, look to camera, single exaggerated tear"],
+        [/sorrindo|sorriso|veneno/, "smile held 1s too long, slow blink, head tilt"],
+        [/teatral|pose|régi|regi/, "chin up in arc, dramatic pause, pointing gesture with overshoot"],
+        [/fug|correr|escap/, "wind-up crouch, scurry with smear, crash stop with dust"],
+        [/surpres|choque|espant/, "double-take: look, look away, snap back with squash"],
+      ];
+      for (const [re, beat] of rules) {
+        if (re.test(paren) || re.test(act)) return beat;
+      }
+      return "";
+    }
+    function shotFunction(scene) {
+      const map = {
+        "MASTER SHOT": "establish geography and power positions; motivated stillness or slow push",
+        "INSERT": "single proof detail (hand, object, screen); one job, then back to master geography",
+        "REACTION": "receiver response IS the joke; hold long enough to read the face; cut only after",
+      };
+      return map[scene.type] || "";
+    }
     function buildVideoPrompt(scene) {
       const chars = scene.characters || [];
       const lock = chars.map(id => { const c = charById[id]; return c ? `${c.name}: ${c.visual}` : null; }).filter(Boolean);
@@ -1727,11 +1770,15 @@
       const parts = [];
       parts.push(`[Character Lock — paste verbatim every clip]\n${lock.join("\n") || "No characters."}`);
       parts.push(`Subject: ${names} in take ${scene.id} — ${sanitize(scene.location)}`);
-      parts.push(`Action: Single continuous shot, no cuts. ${sanitize(scene.action)} Physics: realistic mass and collision, grounded contact, no floating between contacts, no skipped motion.`);
+      let actLine = `Action: Single continuous shot, no cuts. ${sanitize(scene.action)}`;
+      const beat = actingBeat(scene);
+      if (beat) actLine += ` Acting beats (anticipation→action→follow-through): ${beat}.`;
+      actLine += " Physics: realistic mass and collision, grounded contact, no floating between contacts, no skipped motion.";
+      parts.push(actLine);
       let sceneLine = `Scene: ${sanitize(scene.location)}. 2D satirical animation, thick black outlines, vibrant colors.`;
       if (scene.alertMel) sceneLine += " Lower third graphic overlay with exact text ALERTA MEL in yellow/honey with dripping honey effect visible at bottom of frame.";
       parts.push(sceneLine);
-      parts.push(`Camera: ${scene.shot}, ${scene.camera}, level horizon, 24-70mm studio feel. Duration: ${scene.duration}s. Aspect: 16:9.`);
+      parts.push(`Camera: ${scene.shot}, ${scene.camera}, level horizon, 24-70mm studio feel. Duration: ${scene.duration}s. Aspect: 16:9.${shotFunction(scene) ? " Shot function: " + shotFunction(scene) + "." : ""}`);
       parts.push("Lighting: Warm three-point daytime-TV lighting (3200K-4500K), soft key + fill, gentle rim separation. Identical light direction across reframes.");
       if (scene.dialogue) {
         const c = charById[scene.dialogue.char];
@@ -1813,361 +1860,6 @@
       const tab = document.querySelector('[data-tab="video"]');
       if (tab) tab.textContent = `Video${list.length ? ` (${list.length})` : ""}`;
     }
-    // SALA DOS ARGUMENTISTAS — laboratório multiagente (polling de eventos reais).
-    let SALA = { id: null, data: null, timer: null, agents: [], history: [] };
-    // Modo automático: ao entrar na Sala sem sessão ativa, inicia uma sozinha
-    // com tópico rotativo. Nunca duplica sessões a correr nem repete tópico.
-    const SALA_AUTO_KEY = "osLesados_salaAuto";
-    const SALA_TOPIC_KEY = "osLesados_salaTopicIdx";
-    const SALA_TOPICS = [
-      "realities e daytime TVI",
-      "polémicas da semana na TV portuguesa",
-      "bastidores, camarins e corridors de estúdio",
-      "audiências, galas e expulsões de realities",
-      "diretos que correram mal"
-    ];
-    function salaAutoOn() {
-      try { return localStorage.getItem(SALA_AUTO_KEY) !== "off"; } catch (e) { return true; }
-    }
-    function nextAutoTopic() {
-      let i = 0;
-      try {
-        i = Number(localStorage.getItem(SALA_TOPIC_KEY) || "0") || 0;
-        localStorage.setItem(SALA_TOPIC_KEY, String((i + 1) % SALA_TOPICS.length));
-      } catch (e) {}
-      return SALA_TOPICS[i % SALA_TOPICS.length];
-    }
-    async function enterSala() {
-      renderSala();
-      await salaHistory();
-      if (!salaAutoOn()) return;
-      if (SALA.id) { await salaPoll(true); if (salaRunning()) return; }
-      const hasRunning = (SALA.history || []).some(h => h.status === "running");
-      if (hasRunning) return;
-      const today = new Date().toISOString().slice(0, 10);
-      const doneToday = (SALA.history || []).some(h => h.status === "done" && (h.updatedAt || "").slice(0, 10) === today);
-      if (doneToday) return;
-      const input = $("salaTopic");
-      if (input && !input.value.trim()) input.value = nextAutoTopic();
-      status("Sala automática: a iniciar sessão sozinha...", "success");
-      await salaStart();
-    }
-    const ST_LABEL = { espera: ["À espera", ""], pesquisar: ["A pesquisar", "run"], gerar: ["A gerar ideias", "run"], criticar: ["A criticar", "run"], rever: ["A rever", "run"], "concluído": ["Concluído", "ok"], concluído: ["Concluído", "ok"], erro: ["Erro", "err"] };
-    function salaRunning() { return SALA.data && (SALA.data.status === "running"); }
-    function salaStopPoll() { if (SALA.timer) { clearInterval(SALA.timer); SALA.timer = null; } }
-    async function salaStart() {
-      if (location.protocol === "file:") return status("A Sala precisa do backend: abre via http://localhost:8787.", "error");
-      const topic = ($("salaTopic")?.value || "").trim() || "atualidade televisiva portuguesa";
-      salaStopPoll();
-      try {
-        const res = await fetch(`${backendUrl()}/writers/start`, {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic })
-        });
-        const data = await safeJson(res);
-        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
-        SALA.id = data.id;
-        SALA.data = null;
-        status(`Sala aberta: sessão ${data.id}. A trabalhar...`, "success");
-        await salaPoll(true);
-        SALA.timer = setInterval(() => salaPoll(false), 3000);
-      } catch (e) { status("Sala: " + e.message, "error"); }
-    }
-    async function salaPoll(force) {
-      if (!SALA.id) return;
-      try {
-        const res = await fetch(`${backendUrl()}/writers/session/${encodeURIComponent(SALA.id)}`, { headers: { Accept: "application/json" } });
-        const data = await safeJson(res);
-        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
-        SALA.data = data.session;
-        if (Array.isArray(data.agents) && data.agents.length) SALA.agents = data.agents;
-        renderSala();
-        if (!salaRunning()) { salaStopPoll(); salaHistory(); }
-      } catch (e) { if (force) status("Sala: " + e.message, "error"); }
-    }
-    async function salaStop() {
-      if (!SALA.id) return;
-      try {
-        await fetch(`${backendUrl()}/writers/session/${encodeURIComponent(SALA.id)}/stop`, { method: "POST" });
-        salaStopPoll();
-        await salaPoll(true);
-      } catch (e) { status("Sala: " + e.message, "error"); }
-    }
-    async function salaContinue(id) {
-      SALA.id = id || SALA.id;
-      if (!SALA.id) return;
-      try {
-        const res = await fetch(`${backendUrl()}/writers/session/${encodeURIComponent(SALA.id)}/continue`, { method: "POST" });
-        const data = await safeJson(res);
-        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
-        salaStopPoll();
-        await salaPoll(true);
-        SALA.timer = setInterval(() => salaPoll(false), 3000);
-      } catch (e) { status("Sala: " + e.message, "error"); }
-    }
-    async function salaView(id) {
-      SALA.id = id;
-      salaStopPoll();
-      await salaPoll(true);
-      const s = SALA.data;
-      if (s && s.status === "running") SALA.timer = setInterval(() => salaPoll(false), 3000);
-    }
-    async function salaHistory() {
-      if (location.protocol === "file:") return;
-      try {
-        const res = await fetch(`${backendUrl()}/writers/sessions`, { headers: { Accept: "application/json" } });
-        const data = await safeJson(res);
-        if (data?.ok) { SALA.history = data.sessions || []; renderSalaHistory(); }
-      } catch (e) {}
-    }
-    async function salaVerdict(proposalId, verdict) {
-      if (!SALA.id) return;
-      try {
-        const res = await fetch(`${backendUrl()}/writers/session/${encodeURIComponent(SALA.id)}/approve`, {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ proposalId, verdict })
-        });
-        const data = await safeJson(res);
-        if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
-        await salaPoll(true);
-      } catch (e) { status("Sala: " + e.message, "error"); }
-    }
-    function salaUseInScript(p) {
-      $("episodeName").value = p.title || "";
-      $("premise").value = p.premise || "";
-      switchTab("script");
-      document.querySelector(".layout")?.scrollIntoView?.();
-      status(`Ideia "${p.title}" enviada para o guião (gera o episódio na sidebar). Nada foi criado automaticamente.`, "success");
-    }
-    // Bonequinhos estilo Habbo: avatar pixel gerado por agente (cor própria),
-    // posição fixa na sala, animação CSS por estado real (parado / a trabalhar).
-    const HABBO_MAP = [
-      "....HHHH....",
-      "...HHHHHH...",
-      "...HFFFFH...",
-      "...FFFFFF...",
-      "....FFFF....",
-      "..SSSSSSSS..",
-      ".SSSSSSSSSS.",
-      ".SS.SSSS.SS.",
-      "....PPPP....",
-      "....P..P....",
-      "....P..P....",
-      "...SS..SS...",
-      "...SS..SS...",
-      "............",
-      "............"
-    ];
-    const HABBO_SPOTS = [[6, 52], [22, 38], [38, 54], [54, 40], [70, 54], [86, 42]];
-    const HABBO_BUB = { espera: "💤", pesquisar: "🔍", gerar: "✍️", criticar: "🔪", rever: "🔁", "concluído": "✅", erro: "❌" };
-    function habboHTML(a, live, i) {
-      const shirt = ["#ff006e", "#8338ec", "#ffd700", "#00c853", "#ffab00", "#4dd0e1"][i % 6];
-      const hair = ["#3e2723", "#111111", "#ffeb3b", "#795548", "#e0e0e0", "#880e4f"][i % 6];
-      let shadows = [];
-      HABBO_MAP.forEach((row, y) => {
-        [...row].forEach((ch, x) => {
-          if (ch === ".") return;
-          const c = ch === "H" ? hair : ch === "F" ? "#ffcc99" : ch === "S" ? shirt : "#222233";
-          shadows.push(`calc(var(--px) * ${x}) calc(var(--px) * ${y}) 0 0 ${c}`);
-        });
-      });
-      const st = live?.state || "espera";
-      const cls = st === "concluído" ? "done" : st === "erro" ? "failed" : ["pesquisar", "gerar", "criticar", "rever"].includes(st) ? "work" : "";
-      const [left, top] = HABBO_SPOTS[i % HABBO_SPOTS.length];
-      return `<div class="habbo ${cls}" style="left:${left}%;top:${top}%;animation-delay:${(i * 0.35).toFixed(2)}s;">` +
-        `<span class="tag">${esc(a.name.split(" ")[0])}</span>` +
-        `<span class="bub">${HABBO_BUB[st] || "💤"}</span>` +
-        `<span class="px" style="box-shadow:${shadows.join(",")};"></span></div>`;
-    }
-    function salaRoomHTML(agents, s) {
-      return `<div class="door"></div>` + agents.map((a, i) => habboHTML(a, s?.agents?.[a.id], i)).join("");
-    }
-    function agentCard(a, live) {
-      const [label, cls] = ST_LABEL[live?.state] || ST_LABEL.espera;
-      const active = ["pesquisar", "gerar", "criticar", "rever"].includes(live?.state) ? "active" : "";
-      const done = live?.state === "concluído" ? "done" : "";
-      const failed = live?.state === "erro" ? "failed" : "";
-      return `<div class="agent ${active} ${done} ${failed}"><h4>${a.icon || "🤖"} ${esc(a.name)}</h4><div class="role">${esc(a.desc || "")}</div><span class="st ${cls}">${label}</span>${live?.detail ? `<div class="meta">${esc(live.detail)}</div>` : ""}</div>`;
-    }
-    function renderSala() {
-      const s = SALA.data;
-      const agents = SALA.agents.length ? SALA.agents : [
-        { id: "investigador", name: "Investigador", icon: "🔎", desc: "Pesquisa factos reais na web." },
-        { id: "analista", name: "Analista", icon: "🧩", desc: "Cruza factos com o canon." },
-        { id: "argumentista", name: "Argumentista", icon: "✍️", desc: "Cria 10 premissas curtas." },
-        { id: "improvisador", name: "Improvisador Absurdo", icon: "🤪", desc: "Reviravoltas inesperadas." },
-        { id: "critico", name: "Crítico", icon: "🔪", desc: "Ataca clichés." },
-        { id: "showrunner", name: "Showrunner", icon: "🎬", desc: "Shortlist final." }
-      ];
-      let html = `<div class="gen"><h3>🛋️ Sala dos Argumentistas</h3>
-        <div class="field"><label>Tópico da sessão</label><input id="salaTopic" placeholder="Ex: realities, daytime, polémicas da semana" value="${esc(s?.topic || "")}"></div>
-        <div class="buttons">
-          <button class="btn btn-sm btn-danger" id="salaStopBtn" ${salaRunning() ? "" : "disabled"}>Parar</button>
-          ${s && ["error", "stopped", "interrupted"].includes(s.status) ? `<button class="btn btn-sm btn-warning" id="salaContinueBtn">Continuar</button>` : ""}
-        </div>
-        <div class="meta"><label style="cursor:pointer;"><input type="checkbox" id="salaAutoChk" ${salaAutoOn() ? "checked" : ""} style="vertical-align:middle;"> Automático (inicia sozinha ao abrir, 1 sessão/dia)</label></div>
-        ${s ? `<div class="meta">Sessão ${esc(s.id)} · ${esc(s.status)} · etapa ${esc(s.stage || "-")} · ${s.stats?.aiCalls || 0} chamadas IA · ${esc(s.topic || "")}</div>` : '<div class="meta">Sem sessão ativa. As mensagens e animações refletem eventos reais do backend.</div>'}
-      </div>`;
-      html += `<h3 style="color:var(--warning);margin-bottom:10px;">🤖 Agentes</h3><div class="habbo-room" id="salaRoom"></div><div class="agents">`;
-      SALA.roomAgents = agents;
-      html += agents.map(a => agentCard(a, s?.agents?.[a.id])).join("");
-      html += `</div><div class="cols"><div><h3 style="color:var(--warning);margin-bottom:10px;">📡 Atividade (remetente → destino)</h3><div class="feed">`;
-      const msgs = (s?.messages || []).slice().reverse();
-      html += msgs.length ? msgs.map(m =>
-        `<div class="msg"><span class="flow">${esc(m.from)} → ${esc((m.to || []).join(", "))}</span> <small style="color:#888">${esc(m.task || "")} · ${esc((m.at || "").slice(11, 19))}</small><br>${esc(m.content || "")}</div>`
-      ).join("") : '<div class="meta">Sem mensagens ainda.</div>';
-      html += `</div></div><div><h3 style="color:var(--warning);margin-bottom:10px;">📚 Fontes consultadas</h3><div class="feed">`;
-      const srcs = s?.sources || [];
-      html += srcs.length ? srcs.map(x =>
-        `<div class="src">${x.kind === "tecnica" ? "🎓" : "🔗"} <a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title || x.url)}</a> <span style="color:#888">[${esc(x.kind === "tecnica" ? "TÉCNICA" : "FACTO")}]</span><br><span style="color:#666">${esc(x.source || "")} · ${esc(x.topic || "")}</span><br>${esc((x.snippet || "").slice(0, 160))}</div>`
-      ).join("") : '<div class="meta">Sem fontes ainda.</div>';
-      if (s?.sourceErrors?.length) html += `<div class="meta">Falhas de pesquisa: ${esc(s.sourceErrors.slice(0, 3).join(" | "))}</div>`;
-      html += `</div></div></div>`;
-      html += `<h3 style="color:var(--warning);margin:12px 0 10px;">🧵 Continuidade (só o que registares aqui conta)</h3><div id="salaNotes"><div class="meta">A carregar...</div></div>`;
-    const SALA_THEMES = [
-      ["poder", "🏛️ Poder", ["capitao", "gancho", "tininha", "diretora", "diretor", "veto", "grelha", "decis"]],
-      ["bastidores", "🚪 Bastidores", ["camarim", "corredor", "esconderijo", "trono", "perpetua", "perpétua", "bastidor"]],
-      ["realities", "👁️ Realities", ["secret story", "big brother", "reality", "gala", "expuls", "nomea", "desafio", "concorrente", "tereza", "guilhermina", "rainha", "trono"]],
-      ["daytime", "☀️ Daytime", ["coxa", "manhã", "manha", "entrevista", "dois às", "claudio", "cláudio"]],
-      ["diretos", "📡 Diretos", ["abelha", "maia", "mel", "direto", "emissão", "emissao", "falha", "técnica", "tecnica"]]
-    ];
-    function salaThemeOf(p) {
-      const t = `${p.title || ""} ${(p.chars || []).join(" ")} ${p.scenario || ""} ${p.premise || ""}`.toLowerCase();
-      for (const [key, , words] of SALA_THEMES) {
-        if (words.some(w => t.includes(w))) return key;
-      }
-      return "geral";
-    }
-    function salaPropCard(p, short, crit) {
-        const c = crit[p.id];
-        const cls = p.state === "rejeitada" ? "dead" : (short.has(p.id) ? "short" : "");
-        return `<div class="prop ${cls}"><h4>${p.absurdo ? "🤪 " : ""}${esc(p.title)} ${short.has(p.id) ? '<span class="badge-ok">SHORTLIST</span>' : ""} ${p.revised ? '<span class="badge">REVISTA</span>' : ""} ${p.state === "aprovada" && !short.has(p.id) ? '<span class="badge-ok">APROVADA</span>' : ""}</h4>
-          <p>${esc(p.premise)}</p>
-          <p><span class="kw">Elenco:</span> ${esc((p.chars || []).join(", "))} · <span class="kw">Cenário:</span> ${esc(p.scenario || "—")}</p>
-          <p><span class="kw">Payoff:</span> ${esc(p.payoff || "—")}</p>
-          ${c ? `<p><span class="kw">Crítica ${c.score}/10:</span> ${esc(c.flaw)} <em>Correção: ${esc(c.fix)}</em></p>` : ""}
-          <div class="buttons" style="margin-top:8px;">
-            <button class="btn btn-sm btn-success" data-sact="approve" data-pid="${esc(p.id)}">Aprovar</button>
-            <button class="btn btn-sm btn-danger" data-sact="reject" data-pid="${esc(p.id)}">Rejeitar</button>
-            <button class="btn btn-sm btn-secondary" data-sact="use" data-pid="${esc(p.id)}">Usar no guião</button>
-          </div></div>`;
-    }
-    function salaGroupedProps() {
-      const sd = SALA.data;
-      const props = sd?.proposals || [];
-      const short = new Set(sd?.shortlist || []);
-      const crit = Object.fromEntries((sd?.critiques || []).map(c => [c.proposalId, c]));
-      const filter = SALA.theme || "todas";
-      const groups = [["todas", "💡 Todas", null]];
-      for (const [key, label] of SALA_THEMES) groups.push([key, label, key]);
-      groups.push(["geral", "📦 Geral", "geral"]);
-      let html = `<h3 style="color:var(--warning);margin:12px 0 10px;">💡 Propostas (${props.length}) · Shortlist (${short.size})</h3>`;
-      html += `<div class="buttons" style="margin-bottom:10px;">` + groups.map(([key, label]) => {
-        const n = key === "todas" ? props.length : props.filter(p => salaThemeOf(p) === key).length;
-        const on = (SALA.theme || "todas") === key;
-        return `<button class="btn btn-sm ${on ? "" : "btn-secondary"}" data-theme="${key}" style="flex:0 1 auto;">${label} (${n})</button>`;
-      }).join("") + `</div>`;
-      if (!props.length) return html + '<div class="empty"><h3>Sem propostas</h3><p>Inicia uma sessão para gerar 10 ideias.</p></div>';
-      const order = [];
-      if (filter === "todas") {
-        for (const [key, label] of [...SALA_THEMES.map(([k, l]) => [k, l]), ["geral", "📦 Geral"]]) {
-          const list = props.filter(p => salaThemeOf(p) === key);
-          if (list.length) order.push([label, list]);
-        }
-      } else {
-        const label = (SALA_THEMES.find(([k]) => k === filter)?.[1]) || "📦 Geral";
-        order.push([label, props.filter(p => salaThemeOf(p) === filter)]);
-      }
-      for (const [label, list] of order) {
-        if (!label) continue;
-        html += `<h4 style="color:var(--canon);margin:10px 0 8px;">${label} (${list.length})</h4><div class="props">`;
-        html += list.map(p => salaPropCard(p, short, crit)).join("");
-        html += `</div>`;
-      }
-      return html;
-    }
-      html += salaGroupedProps();
-      html += `<h3 style="color:var(--warning);margin:12px 0 10px;">🗂️ Histórico de sessões</h3><div id="salaHistory"><div class="meta">A carregar...</div></div>`;
-      $("salaContent").innerHTML = html;
-      const roomEl = $("salaRoom");
-      if (roomEl && SALA.roomAgents) {
-        const sig = JSON.stringify(SALA.roomAgents.map(a => a.id)) + "|" + JSON.stringify(s && Object.entries(s.agents || {}).map(([k, v]) => k + v.state));
-        if (sig !== SALA.roomSig) {
-          SALA.roomSig = sig;
-          roomEl.innerHTML = salaRoomHTML(SALA.roomAgents, s);
-        }
-      }
-      $("salaContent").querySelectorAll("[data-theme]").forEach(b => b.addEventListener("click", () => {
-        SALA.theme = b.dataset.theme;
-        renderSala();
-      }));
-      $("salaStopBtn")?.addEventListener("click", salaStop);
-      $("salaAutoChk")?.addEventListener("change", ev => {
-        try { localStorage.setItem(SALA_AUTO_KEY, ev.target.checked ? "on" : "off"); } catch (e) {}
-      });
-      $("salaContinueBtn")?.addEventListener("click", () => salaContinue());
-      $("salaContent").querySelectorAll("[data-sact]").forEach(b => b.addEventListener("click", () => {
-        const pid = b.dataset.pid;
-        const p = (SALA.data?.proposals || []).find(x => x.id === pid);
-        if (b.dataset.sact === "use" && p) return salaUseInScript(p);
-        salaVerdict(pid, b.dataset.sact === "reject" ? "reject" : "approve");
-      }));
-      renderSalaHistory();
-    }
-    function renderSalaHistory() {
-      const el = $("salaHistory");
-      if (!el) return;
-      const h = SALA.history || [];
-      el.innerHTML = h.length ? h.map(x =>
-        `<div class="ep-item" style="margin-bottom:6px;"><span style="flex:1;">${esc(x.topic || x.id)} · ${esc(x.status)} · ${x.proposals} propostas${x.shortlist ? ` · ⭐${x.shortlist}` : ""}</span><button class="btn btn-sm btn-secondary" data-hview="${esc(x.id)}" style="width:auto;margin:0;">Ver</button></div>`
-      ).join("") : '<div class="meta">Sem histórico.</div>';
-      el.querySelectorAll("[data-hview]").forEach(b => b.addEventListener("click", () => salaView(b.dataset.hview)));
-      renderSalaNotes();
-    }
-    async function renderSalaNotes() {
-      const el = $("salaNotes");
-      if (!el) return;
-      if (location.protocol === "file:") { el.innerHTML = '<div class="meta">Precisa do backend.</div>'; return; }
-      try {
-        if ($("noteText") && document.activeElement === $("noteText") && $("noteText").value.trim()) return; // não interromper escrita
-      } catch {}
-      const draft = $("noteText") ? $("noteText").value : "";
-      const draftKind = $("noteKind") ? $("noteKind").value : "gancho";
-      try {
-        const res = await fetch(`${backendUrl()}/continuity`, { headers: { Accept: "application/json" } });
-        const data = await res.json();
-        const notes = data?.notes || [];
-        const act = notes.filter(n => n.status === "active");
-        const done = notes.filter(n => n.status !== "active");
-        el.innerHTML =
-          `<div class="field" style="display:flex;gap:8px;flex-wrap:wrap;"><input id="noteText" placeholder="Ex: Tininha deve um favor ao Capitão" style="flex:2;min-width:200px;"><select id="noteKind" style="flex:0 1 auto;"><option value="gancho">gancho</option><option value="rivalidade">rivalidade</option><option value="promessa">promessa</option><option value="piada">piada</option></select><button class="btn btn-sm" id="noteAddBtn" style="flex:0 1 auto;">Registar</button></div>` +
-          (act.length ? act.map(n =>
-            `<div class="ep-item" style="margin-bottom:6px;"><span style="flex:1;">[${esc(n.kind)}] ${esc(n.text)} <small style="color:#888">${esc(n.episode || "")}</small></span><button class="btn btn-sm btn-secondary" data-resolve="${esc(n.id)}" style="width:auto;margin:0;">Resolver</button></div>`
-          ).join("") : '<div class="meta">Sem notas ativas. Só isto alimenta a continuidade da Sala.</div>') +
-          (done.length ? `<div class="meta">Resolvidas: ${done.length}</div>` : "");
-        if (draft) { $("noteText").value = draft; $("noteKind").value = draftKind; }
-        $("noteAddBtn")?.addEventListener("click", async () => {
-          const text = ($("noteText").value || "").trim();
-          if (!text) return status("Escreve a nota primeiro.", "error");
-          try {
-            const res = await fetch(`${backendUrl()}/continuity`, {
-              method: "POST", headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ text, kind: $("noteKind").value, episode: currentEpisode()?.name || "" })
-            });
-            const data = await res.json();
-            if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
-            renderSalaNotes();
-            status("Nota de continuidade registada.", "success");
-          } catch (e) { status("Continuity: " + e.message, "error"); }
-        });
-        el.querySelectorAll("[data-resolve]").forEach(b => b.addEventListener("click", async () => {
-          try {
-            await fetch(`${backendUrl()}/continuity/${encodeURIComponent(b.dataset.resolve)}/resolve`, { method: "POST" });
-            renderSalaNotes();
-          } catch (e) { status("Continuity: " + e.message, "error"); }
-        }));
-      } catch (e) { el.innerHTML = '<div class="meta">Falha a ler continuidade.</div>'; }
-    }
     function activeTab() { const t = document.querySelector(".tab.active"); return (t && t.dataset.tab) || "script"; }
     function refreshAll() {
       renderHeaderNav();
@@ -2179,7 +1871,6 @@
       if (t === "video") renderVideo();
     }
     function renderHeaderNav() {
-      updateTicker();
       const nav = $("epNav");
       if (!state.seasons.length) {
         nav.innerHTML = '<span class="epnav-empty">Sem episódios — gera o primeiro na sidebar.</span>';
@@ -2232,19 +1923,6 @@
       else $("audit").innerHTML = "";
       refreshAll();
       status(`Episódio ${ep.number} apagado.`, "success");
-    }
-    function updateTicker() {
-      const el = $("tickerText");
-      if (!el) return;
-      const ep = currentEpisode();
-      let txt;
-      if (ep) {
-        const ap = ep.scenes.filter(s => s.approved).length;
-        txt = `EM DIRETO ▸ ${ep.name} ▸ Episódio ${ep.number} ▸ ${ep.scenes.length} takes ▸ ${ap} aprovados ▸ ALERTA MEL ▸ A seguir: mais caos nos bastidores ▸ `;
-      } else {
-        txt = "BOMBAAAA ▸ Exclusivo em direto ▸ Gera um episódio na sidebar para entrar no ar ▸ ALERTA MEL ▸ ";
-      }
-      el.textContent = txt + txt;
     }
     function backendUrl() { return ($("backendUrl").value || "/api").replace(/\/$/, ""); }
     function model() { return $("modelSelect").value || "gemini-nano-banana-2.1"; }
@@ -2348,7 +2026,6 @@
         save();
         renderPipeline();
         updateVideoTab();
-        updateTicker();
         status(`Imagem gerada com ${scene.model}.`, "success");
         if (Array.isArray(data.warnings) && data.warnings.length) status(data.warnings.join(" | "), "info");
       } catch(e) {
@@ -2359,7 +2036,7 @@
       }
     }
     // Export/import de episódios (recuperação; F0). Formato versionado, validação
-    // explícita, nunca apaga sem confirmação. Não toca em sessões da Sala.
+    // explícita, nunca apaga sem confirmação.
     function exportState() {
       try {
         const payload = { app: "os-lesados", format: 1, exportedAt: new Date().toISOString(), state };
@@ -2391,7 +2068,7 @@
           const data = JSON.parse(rd.result);
           const problem = validateImported(data);
           if (problem) return status("Importação recusada: " + problem + ". Nada foi alterado.", "error");
-          if (!confirm("Substituir TODOS os episódios atuais pelo backup? (As sessões da Sala não são afetadas.)")) return;
+          if (!confirm("Substituir TODOS os episódios atuais pelo backup?")) return;
           state = data.state || data;
           save();
           normalize();
