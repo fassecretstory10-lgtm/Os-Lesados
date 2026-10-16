@@ -1,5 +1,19 @@
 # Episódio 3 — Monte do Coxa
 
+## Ficha de produção
+
+- **Formato:** Sitcom animada narrativa; humor de situação e escalada caricatural
+- **Duração prevista:** Estimativa inicial: 1–2 minutos; confirmar após decupagem
+- **Estado do guião:** História-base aprovada; duração e decupagem por definir
+- **Personagens:** Coxa, Capitão Gancho, caseiro
+- **Cenários/localizações:** Monte alentejano, sala com secretária, entrada/propriedade, Mercedes preto
+- **Estado do texto:** História e diálogo-chave escritos; expandir apenas se necessário para o ritmo
+- **Som e efeitos:** Ambiente rural, motor do Mercedes, porta da mala a fechar
+- **Nota de produção:** A captura de Coxa deve ser caricatural e não gráfica. Não inventar biografia nem características vocais para Coxa.
+
+> A duração é uma estimativa de trabalho, não uma duração final medida. Atualizar após fechar o guião e aprovar a decupagem.
+
+
 **Estado:** Aprovado como história-base  
 **Formato:** Sitcom animada, humor de situação e escalada caricatural.
 
