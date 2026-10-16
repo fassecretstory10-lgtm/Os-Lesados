@@ -413,9 +413,12 @@
       return "Chicote de câmara (whip pan) — muda de cenário";
     }
     function buildNarration(epName) {
+      // A Abelha Maia não é narradora automática. Voz-off só pode ser
+      // acrescentada deliberadamente a um episódio e marcada como aprovada.
       return {
-        open: pick(NARR_OPENS).replace("{name}", epName),
-        close: pick(NARR_CLOSES),
+        open: null,
+        close: null,
+        approvedVoiceOver: false,
         tcIncidente: pick(TC_INCIDENTE),
         tcBastidor: pick(TC_BASTIDOR),
         tcFinal: pick(TC_FINAL)
@@ -510,7 +513,11 @@
           ep.number = Number(ep.number || 1);
           ep.name = sanitize(ep.name || "O Grande Plano");
           ep.premise = sanitize(ep.premise || "");
-          if (!ep.narration || !ep.narration.open) ep.narration = buildNarration(ep.name);
+          if (!ep.narration) ep.narration = buildNarration(ep.name);
+          if (!ep.narration.approvedVoiceOver) {
+            ep.narration.open = null;
+            ep.narration.close = null;
+          }
           if (!ep.hook && ep.number) ep.hook = pickSeasonHook(ep.number);
           ep.scenes.forEach(sc => {
             sc.location = sanitize(sc.location || "Estúdio Central");
