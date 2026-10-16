@@ -13,7 +13,7 @@ Arquivo editorial da temporada, organizado por episódio. Cada episódio tem o s
 | Ep. | Título | Estado |
 |---:|---|---|
 | 1 | [A Rainha dos Reality-Shows](./episodio-01-a-rainha-dos-reality-shows.md) | Em desenvolvimento |
-| 2 | [O Ar Está Contra Mim](./episodio-02-o-ar-esta-contra-mim.md) | Conceito desenvolvido · falta guião completo |
+| 2 | [Roda Capitão](./episodio-02-roda-capitao.md) | Guião em revisão · texto integral por consolidar |
 | 3 | [Monte do Coxa](./episodio-03-monte-do-coxa.md) | História-base aprovada |
 | 4 | [O Casting dos Desesperados](./episodio-04-o-casting-dos-desesperados.md) | Ideia provisória · por desenvolver |
 | 5 | [A Roda Está Viciada](./episodio-05-a-roda-esta-viciada.md) | Rascunho de história · por fechar |
