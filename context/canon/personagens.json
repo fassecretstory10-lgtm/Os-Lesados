@@ -83,10 +83,10 @@
     {
       "id": "mario",
       "name": "Mário Galático",
-      "role": "Patrão do Douro, megalómano generoso",
+      "role": "Patrão da Dourito Blue, megalómano generoso",
       "personality": "Bonacheirão e megalómano. Trata o estúdio como convés e audiências como maré. Incapaz de ouvir 'não': cada problema vira expansão.",
       "goals": ["Resolver tudo com escala", "Ser o dono que manda", "Levar a TV para órbita"],
-      "mannerisms": ["Gestos largos", "Aponta para tudo", "Mão no ombro alheio", "Fala de barcos em reuniões"],
+      "mannerisms": ["Gestos largos", "Aponta para tudo", "Mão no ombro alheio", "Fala de barcos em reuniões; a sua empresa chama-se sempre Dourito Blue"],
       "humor": "Escala absurda aplicada a ninharias; generosidade que atropela.",
       "voice": "Loud expansive Northern-accent PT-PT, visionary sales pitch.",
       "catchphrases": ["Do Douro ao Espaço!", "Isto aqui precisa é de mais escala!", "Eu estou dentro."],
