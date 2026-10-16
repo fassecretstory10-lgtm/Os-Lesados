@@ -40,7 +40,7 @@ function extractStatus(content) {
 
 function validateDecoupage(file) {
   const content = read(file);
-  const sceneCount = (content.match(/^##\s+CENA\s+\d+/gmi) || []).length;
+  const sceneCount = (content.match(/^#{1,3}\s+CENA\s+\d+/gmi) || []).length;
   const checks = {
     marker: /<!--\s*OS_LESADOS_DECOUPAGE_STATUS:\s*COMPLETE\s*-->/.test(content),
     scenes: sceneCount >= 3,
