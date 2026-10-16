@@ -1,5 +1,19 @@
 # Episódio 2 — Roda Capitão
 
+## Ficha de produção
+
+- **Formato:** Sitcom animada narrativa
+- **Duração prevista:** Por definir após recuperar o guião integral
+- **Estado do guião:** Guião integral por recuperar/consolidar
+- **Personagens:** Capitão Gancho, Tininha; Teresa Guilhermina I de Portugal apenas no final
+- **Cenários/localizações:** Por confirmar a partir do guião integral; confronto Gancho/Tininha e cena final separada de Teresa
+- **Estado do texto:** Ficha de continuidade; não contém o guião integral
+- **Som e efeitos:** Por definir após consolidação do guião
+- **Nota de produção:** Não inventar diálogos para preencher lacunas. Abelha Maia não é narradora automática. Preservar a nota de remate registada no documento.
+
+> A duração é uma estimativa de trabalho, não uma duração final medida. Atualizar após fechar o guião e aprovar a decupagem.
+
+
 **Estado:** guião em revisão; texto integral por consolidar  
 **Tipo:** ficha de continuidade para recuperar a versão aprovada antes de storyboard e animação.
 
