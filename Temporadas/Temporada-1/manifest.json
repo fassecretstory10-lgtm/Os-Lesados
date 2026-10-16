@@ -1,0 +1,69 @@
+{
+  "season": 1,
+  "name": "Temporada 1",
+  "episodes": [
+    {
+      "number": 1,
+      "title": "A Rainha dos Reality-Shows",
+      "status": "Em desenvolvimento",
+      "path": "Temporadas/Temporada-1/episodio-01-a-rainha-dos-reality-shows.md",
+      "kind": "guião"
+    },
+    {
+      "number": 2,
+      "title": "Roda Capitão",
+      "status": "Guião em revisão · texto integral por consolidar",
+      "path": "Temporadas/Temporada-1/episodio-02-roda-capitao.md",
+      "kind": "ficha"
+    },
+    {
+      "number": 3,
+      "title": "Monte do Coxa",
+      "status": "História-base aprovada",
+      "path": "Temporadas/Temporada-1/episodio-03-monte-do-coxa.md",
+      "kind": "guião"
+    },
+    {
+      "number": 4,
+      "title": "O Casting dos Desesperados",
+      "status": "Ideia provisória · por desenvolver",
+      "path": "Temporadas/Temporada-1/episodio-04-o-casting-dos-desesperados.md",
+      "kind": "ficha"
+    },
+    {
+      "number": 5,
+      "title": "A Roda Está Viciada",
+      "status": "Rascunho de história · por fechar",
+      "path": "Temporadas/Temporada-1/episodio-05-a-roda-esta-viciada.md",
+      "kind": "ficha"
+    },
+    {
+      "number": 6,
+      "title": "Edição Especialíssima",
+      "status": "Rascunho de história · por fechar",
+      "path": "Temporadas/Temporada-1/episodio-06-edicao-especialissima.md",
+      "kind": "ficha"
+    },
+    {
+      "number": 7,
+      "title": "A Espia",
+      "status": "Conceito provisório · por desenvolver",
+      "path": "Temporadas/Temporada-1/episodio-07-a-espia.md",
+      "kind": "ficha"
+    },
+    {
+      "number": 8,
+      "title": "O Barco da TVI",
+      "status": "Rascunho de história · por fechar",
+      "path": "Temporadas/Temporada-1/episodio-08-o-barco-da-tvi.md",
+      "kind": "ficha"
+    },
+    {
+      "number": 9,
+      "title": "O Lançamento Naval",
+      "status": "Primeira versão, por aprovar",
+      "path": "Temporadas/Temporada-1/episodio-09-o-lancamento-naval.md",
+      "kind": "guião"
+    }
+  ]
+}
