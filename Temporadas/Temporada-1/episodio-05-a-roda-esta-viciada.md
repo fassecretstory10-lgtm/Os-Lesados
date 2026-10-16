@@ -1,5 +1,19 @@
 # Episódio 5 — A Roda Está Viciada
 
+## Ficha de produção
+
+- **Formato:** Sitcom animada narrativa
+- **Duração prevista:** Estimativa inicial: 1–2 minutos; confirmar após escrita
+- **Estado do guião:** Rascunho de história; guião por fechar
+- **Personagens:** Capitão Gancho, Tininha, Teresa Guilhermina I de Portugal
+- **Cenários/localizações:** Espaço de trabalho do Capitão/Tininha (por confirmar), escritório secreto de Teresa
+- **Estado do texto:** Premissa e diálogo-base existentes; ainda não é guião integral
+- **Som e efeitos:** Sons de escritório e chamada telefónica; restantes efeitos por definir
+- **Nota de produção:** A transferência deve sugerir manipulação das audiências sem explicar prematuramente o mecanismo.
+
+> A duração é uma estimativa de trabalho, não uma duração final medida. Atualizar após fechar o guião e aprovar a decupagem.
+
+
 **Estado:** rascunho de história; falta fechar o guião.
 
 ## Premissa
