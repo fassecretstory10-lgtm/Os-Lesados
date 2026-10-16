@@ -1340,14 +1340,125 @@
       const root = $("archiveContent");
       if (!root) return;
       const ordered = REPO_EPISODES.slice().sort((a, b) => a.number - b.number);
-      root.innerHTML = "<div class=\"summary\"><h3>Arquivo da Temporada 1</h3><p>Guiões e fichas de desenvolvimento da Temporada 1. Só os episódios identificados como guiões têm um documento completo no repositório.</p><div class=\"grid-summary\" style=\"margin-top:12px;\">" + ordered.map(ep => "<div class=\"card-mini\"><div class=\"label\">Episódio " + ep.number + "</div><div class=\"value\"><strong>" + esc(ep.title) + "</strong><br>" + esc(ep.status) + "</div><button class=\"btn btn-sm btn-secondary archive-open\" data-ep=\"" + ep.number + "\" style=\"margin-top:10px;\">Abrir episódio</button></div>").join("") + "</div></div><div id=\"archiveScriptView\" class=\"archive-script-view\"><div class=\"empty\"><h3>Arquivo</h3><p>Escolhe um guião para o consultar.</p></div></div>";
+      root.innerHTML = "<div class=\"summary\"><h3>Guiões da Temporada 1</h3><p>Consulta os documentos completos e as fichas de desenvolvimento. Usa <strong>Enviar para Pipeline</strong> para criar uma versão visual editável; fichas e conceitos continuam identificados como material incompleto.</p><div class=\"grid-summary\" style=\"margin-top:12px;\">" + ordered.map(ep => "<div class=\"card-mini\"><div class=\"label\">Episódio " + ep.number + "</div><div class=\"value\"><strong>" + esc(ep.title) + "</strong><br>" + esc(ep.status) + "</div><div class=\"buttons\" style=\"margin-top:10px;\"><button class=\"btn btn-sm btn-secondary archive-open\" data-ep=\"" + ep.number + "\">Ler documento</button><button class=\"btn btn-sm btn-warning archive-send\" data-ep=\"" + ep.number + "\">Enviar para Pipeline</button></div></div>").join("") + "</div></div><div id=\"archiveScriptView\" class=\"archive-script-view\"><div class=\"empty\"><h3>Arquivo de guiões</h3><p>Escolhe um episódio para ler ou enviar para o Pipeline.</p></div></div>";
       root.querySelectorAll(".archive-open").forEach(btn => btn.addEventListener("click", () => {
         const ep = ordered.find(item => item.number === Number(btn.dataset.ep));
         if (!ep) return;
         $("archiveScriptView").innerHTML = "<div class=\"box\"><div class=\"label\">Episódio " + ep.number + " · " + esc(ep.status) + "</div><h2 style=\"color:var(--canon);margin:6px 0 12px;\">" + esc(ep.title) + "</h2><button class=\"btn btn-sm btn-secondary\" id=\"copyRepoScript\" style=\"max-width:180px;\">Copiar texto</button></div><pre class=\"archive-script\">" + esc(ep.content) + "</pre>";
-        $("copyRepoScript").addEventListener("click", async () => { try { await navigator.clipboard.writeText(ep.content); status("Guião copiado.", "success"); } catch(e) { status("Não foi possível copiar automaticamente. Seleciona o texto.", "error"); } });
+        $("copyRepoScript").addEventListener("click", async () => { try { await navigator.clipboard.writeText(ep.content); status("Documento copiado.", "success"); } catch(e) { status("Não foi possível copiar automaticamente. Seleciona o texto.", "error"); } });
         $("archiveScriptView").scrollIntoView({behavior:"smooth",block:"start"});
       }));
+      root.querySelectorAll(".archive-send").forEach(btn => btn.addEventListener("click", () => importRepoEpisode(Number(btn.dataset.ep))));
+    }
+    function importRepoEpisode(number) {
+      const source = REPO_EPISODES.find(item => item.number === Number(number));
+      if (!source) return status("Episódio não encontrado no arquivo.", "error");
+      if (!state.seasons.length) state.seasons.push({ id: "s1", name: "Temporada 1", episodes: [] });
+      let season = state.seasons.find(item => item.id === state.currentSeason) || state.seasons.find(item => item.id === "s1") || state.seasons[0];
+      if (!season) { season = { id: "s1", name: "Temporada 1", episodes: [] }; state.seasons.push(season); }
+      if (!Array.isArray(season.episodes)) season.episodes = [];
+      const existing = season.episodes.find(item => Number(item.repoEpisodeNumber) === Number(number));
+      if (existing) {
+        state.currentSeason = season.id;
+        state.currentEpisode = existing.id;
+        state.currentScene = existing.scenes && existing.scenes[0] ? existing.scenes[0].id : null;
+        save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("pipeline");
+        return status("Este episódio já está no Pipeline. Abri a versão existente para preservares as tuas alterações.", "success");
+      }
+      const clean = value => String(value || "").replace(/\r/g, "").trim();
+      const headingMatches = [...source.content.matchAll(/^(#{2,3})\s+(.+)$/gm)];
+      const candidates = headingMatches.filter(m => {
+        const h = m[2].trim();
+        return /^CENA\s+\d+/i.test(h) || /^\d+[.)]\s+/.test(h) || /^(Abertura|Gabinete do Capitão|Saída)/i.test(h);
+      });
+      let blocks = candidates.map((m, i) => {
+        const start = m.index + m[0].length;
+        const next = candidates[i + 1];
+        const end = next ? next.index : source.content.length;
+        return { title: m[2].replace(/\s+/g, " ").trim(), body: source.content.slice(start, end).replace(/^\s+/, "").trim() };
+      }).filter(b => b.body);
+      if (!blocks.length) {
+        const premiseMatch = source.content.match(/## Premissa\s*\n([\s\S]*?)(?=\n## |\n### |$)/i);
+        const premiseText = clean(premiseMatch && premiseMatch[1] ? premiseMatch[1] : source.content).replace(/\n+/g, " ").slice(0, 850);
+        const dialogueLines = [...source.content.matchAll(/^\s*-\s*([^:\n]{2,45}):\s*[“"]?([^\n”"]+)[”"]?\s*$/gm)].map(m => ({speaker:m[1].trim(),line:m[2].trim()}));
+        blocks = [
+          {title:"Abertura",body:"Estabelecer a situação inicial. " + premiseText},
+          {title:"Confronto e escalada",body:"A situação complica-se e os protagonistas tentam impor a sua versão. " + dialogueLines.slice(0,2).map(d=>d.speaker+": "+d.line).join(" ")},
+          {title:"Remate",body:"A situação chega a uma consequência cómica que fecha a ideia do episódio. " + dialogueLines.slice(2).map(d=>d.speaker+": "+d.line).join(" ")}
+        ];
+      }
+      const allText = source.content.toLowerCase();
+      const charIds = Object.keys(charById).filter(id => {
+        const ch = charById[id];
+        const name = String(ch.name || "").toLowerCase();
+        return (name && allText.includes(name)) || allText.includes(id);
+      });
+      const locate = text => {
+        const v = String(text || "").toLowerCase();
+        if (/monte|alentej|secretária.*papéis/.test(v)) return "Monte do Coxa";
+        if (/receção|recepcao|hall|torniquete/.test(v)) return "Hall TVI (receção)";
+        if (/corredor|bastidor/.test(v)) return "Corredor de Bastidores";
+        if (/camarim|maquilhagem/.test(v)) return "Camarim";
+        if (/gabinete|capitão gancho|capitao gancho/.test(v)) return "Gabinete do Diretor";
+        if (/entrada de serviço|exterior|rua|torre/.test(v)) return "Exterior da Estação";
+        if (/estúdio|estudio|palco|direto|régie|regie/.test(v)) return "Estúdio Central";
+        if (/barco|navio|tejo|ponte 25/.test(v)) return "Estúdio Central";
+        return "Corredor de Bastidores";
+      };
+      const sceneCharIds = text => {
+        const low = String(text || "").toLowerCase();
+        return Object.keys(charById).filter(id => {
+          const ch = charById[id], name = String(ch.name || "").toLowerCase();
+          return (name && low.includes(name)) || low.includes(id);
+        });
+      };
+      let time = 0;
+      const scenes = blocks.map((block, i) => {
+        const body = clean(block.body);
+        const lines = [...body.matchAll(/^\s*\*\*([^*]+):\*\*\s*(.+)$/gm)];
+        const bulletLines = [...body.matchAll(/^\s*-\s*([^:\n]{2,45}):\s*[“"]?([^\n”"]+)[”"]?\s*$/gm)];
+        let dialogue = null;
+        for (const match of [...lines.map(m=>({speaker:m[1].trim(),line:m[2].trim()})), ...bulletLines.map(m=>({speaker:m[1].trim(),line:m[2].trim()}))]) {
+          const speaker = match.speaker.toLowerCase();
+          const id = Object.keys(charById).find(key => {
+            const name = String(charById[key].name || "").toLowerCase();
+            return speaker === key || (name && (speaker === name || name.includes(speaker) || speaker.includes(name)));
+          });
+          if (id) { dialogue = { char:id, paren:"", line:match.line.replace(/^[“"]|[”"]$/g,"").trim() }; break; }
+        }
+        const action = body.split("\n").filter(line => !/^\s*(?:\*\*[^*]+:\*\*|-\s*[^:\n]{2,45}:)/.test(line) && !/^\s*#{1,6}\s/.test(line))
+          .map(line=>line.replace(/[*_]/g,"").trim()).filter(Boolean).join(" ").replace(/\s+/g," ").slice(0,850) || block.title;
+        const chars = sceneCharIds(block.title + " " + body);
+        const duration = 6;
+        const start = time; time += duration;
+        const scene = {
+          id: "repo" + (i+1), title: "Cena " + (i+1) + " · " + block.title, type:"MASTER SHOT",
+          location:locate(block.title + " " + body), duration, shot:i===0?"WIDE SHOT":"MEDIUM SHOT",
+          camera:i===0?"SLOW PUSH-IN":i===blocks.length-1?"SLOW ZOOM IN":"STATIC",
+          characters:chars.length?chars:charIds.slice(0,2), action, dialogue, reversal:null, reframeOf:null,
+          timecode:fmt(start)+" - "+fmt(time), actLabel:i===0?"ABERTURA":i===blocks.length-1?"REMATE":null,
+          imageUrl:null, model:null, variant:0, approved:false, referenceCount:0, prompt:null, alertMel:chars.includes("abelha")
+        };
+        scene.prompt = buildPrompt(scene);
+        return scene;
+      });
+      const premiseMatch = source.content.match(/## Premissa\s*\n([\s\S]*?)(?=\n## |\n### |$)/i);
+      const premise = clean(premiseMatch && premiseMatch[1] ? premiseMatch[1] : source.title).replace(/\n+/g," ").slice(0,1200);
+      const episode = {
+        id:"repo-s1-ep-"+number, number:Number(number), name:source.title, premise,
+        season:1, story:null, scenes, narration:null, tagScene:null, coldOpen:null,
+        repoEpisodeNumber:Number(number), repoStatus:source.status, sourceScript:source.content,
+        sourceKind:source.kind, importedFromArchive:true
+      };
+      episode.audit = [];
+      season.episodes.push(episode);
+      state.currentSeason = season.id;
+      state.currentEpisode = episode.id;
+      state.currentScene = scenes[0] ? scenes[0].id : null;
+      save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("pipeline");
+      status(source.kind === "guião"
+        ? "Guião enviado para o Pipeline. Revê cada cena antes de gerar e aprovar as imagens."
+        : "Ficha enviada como estrutura visual inicial. O guião continua incompleto e deve ser desenvolvido antes de considerar as cenas finais.", "success");
     }
     function renderScript() {
       const ep = currentEpisode();
