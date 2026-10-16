@@ -507,7 +507,7 @@
         // a renderizar pelo motor clássico, sem corrupção.
         state.seasons.forEach(s => (s.episodes || []).forEach(ep => {
           if (!("story" in ep)) ep.story = null;
-          if (!("decoupageApproved" in ep)) ep.decoupageApproved = false;
+          if (!("decoupageApproved" in ep)) { ep.decoupageApproved = false; (ep.scenes || []).forEach(sc => { sc.approved = false; }); }
         }));
         state.version = VERSION;
         try { localStorage.setItem("osLesados_html", JSON.stringify(state)); } catch (e) {}
