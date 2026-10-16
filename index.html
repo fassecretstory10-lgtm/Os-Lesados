@@ -1387,11 +1387,12 @@
           {title:"Remate",body:"A situação chega a uma consequência cómica que fecha a ideia do episódio. " + dialogueLines.slice(2).map(d=>d.speaker+": "+d.line).join(" ")}
         ];
       }
-      const allText = source.content.toLowerCase();
+      const fold = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      const allText = fold(source.content);
       const charIds = Object.keys(charById).filter(id => {
         const ch = charById[id];
-        const name = String(ch.name || "").toLowerCase();
-        return (name && allText.includes(name)) || allText.includes(id);
+        const name = fold(ch.name || "");
+        return (name && allText.includes(name)) || allText.includes(fold(id));
       });
       const locate = text => {
         const v = String(text || "").toLowerCase();
@@ -1406,10 +1407,10 @@
         return "Corredor de Bastidores";
       };
       const sceneCharIds = text => {
-        const low = String(text || "").toLowerCase();
+        const low = fold(text);
         return Object.keys(charById).filter(id => {
-          const ch = charById[id], name = String(ch.name || "").toLowerCase();
-          return (name && low.includes(name)) || low.includes(id);
+          const ch = charById[id], name = fold(ch.name || "");
+          return (name && low.includes(name)) || low.includes(fold(id));
         });
       };
       let time = 0;
@@ -1419,10 +1420,10 @@
         const bulletLines = [...body.matchAll(/^\s*-\s*([^:\n]{2,45}):\s*[“"]?([^\n”"]+)[”"]?\s*$/gm)];
         let dialogue = null;
         for (const match of [...lines.map(m=>({speaker:m[1].trim(),line:m[2].trim()})), ...bulletLines.map(m=>({speaker:m[1].trim(),line:m[2].trim()}))]) {
-          const speaker = match.speaker.toLowerCase();
+          const speaker = fold(match.speaker);
           const id = Object.keys(charById).find(key => {
-            const name = String(charById[key].name || "").toLowerCase();
-            return speaker === key || (name && (speaker === name || name.includes(speaker) || speaker.includes(name)));
+            const name = fold(charById[key].name || "");
+            return speaker === fold(key) || (name && (speaker === name || name.includes(speaker) || speaker.includes(name)));
           });
           if (id) { dialogue = { char:id, paren:"", line:match.line.replace(/^[“"]|[”"]$/g,"").trim() }; break; }
         }
@@ -1435,7 +1436,7 @@
           id: "repo" + (i+1), title: "Cena " + (i+1) + " · " + block.title, type:"MASTER SHOT",
           location:locate(block.title + " " + body), duration, shot:i===0?"WIDE SHOT":"MEDIUM SHOT",
           camera:i===0?"SLOW PUSH-IN":i===blocks.length-1?"SLOW ZOOM IN":"STATIC",
-          characters:chars.length?chars:charIds.slice(0,2), action, dialogue, reversal:null, reframeOf:null,
+          characters:chars, action, dialogue, reversal:null, reframeOf:null,
           timecode:fmt(start)+" - "+fmt(time), actLabel:i===0?"ABERTURA":i===blocks.length-1?"REMATE":null,
           imageUrl:null, model:null, variant:0, approved:false, referenceCount:0, prompt:null, alertMel:chars.includes("abelha")
         };
