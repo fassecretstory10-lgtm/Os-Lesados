@@ -1491,79 +1491,6 @@
       }));
       root.querySelectorAll(".archive-send").forEach(btn => btn.addEventListener("click", () => importRepoEpisode(Number(btn.dataset.ep))));
     }
-    function parseDecoupageMarkdown(markdown) {
-      const text = String(markdown || "").replace(/\r/g, "");
-      const lines = text.split("\n");
-      const entries = [];
-      let currentScene = "1", currentSceneName = "Cena 1";
-      const headingRe = /^(# CENA\s+(\d+)\s*[—-]\s*(.+)|## PLANO\s+(\d+)\s*[—-]\s*(.+)|###\s+(\d+[A-Z])\s*[·—-]\s*REFRAME\s*[—-]\s*(.+))$/i;
-      for (let i = 0; i < lines.length; i++) {
-        const m = lines[i].match(headingRe);
-        if (!m) continue;
-        if (m[2]) { currentScene = m[2]; currentSceneName = m[3].trim(); continue; }
-        if (m[4]) entries.push({ kind: "master", id: String(m[4]).padStart(2,"0"), title: m[5].trim(), sceneId: currentScene, sceneName: currentSceneName, start: i, end: lines.length });
-        else if (m[6]) entries.push({ kind: "reframe", id: m[6].toLowerCase(), title: m[7].trim(), sceneId: currentScene, sceneName: currentSceneName, start: i, end: lines.length });
-      }
-      if (!entries.length) return [];
-      for (let i = 0; i < entries.length; i++) {
-        for (let j = i + 1; j < entries.length; j++) {
-          if (entries[j].start > entries[i].start) { entries[i].end = entries[j].start; break; }
-        }
-      }
-      const fold = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      const canonical = Object.entries(charById).map(([id, ch]) => ({ id, name: ch.name || id, folded: fold(ch.name || id) }));
-      const promptBlock = (body, label) => {
-        const re = new RegExp("\\*\\*" + label + "\\*\\*\\s*\\n([\\s\\S]*?)(?=\\n\\*\\*[^\\n]+\\*\\*|\\n### |\\n## PLANO|\\n# CENA|$)", "i");
-        const match = body.match(re);
-        return match ? match[1].split("\n").map(line => line.replace(/^>\s?/, "").trim()).filter(Boolean).join("\n").trim() : "";
-      };
-      const dialogueFrom = body => {
-        const matches = [...body.matchAll(/^\*\*([^*:\n]{2,50}):\*\*\s*(.+)$/gm)];
-        if (!matches.length) return null;
-        const m = matches[0], speaker = m[1].trim();
-        const line = m[2].trim().replace(/^«|»$/g, "").replace(/^["“]|["”]$/g, "");
-        if (!line || /^(?:prompt|origem|tipo|duração estimada|câmara|personagens):?$/i.test(speaker)) return null;
-        const hit = canonical.find(ch => fold(speaker) === fold(ch.id) || fold(speaker) === ch.folded || ch.folded.includes(fold(speaker)) || fold(speaker).includes(ch.folded));
-        return { char: hit ? hit.id : speaker, line, paren: "" };
-      };
-      return entries.map((entry, index) => {
-        const body = lines.slice(entry.start + 1, entry.end).join("\n");
-        const meta = body.match(/\*\*Duração estimada:\*\*\s*(\d+)(?:\s*[–-]\s*(\d+))?\s*s/i);
-        const duration = meta ? Math.max(1, Math.min(8, Math.round((Number(meta[1]) + Number(meta[2] || meta[1])) / 2))) : 5;
-        const cameraMeta = body.match(/\*\*Câmara:\*\*\s*([^·\n]+)/i);
-        const shot = cameraMeta ? cameraMeta[1].trim() : (entry.kind === "reframe" ? "Plano médio / close-up" : "Plano geral");
-        const motion = /tracking|acompanha|dolly|push-in|zoom|pan|whip/i.test(shot) ? shot : "STATIC";
-        let imagePrompt = promptBlock(body, entry.kind === "reframe" ? "Prompt de reframe" : "Prompt de imagem");
-        let animationPrompt = promptBlock(body, "Prompt de animação");
-        if (!imagePrompt && entry.kind === "reframe") imagePrompt = "Reframe digital do plano-mestre " + String(entry.id.match(/^\d+/)?.[0] || "").padStart(2,"0") + ", preservando identidade, roupa, luz, posições e eixo de câmara. Composição centrada em " + entry.title + ".";
-        const dialogue = dialogueFrom(body);
-        if (!animationPrompt) animationPrompt = dialogue
-          ? ("Animate this " + (entry.kind === "reframe" ? "reframe" : "master shot") + " in a restrained 2D sitcom style. " + dialogue.char + " says exactly: “" + dialogue.line + "”. Natural European Portuguese (PT-PT) delivery, clear lip sync, preserve the established camera axis, identity, costume and positions. Do not add dialogue or new actions.")
-          : ("Animate the specific action established by the approved image prompt for “" + entry.title + "”. Preserve the canonical character designs, clothing, location, lighting and camera axis. Keep the movement concise and filmable; do not invent dialogue, props, characters or extra gags.");
-        const haystack = fold(entry.title + " " + entry.sceneName + " " + body);
-        const locText = fold(entry.sceneName + " " + entry.title);
-        const location = /gabinete|secretaria|secretário/.test(locText) ? "Gabinete do Diretor"
-          : /corredor|saida|saída/.test(locText) ? "Corredor de Bastidores"
-          : /rececao|recepção|torniquete|hall/.test(locText) ? "Hall TVI (receção)"
-          : /exterior|fachada|entrada da tvi/.test(locText) ? "Exterior da TVI"
-          : /estudio|estúdio|palco/.test(locText) ? "Estúdio Central"
-          : entry.sceneName;
-        const chars = canonical.filter(ch => haystack.includes(ch.folded) || haystack.includes(fold(ch.id))).map(ch => ch.id);
-        const actionStart = body.match(/\*\*Ação:\*\*\s*([\s\S]*?)(?=\n\*\*Prompt|\n### |$)/i);
-        const action = actionStart ? actionStart[1].replace(/\n+/g, " ").trim()
-          : (animationPrompt || imagePrompt || (entry.kind === "reframe" ? "Reenquadramento do plano-mestre para cobrir a fala ou reação indicada." : "Estabelecer a composição, a ação principal e a continuidade descritas no prompt de produção.")).slice(0,1800);
-        const masterId = entry.kind === "reframe" ? entry.id.match(/^\d+/)?.[0] : null;
-        return {
-          id: entry.id, sceneId: "cena-" + entry.sceneId, title: entry.title,
-          type: entry.kind === "reframe" ? "REFRAME" : "MASTER FRAME",
-          location, duration, shot, camera: motion, characters: chars,
-          action, dialogue, reframeOf: entry.kind === "reframe" ? String(masterId || "").padStart(2,"0") : null,
-          imagePrompt, animationPrompt, prompt: imagePrompt || null,
-          timecode: "", imageUrl: null, model: null, variant: 0, approved: false, referenceCount: 0,
-          clipApproved: false, alertMel: chars.includes("abelha")
-        };
-      });
-    }
     function importRepoEpisode(number) {
       const source = REPO_EPISODES.find(item => item.number === Number(number));
       if (!source) return status("Episódio não encontrado no arquivo.", "error");
@@ -1573,23 +1500,18 @@
       if (!Array.isArray(season.episodes)) season.episodes = [];
       const existing = season.episodes.find(item => Number(item.repoEpisodeNumber) === Number(number));
       if (existing) {
-        // Repara importações antigas que converteram cada secção da ficha num único plano genérico.
-        const parsed = source.decoupageContent ? parseDecoupageMarkdown(source.decoupageContent) : [];
-        const needsDecoupageRepair = !Array.isArray(existing.scenes) || existing.scenes.length < 5 ||
-          existing.scenes.some(s => !String(s.imagePrompt || "").trim() || !String(s.animationPrompt || "").trim());
-        if (parsed.length >= 5 && needsDecoupageRepair) {
-          existing.scenes = parsed;
-          existing.sourceScript = source.decoupageContent || source.content;
-          existing.sourceFicha = source.content;
+        // Atualiza a fonte de verdade; a estrutura antiga não é apresentada como decupagem final.
+        existing.sourceScript = source.decoupageContent || source.content;
+        existing.sourceFicha = source.content;
+        if (!Array.isArray(existing.scenes) || existing.scenes.length < 5 ||
+            existing.scenes.some(s => !String(s.imagePrompt || "").trim() || !String(s.animationPrompt || "").trim())) {
           existing.decoupageApproved = false;
-          existing.scenes.forEach(s => { s.sv = existing.storyVersion || 1; s.prompt = s.imagePrompt || buildPrompt(s); });
-          status("Importação antiga corrigida: a decupagem detalhada do repositório foi carregada.", "success");
         }
         state.currentSeason = season.id;
         state.currentEpisode = existing.id;
         state.currentScene = existing.scenes && existing.scenes[0] ? existing.scenes[0].id : null;
         save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("script");
-        return status("Episódio preparado. A decupagem detalhada está disponível para revisão.", "success");
+        return status("Guião carregado. Na aba Decupagem, clica em «Gerar decupagem completa com IA» para criar os planos de produção.", "success");
       }
       const clean = value => String(value || "").replace(/\r/g, "").trim();
       const headingMatches = [...source.content.matchAll(/^(#{2,3})\s+(.+)$/gm)];
@@ -1669,8 +1591,7 @@
         scene.prompt = buildPrompt(scene);
         return scene;
       });
-      const parsedDecoupage = source.decoupageContent ? parseDecoupageMarkdown(source.decoupageContent) : [];
-      const scenes = parsedDecoupage.length >= 5 ? parsedDecoupage : fallbackScenes;
+      const scenes = fallbackScenes;
       const premiseMatch = source.content.match(/## Premissa\s*\n([\s\S]*?)(?=\n## |\n### |$)/i);
       const premise = clean(premiseMatch && premiseMatch[1] ? premiseMatch[1] : source.title).replace(/\n+/g," ").slice(0,1200);
       const episode = {
@@ -1827,8 +1748,9 @@
       const scenes = ep.scenes || [];
       const labelFor = (s, i) => { const m = String(s?.id || "").match(/^(\d+)([a-z])?$/i); return m ? String(m[1]).padStart(2, "0") + (m[2] || "").toUpperCase() : String(i + 1).padStart(2, "0"); };
       const ready = scenes.length >= 5 && scenes.every(s => String(s.location || "").trim() && String(s.action || "").trim() && String(s.shot || "").trim() && String(s.camera || "").trim() && String(s.imagePrompt || s.prompt || "").trim() && String(s.animationPrompt || "").trim() && Number(s.duration || 0) > 0 && Number(s.duration || 0) <= 8);
-      let html = `<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história numa sequência de cenas e planos filmáveis. Revê cada enquadramento, ação, fala e duração. A aprovação desbloqueia o Pipeline.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-success" id="generateDecoupageBtn">Gerar decupagem completa com IA</button><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, a decupagem precisa de pelo menos 5 planos e cada plano deve ter localização, ação, enquadramento, câmara, prompt de imagem, prompt de animação e duração entre 1 e 8 segundos.</p>' : ""}</div>`;
-      if (!scenes.length) html += '<div class="empty">Ainda não existem planos para decupar.</div>';
+      let html = `<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história aprovada numa sequência de planos filmáveis. A estrutura inicial não é uma decupagem final: gera a decupagem completa com IA, revê os enquadramentos, ações, diálogos e prompts, e só depois aprova.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-success" id="generateDecoupageBtn">Gerar decupagem completa com IA</button><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, a decupagem precisa de pelo menos 5 planos e cada plano deve ter localização, ação, enquadramento, câmara, prompt de imagem, prompt de animação e duração entre 1 e 8 segundos.</p>' : ""}</div>`;
+      if (ep.importedFromArchive && scenes.length < 5) html += '<div class="audit warning"><strong>Estrutura inicial, não decupagem final.</strong><br>Os planos abaixo são apenas placeholders extraídos da ficha. Usa «Gerar decupagem completa com IA» para criar a cobertura real, os reframes necessários e os prompts de imagem/animação.</div>';
+      else if (!scenes.length) html += '<div class="empty">Ainda não existem planos para decupar.</div>';
       scenes.forEach((s, i) => {
         const code = labelFor(s, i);
         html += `<div class="box" style="margin-top:14px;"><h3 style="color:var(--canon);margin-bottom:10px;">CENA ${esc(String(s.sceneId || ("cena-" + (i+1))).replace(/^cena[\s-]*/i,"").padStart(2,"0"))} · ${s.type === "REFRAME" ? "REFRAME" : "PLANO"} ${code} <span class="meta">${esc(s.title || "")}</span></h3><div class="grid-summary"><div class="field"><label>Nome do plano</label><input data-shot-field="title" data-shot-id="${esc(s.id)}" value="${esc(s.title||"")}" /></div><div class="field"><label>Localização</label><input data-shot-field="location" data-shot-id="${esc(s.id)}" value="${esc(s.location||"")}" /></div><div class="field"><label>Enquadramento</label><input data-shot-field="shot" data-shot-id="${esc(s.id)}" value="${esc(s.shot||"")}" placeholder="Plano geral, médio, close-up..." /></div><div class="field"><label>Movimento de câmara</label><input data-shot-field="camera" data-shot-id="${esc(s.id)}" value="${esc(s.camera||"")}" placeholder="STATIC, DOLLY IN, PAN..." /></div><div class="field"><label>Duração (segundos)</label><input type="number" min="1" max="8" data-shot-field="duration" data-shot-id="${esc(s.id)}" value="${Number(s.duration||6)}" /></div></div><div class="field"><label>Ação visual e continuidade</label><textarea data-shot-field="action" data-shot-id="${esc(s.id)}">${esc(s.action||"")}</textarea></div>${s.dialogue ? `<div class="field"><label>Diálogo · ${esc(charById[s.dialogue.char]?.name || s.dialogue.char)}</label><textarea data-dialogue-field="line" data-shot-id="${esc(s.id)}">${esc(s.dialogue.line||"")}</textarea><label>Intenção / expressão</label><input data-dialogue-field="paren" data-shot-id="${esc(s.id)}" value="${esc(s.dialogue.paren||"")}" /></div>` : '<p class="meta">Sem diálogo associado a este plano.</p>'}<details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de imagem</summary><textarea data-shot-field="imagePrompt" data-shot-id="${esc(s.id)}" placeholder="Prompt de imagem específico para este plano...">${esc(s.imagePrompt || s.prompt || "")}</textarea></details><details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de animação</summary><textarea data-shot-field="animationPrompt" data-shot-id="${esc(s.id)}" placeholder="Movimento, acting, timing, fala exata e som...">${esc(s.animationPrompt || "")}</textarea></details><div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}${s.reframeOf ? " · reframe do plano " + esc(s.reframeOf) : ""}</div></div>`;
