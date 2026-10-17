@@ -205,13 +205,15 @@ app.post("/api/decoupage/generate", async (req, res) => {
 ELENCO CANÓNICO DISPONÍVEL:
 ${castText}
 REGRAS OBRIGATÓRIAS:
-- Responde em português europeu (PT-PT), incluindo falas e instruções. Mantém nomes e diálogos do guião exatamente como estão; nunca inventes nem reescrevas falas aprovadas.
+- Escreve em português europeu (PT-PT) tudo o que é produção e interface: títulos, ação, intenção, localização, notas. Mantém nomes e diálogos do guião exatamente como estão; nunca inventes nem reescrevas falas aprovadas.
+- EXCEÇÃO OBRIGATÓRIA: imagePrompt e animationPrompt escrevem-se SEMPRE em inglês, e os campos shot e camera usam vocabulário técnico inglês (ex.: "MEDIUM SHOT", "SLOW PUSH IN"). Vão diretos para os modelos de imagem e de vídeo, que não interpretam português.
 - Preserva a ordem causal, todas as cenas importantes, ações, entradas, saídas, gags, revelações e o final do guião. Não mudes a história.
 - Divide em cenas identificadas por sceneId e planos individualizados. Cada plano deve ter ação específica, enquadramento e prompt de animação concreto. Não devolvas três blocos genéricos para uma história completa.
 - Usa um MASTER FRAME para estabelecer cada espaço e posições. Depois cria reframes apenas para cobrir falas, reações ou ações que realmente precisem de enquadramento próprio. Não inventes reframes decorativos.
 - Se houver diálogo, dá cobertura filmável: quem fala, reação de quem ouve quando narrativamente necessária, eixo de câmara e eyelines consistentes. Não repitas a mesma fala em vários planos.
 - Mantém planos curtos (1–8 segundos), com duração coerente com ação e diálogo. A soma deve aproximar-se da duração-alvo sem acelerar falas impossivelmente.
-- imagePrompt deve ser um prompt de imagem autónomo, específico à composição e ao cenário; animationPrompt deve descrever movimento, acting, timing, diálogo exato e som. Nunca escrevas apenas “imagem por gerar”.
+- imagePrompt: prompt para o NANO BANANA PRO (Gemini 3 Pro Image). UM parágrafo corrido em inglês, em linguagem natural — o modelo segue melhor frases do que listas de etiquetas. Cobre: assunto e ação; localização e adereços; composição e enquadramento; ângulo e lente; iluminação; estilo de sitcom 2D animada (contornos pretos grossos, flat cel shading, 16:9); e o que deve ser mantido das imagens de referência (rosto, cabelo, guarda-roupa, cenário). Fecha com as proibições: pessoas reais, render fotorrealista ou 3D, logótipos, marcas de água, texto legível, balões de fala, adereços novos, figurinos alterados. Nunca escrevas apenas "imagem por gerar".
+- animationPrompt: prompt de image-to-video para o OMNI FLASH (gemini-omni-1.1-flash), que recebe o still aprovado como PRIMEIRO frame. Um bloco em inglês, em linhas, com: uma só ação contínua e legível (orçamento de movimento, sem cortes); a câmara; o estado final quando o plano tem movimento; o ambiente sonoro; e as falas. As falas citam-se exatamente como no guião, em português europeu, marcadas como "Spoken dialogue (European Portuguese, exact words, lip-synced)". Não redesenhes a imagem: o still fixa aparência, cenário e luz — o prompt só descreve movimento e limites.
 - Em reframes, reframeOf deve apontar para o id do respetivo master; characters contém IDs canónicos quando conhecidos. Para extras sem ID canónico, dialogueChar pode ser o nome do papel.
 - Não adiciones narradores, personagens, falas, figurinos, objetos ou piadas que não existam no guião.
 - Usa um número de planos adequado à complexidade e duração; não há contagem fixa. Uma sequência de diálogo pode reutilizar o master e ter closes seletivos; uma ação física que exige composição própria pode justificar um plano adicional.
@@ -262,6 +264,135 @@ Cria a decupagem completa. Inclui cada beat narrativo do texto, com os diálogos
   } catch (e) {
     console.error("[decoupage/generate]", e);
     res.status(e?.httpStatus || 500).json({ ok: false, error: e.message || "Não foi possível gerar a decupagem." });
+  }
+});
+
+// Prompts técnicos em inglês para planos que já existem (estruturas importadas
+// do arquivo, ou planos revistos à mão). Reescreve apenas imagePrompt e
+// animationPrompt: não toca em ação, falas, duração nem enquadramento.
+// Imagem -> Nano Banana Pro (Gemini 3 Pro Image); animação -> Omni Flash.
+app.post("/api/prompts/optimize", async (req, res) => {
+  try {
+    const { episodeName, scenes = [] } = req.body || {};
+    const list = (Array.isArray(scenes) ? scenes : []).filter(s => s && s.id);
+    if (!list.length) return res.status(400).json({ ok: false, error: "Sem planos para otimizar." });
+    if (list.length > 40) return res.status(400).json({ ok: false, error: "Demasiados planos de uma vez (máximo 40)." });
+    const textRouter = await import("./text-providers/index.mjs");
+    if (!textRouter.isConfigured()) {
+      return res.status(503).json({ ok: false, error: "A otimização de prompts está indisponível: não há provider de texto configurado no .env." });
+    }
+    const schema = {
+      type: "object",
+      properties: {
+        prompts: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "string" },
+              imagePrompt: { type: "string" },
+              animationPrompt: { type: "string" }
+            },
+            required: ["id", "imagePrompt", "animationPrompt"]
+          }
+        }
+      },
+      required: ["prompts"]
+    };
+    const system = `És diretor de arte e realizador de OS LESADOS, sitcom de animação satírica portuguesa em 2D. Recebes planos de uma decupagem já fechada (em português) e devolves, para cada plano, dois prompts técnicos EM INGLÊS:
+1) imagePrompt — para o NANO BANANA PRO (Gemini 3 Pro Image), que vai gerar o still.
+2) animationPrompt — para o OMNI FLASH (gemini-omni-1.1-flash), que vai animar esse still como PRIMEIRO frame.
+REGRAS OBRIGATÓRIAS:
+- Escreve TUDO em inglês. A única exceção são as falas citadas, que ficam exatamente em português europeu.
+- Devolve um objeto por plano, com o mesmo id recebido, pela mesma ordem. Não juntes nem dividas planos e não inventes planos novos.
+- Não inventes personagens, adereços, ações, falas ou mudanças de cenário que não estejam no plano. Traduz a ação para inglês sem a alterar e sem a resumir.
+- imagePrompt: um parágrafo corrido em linguagem natural — o Nano Banana Pro segue melhor frases do que listas de etiquetas. Cobre: assunto e ação; localização e adereços; composição e enquadramento; ângulo e lente; iluminação; estilo (2D animated TV sitcom, thick uniform black outlines, flat cel shading with one hard shadow step, saturated characters on a slightly desaturated background, 16:9 broadcast framing); e o que deve ser mantido das imagens de referência anexadas (rosto, cabelo, guarda-roupa, cenário). Fecha a proibir explicitamente: real people, photorealistic or 3D rendering, logos, watermarks, readable text, speech balloons, new props, changed costumes, extra limbs or fingers, cropped heads or crowns.
+- animationPrompt: um bloco em inglês, em linhas, com: uma só ação contínua e legível (motion budget, sem cortes); a câmara e o enquadramento; o estado final quando o plano tem movimento; o ambiente sonoro (sem música e sem narração); e as falas. Marca as falas exatamente assim: "Spoken dialogue (European Portuguese, exact words, lip-synced):" seguido de Nome: "fala". Se não houver falas, escreve apenas "No dialogue in this shot.".
+- Não redesenhes a imagem no animationPrompt: o still fixa aparência, cenário e luz; o prompt só descreve movimento, limites e som.
+- Num establishing de exterior sem personagens, o imagePrompt não pode ter pessoas e o animationPrompt não pode ter falas.
+- Sê conciso: no máximo 110 palavras por prompt. Sem preâmbulos, sem comentários, só o texto do prompt.`;
+    const buildUser = (batch) => `EPISÓDIO: ${String(episodeName || "Sem título").slice(0, 160)}
+PLANOS (${batch.length}):
+${batch.map(s => {
+      const dlg = Array.isArray(s.dialogueLines) ? s.dialogueLines : [];
+      return [
+        `--- PLANO id: ${String(s.id)}`,
+        `tipo: ${String(s.type || "PLANO")}`,
+        `local (português, a traduzir): ${String(s.location || "—")}`,
+        `enquadramento: ${String(s.shot || "—")}`,
+        `câmara: ${String(s.camera || "—")}`,
+        `duração: ${Number(s.duration) || 5}s`,
+        s.reframeOf ? `reframe do plano: ${String(s.reframeOf)}` : "",
+        `personagens: ${(Array.isArray(s.characters) ? s.characters : []).join("; ") || "nenhuma"}`,
+        `ação (português, a traduzir para inglês): ${String(s.action || "—")}`,
+        dlg.length
+          ? `falas (manter em português europeu, exatas):\n${dlg.map(l => `  ${l.char || "?"}: «${l.line}»`).join("\n")}`
+          : "falas: nenhuma"
+      ].filter(Boolean).join("\n");
+    }).join("\n\n")}
+
+Escreve os dois prompts em inglês para cada um dos ${batch.length} planos.`;
+    // Os modelos pequenos saturam quando lhes pedimos 13 planos de uma vez (o
+    // JSON sai truncado e perdem-se planos), por isso vamos em lotes pequenos.
+    const BATCH_SIZE = Math.max(1, Math.min(8, Number(process.env.PROMPT_BATCH_SIZE || 2)));
+    const batches = [];
+    for (let i = 0; i < list.length; i += BATCH_SIZE) batches.push(list.slice(i, i + BATCH_SIZE));
+    const byId = new Map();
+    let usedProvider = null;
+    let usedModel = null;
+    const failures = [];
+    const runBatch = async (batch) => {
+      const result = await textRouter.generateJSON({ system, user: buildUser(batch), schema, schemaName: "prompts" });
+      usedProvider = usedProvider || result.provider;
+      usedModel = usedModel || result.model;
+      const raw = result.data;
+      // Aceita { prompts: [...] }, um array de topo, ou um único objeto — os
+      // modelos pequenos devolvem cada uma destas formas.
+      const got = Array.isArray(raw) ? raw
+        : Array.isArray(raw?.prompts) ? raw.prompts
+        : Array.isArray(raw?.planos) ? raw.planos
+        : (raw && raw.id ? [raw] : []);
+      for (const p of got) if (p && p.id) byId.set(String(p.id), p);
+    };
+    // 1.ª passagem, em lotes.
+    for (const batch of batches) {
+      try {
+        await runBatch(batch);
+      } catch (e) {
+        failures.push(`lote ${batch.map(s => s.id).join("/")}: ${e.message}`);
+      }
+    }
+    const complete = (s) => {
+      const p = byId.get(String(s.id));
+      return Boolean(p && String(p.imagePrompt || "").trim() && String(p.animationPrompt || "").trim());
+    };
+    // 2.ª passagem: os planos que os lotes perderam voltam a ser pedidos um a
+    // um (é assim que se fecha o episódio todo sem intervir à mão).
+    for (const scene of list.filter(s => !complete(s))) {
+      try {
+        await runBatch([scene]);
+      } catch (e) {
+        failures.push(`plano ${scene.id}: ${e.message}`);
+      }
+    }
+    const prompts = list.map(s => {
+      const p = byId.get(String(s.id));
+      return {
+        id: String(s.id),
+        imagePrompt: String(p?.imagePrompt || "").trim(),
+        animationPrompt: String(p?.animationPrompt || "").trim()
+      };
+    });
+    const missing = prompts.filter(p => !p.imagePrompt || !p.animationPrompt).map(p => p.id);
+    if (missing.length === prompts.length) {
+      console.warn("[prompts/optimize] nenhum prompt utilizável. Falhas:", failures.join(" | ") || "(sem erro registado)");
+      return res.status(502).json({ ok: false, error: "A IA não devolveu prompts utilizáveis. Tenta novamente." });
+    }
+    if (failures.length) console.warn("[prompts/optimize] lotes com falha:", failures.join(" | "));
+    res.json({ ok: true, prompts, missing, provider: usedProvider, model: usedModel });
+  } catch (e) {
+    console.error("[prompts/optimize]", e);
+    res.status(e?.httpStatus || 500).json({ ok: false, error: e.message || "Não foi possível otimizar os prompts." });
   }
 });
 
