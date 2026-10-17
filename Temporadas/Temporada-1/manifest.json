@@ -68,6 +68,15 @@
       "status": "Primeira versão, por aprovar",
       "path": "Temporadas/Temporada-1/episodio-09-o-lancamento-naval.md",
       "kind": "guião"
+    },
+    {
+      "number": 10,
+      "title": "A Sucessora Oficial",
+      "status": "Guião e decupagem completos para produção",
+      "path": "Temporadas/Temporada-1/episodio-10-a-sucessora-oficial.md",
+      "kind": "guião",
+      "decoupagePath": "docs/episodios/T1E10-a-sucessora-oficial-decupagem.md",
+      "decoupageStatus": "Completa"
     }
   ]
 }
