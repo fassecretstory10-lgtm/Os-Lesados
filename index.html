@@ -1491,6 +1491,69 @@
       }));
       root.querySelectorAll(".archive-send").forEach(btn => btn.addEventListener("click", () => importRepoEpisode(Number(btn.dataset.ep))));
     }
+    function parseDecoupageMarkdown(markdown) {
+      const text = String(markdown || "").replace(/\r/g, "");
+      const lines = text.split("\n");
+      const entries = [];
+      let currentScene = "1", currentSceneName = "Cena 1";
+      const headingRe = /^(# CENA\s+(\d+)\s*[—-]\s*(.+)|## PLANO\s+(\d+)\s*[—-]\s*(.+)|###\s+(\d+[A-Z])\s*[·—-]\s*REFRAME\s*[—-]\s*(.+))$/i;
+      for (let i = 0; i < lines.length; i++) {
+        const m = lines[i].match(headingRe);
+        if (!m) continue;
+        if (m[2]) { currentScene = m[2]; currentSceneName = m[3].trim(); continue; }
+        if (m[4]) entries.push({ kind: "master", id: String(m[4]).padStart(2,"0"), title: m[5].trim(), sceneId: currentScene, sceneName: currentSceneName, start: i, end: lines.length });
+        else if (m[6]) entries.push({ kind: "reframe", id: m[6].toLowerCase(), title: m[7].trim(), sceneId: currentScene, sceneName: currentSceneName, start: i, end: lines.length });
+      }
+      if (!entries.length) return [];
+      for (let i = 0; i < entries.length; i++) {
+        for (let j = i + 1; j < entries.length; j++) {
+          if (entries[j].start > entries[i].start) { entries[i].end = entries[j].start; break; }
+        }
+      }
+      const fold = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      const canonical = Object.entries(charById).map(([id, ch]) => ({ id, name: ch.name || id, folded: fold(ch.name || id) }));
+      const promptBlock = (body, label) => {
+        const re = new RegExp("\\*\\*" + label + "\\*\\*\\s*\\n([\\s\\S]*?)(?=\\n\\*\\*[^\\n]+\\*\\*|\\n### |\\n## PLANO|\\n# CENA|$)", "i");
+        const match = body.match(re);
+        return match ? match[1].split("\n").map(line => line.replace(/^>\s?/, "").trim()).filter(Boolean).join("\n").trim() : "";
+      };
+      const dialogueFrom = body => {
+        const matches = [...body.matchAll(/^\\*\\*([^*:\\n]{2,50}):\\*\\*\\s*(.+)$/gm)];
+        if (!matches.length) return null;
+        const m = matches[0], speaker = m[1].trim();
+        const line = m[2].trim().replace(/^«|»$/g, "").replace(/^["“]|["”]$/g, "");
+        if (!line || /^(?:prompt|origem|tipo|duração estimada|câmara|personagens):?$/i.test(speaker)) return null;
+        const hit = canonical.find(ch => fold(speaker) === fold(ch.id) || fold(speaker) === ch.folded || ch.folded.includes(fold(speaker)) || fold(speaker).includes(ch.folded));
+        return { char: hit ? hit.id : speaker, line, paren: "" };
+      };
+      return entries.map((entry, index) => {
+        const body = lines.slice(entry.start + 1, entry.end).join("\n");
+        const meta = body.match(/\*\*Duração estimada:\*\*\s*(\d+)(?:\s*[–-]\s*(\d+))?\s*s/i);
+        const duration = meta ? Math.max(1, Math.min(8, Math.round((Number(meta[1]) + Number(meta[2] || meta[1])) / 2))) : 5;
+        const cameraMeta = body.match(/\*\*Câmara:\*\*\s*([^·\n]+)/i);
+        const shot = cameraMeta ? cameraMeta[1].trim() : (entry.kind === "reframe" ? "Plano médio / close-up" : "Plano geral");
+        const motion = /tracking|acompanha|dolly|push-in|zoom|pan|whip/i.test(shot) ? shot : "STATIC";
+        let imagePrompt = promptBlock(body, entry.kind === "reframe" ? "Prompt de reframe" : "Prompt de imagem");
+        let animationPrompt = promptBlock(body, "Prompt de animação");
+        if (!imagePrompt && entry.kind === "reframe") imagePrompt = "Reframe digital do plano-mestre, preservando identidade, roupa, luz, posições e eixo de câmara.";
+        const dialogue = dialogueFrom(body);
+        const haystack = fold(entry.title + " " + entry.sceneName + " " + body);
+        const chars = canonical.filter(ch => haystack.includes(ch.folded) || haystack.includes(fold(ch.id))).map(ch => ch.id);
+        const actionStart = body.match(/\*\*Ação:\*\*\s*([\s\S]*?)(?=\n\*\*Prompt|\n### |$)/i);
+        const action = actionStart ? actionStart[1].replace(/\n+/g, " ").trim()
+          : (animationPrompt || (entry.kind === "reframe" ? "Reenquadramento do plano-mestre para cobrir a fala ou reação indicada." : "Estabelecer a composição, a ação principal e a continuidade descritas no prompt de produção.")).slice(0,1800);
+        const masterId = entry.kind === "reframe" ? entry.id.match(/^\d+/)?.[0] : null;
+        return {
+          id: entry.id, sceneId: "cena-" + entry.sceneId, title: entry.title,
+          type: entry.kind === "reframe" ? "REFRAME" : "MASTER FRAME",
+          location: entry.sceneName, duration, shot, camera: motion, characters: chars,
+          action, dialogue, reframeOf: entry.kind === "reframe" ? String(masterId || "").padStart(2,"0") : null,
+          imagePrompt, animationPrompt, prompt: imagePrompt || null,
+          timecode: "", imageUrl: null, model: null, variant: 0, approved: false, referenceCount: 0,
+          clipApproved: false, alertMel: chars.includes("abelha")
+        };
+      });
+    }
     function importRepoEpisode(number) {
       const source = REPO_EPISODES.find(item => item.number === Number(number));
       if (!source) return status("Episódio não encontrado no arquivo.", "error");
@@ -1555,7 +1618,7 @@
         });
       };
       let time = 0;
-      const scenes = blocks.map((block, i) => {
+      const fallbackScenes = blocks.map((block, i) => {
         const body = clean(block.body);
         const lines = [...body.matchAll(/^\s*\*\*([^*]+):\*\*\s*(.+)$/gm)];
         const bulletLines = [...body.matchAll(/^\s*-\s*([^:\n]{2,45}):\s*[“"]?([^\n”"]+)[”"]?\s*$/gm)];
@@ -1584,12 +1647,14 @@
         scene.prompt = buildPrompt(scene);
         return scene;
       });
+      const parsedDecoupage = source.decoupageContent ? parseDecoupageMarkdown(source.decoupageContent) : [];
+      const scenes = parsedDecoupage.length >= 5 ? parsedDecoupage : fallbackScenes;
       const premiseMatch = source.content.match(/## Premissa\s*\n([\s\S]*?)(?=\n## |\n### |$)/i);
       const premise = clean(premiseMatch && premiseMatch[1] ? premiseMatch[1] : source.title).replace(/\n+/g," ").slice(0,1200);
       const episode = {
         id:"repo-s1-ep-"+number, number:Number(number), name:source.title, premise,
         season:1, story:null, scenes, narration:null, tagScene:null, coldOpen:null,
-        repoEpisodeNumber:Number(number), repoStatus:source.status, sourceScript:source.content,
+        repoEpisodeNumber:Number(number), repoStatus:source.status, sourceScript:source.decoupageContent || source.content, sourceFicha:source.content,
         sourceKind:source.kind, importedFromArchive:true
       };
       episode.audit = [];
