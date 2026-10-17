@@ -1541,6 +1541,13 @@
           ? ("Animate this " + (entry.kind === "reframe" ? "reframe" : "master shot") + " in a restrained 2D sitcom style. " + dialogue.char + " says exactly: “" + dialogue.line + "”. Natural European Portuguese (PT-PT) delivery, clear lip sync, preserve the established camera axis, identity, costume and positions. Do not add dialogue or new actions.")
           : ("Animate the specific action established by the approved image prompt for “" + entry.title + "”. Preserve the canonical character designs, clothing, location, lighting and camera axis. Keep the movement concise and filmable; do not invent dialogue, props, characters or extra gags.");
         const haystack = fold(entry.title + " " + entry.sceneName + " " + body);
+        const locText = fold(entry.sceneName + " " + entry.title);
+        const location = /gabinete|secretaria|secretário/.test(locText) ? "Gabinete do Diretor"
+          : /corredor|saida|saída/.test(locText) ? "Corredor de Bastidores"
+          : /rececao|recepção|torniquete|hall/.test(locText) ? "Hall TVI (receção)"
+          : /exterior|fachada|entrada da tvi/.test(locText) ? "Exterior da TVI"
+          : /estudio|estúdio|palco/.test(locText) ? "Estúdio Central"
+          : entry.sceneName;
         const chars = canonical.filter(ch => haystack.includes(ch.folded) || haystack.includes(fold(ch.id))).map(ch => ch.id);
         const actionStart = body.match(/\*\*Ação:\*\*\s*([\s\S]*?)(?=\n\*\*Prompt|\n### |$)/i);
         const action = actionStart ? actionStart[1].replace(/\n+/g, " ").trim()
@@ -1549,7 +1556,7 @@
         return {
           id: entry.id, sceneId: "cena-" + entry.sceneId, title: entry.title,
           type: entry.kind === "reframe" ? "REFRAME" : "MASTER FRAME",
-          location: entry.sceneName, duration, shot, camera: motion, characters: chars,
+          location, duration, shot, camera: motion, characters: chars,
           action, dialogue, reframeOf: entry.kind === "reframe" ? String(masterId || "").padStart(2,"0") : null,
           imagePrompt, animationPrompt, prompt: imagePrompt || null,
           timecode: "", imageUrl: null, model: null, variant: 0, approved: false, referenceCount: 0,
