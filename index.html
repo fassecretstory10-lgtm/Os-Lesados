@@ -1797,7 +1797,7 @@
           ...detectCast((ep.name || "") + " " + (ep.premise || "")),
           ...(ep.scenes || []).flatMap(s => s.characters || [])
         ])].filter(id => charById[id]);
-        const duration = Number(ep.runtime?.seconds) || (ep.scenes || []).reduce((sum,s)=>sum+Number(s.duration||0),0) || 150;
+        const duration = Number(ep.runtime?.seconds) > 45 ? Number(ep.runtime.seconds) : (ep.importedFromArchive ? 150 : ((ep.scenes || []).reduce((sum,s)=>sum+Number(s.duration||0),0) || 150));
         const response = await fetch(`${backendUrl()}/decoupage/generate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
