@@ -596,11 +596,104 @@
       $("premise").value = idea.premise;
       status("Sugestão gerada: nome + premissa.", "success");
     }
+    // Localizações canónicas em inglês. Só servem os prompts: a interface e o
+    // matching de referências (context/backgrounds) continuam a usar os nomes
+    // portugueses, que são as chaves do manifest.
+    const LOCATION_EN = [
+      [/^Monte do Coxa/i, "the Monte do Coxa estate in the Alentejo countryside"],
+      [/^Hall TVI.*torniquete/i, "the TVI headquarters entrance hall, with the reception desk and electronic access turnstiles"],
+      [/^Hall TVI.*balc[ãa]o/i, "the TVI headquarters reception desk and counter"],
+      [/^Hall TVI/i, "the TVI headquarters reception lobby"],
+      [/^Entrada TVI/i, "the TVI headquarters entrance floor"],
+      [/^Corredor de Bastidores/i, "the TVI backstage corridor"],
+      [/^Camarim/i, "a TVI dressing room with a lit mirror"],
+      [/^Gabinete do Diretor.*master angle/i, "the station director's office in a wide master angle: the door, the desk and the wall of television monitors"],
+      [/^Gabinete do Diretor.*SOLO/i, "the station director's office, the desk and the wall of television monitors, seen from the side where he monitors and decides"],
+      [/^Gabinete do Diretor/i, "the station director's office, corporate side: sofa, desk and the wall of television monitors"],
+      [/^Exterior TVI.*a[ée]rea|^Exterior TVI.*torre/i, "the television headquarters tower, seen from the air"],
+      [/^Exterior Tininha/i, "the rival television building's exterior"],
+      [/^Exterior (da Esta[çc][ãa]o|TVI)/i, "the exterior of the Portuguese television broadcasting headquarters, modern glass and stone facade, daytime"],
+      [/^Est[úu]dio Central/i, "the main television studio set, with cameras and a lit stage"],
+      [/^Sala de Controlo|^R[ée]gie/i, "the television control room (régie), with its wall of monitors and mixing desk"],
+      [/^Escrit[óo]rio Secreto da Guilhermina/i, "Guilhermina's secret office, with her throne"],
+      [/^Escrit[óo]rio da Tininha.*Secret[áa]ria/i, "Tininha's office desk"],
+      [/^Escrit[óo]rio da Tininha/i, "Tininha's office, with her desk and shelving"],
+      [/^Sala de Reuni[õo]es.*[Ll]ado da equipa/i, "the Secret Story meeting room, seen from the production team's side"],
+      [/^Sala de Reuni[õo]es/i, "the Secret Story meeting room"],
+      [/^O Covil/i, "the lair interior"],
+      [/^Placar TVI/i, "a TVI rankings board"],
+      [/^Logo TVI/i, "the TVI logo signage"],
+      [/^Placa /i, "a television station door sign"],
+    ];
+    function locationEn(loc) {
+      const raw = String(loc || "").trim();
+      if (!raw) return "a Portuguese television station interior";
+      for (const [re, en] of LOCATION_EN) if (re.test(raw)) return en;
+      return raw;
+    }
+    // Ação para os prompts: usa a versão inglesa quando o plano já foi
+    // otimizado; caso contrário, o texto do guião (ainda em português).
+    function actionForPrompt(scene) {
+      return sanitize(scene.actionEn || scene.action || "");
+    }
+    // Heurística de controlo: o prompt ainda contém a ação do guião em
+    // português? Testar contra nomes de personagens daria falsos positivos
+    // («Guilhermina I de Portugal» tem "de"), por isso procuramos antes uma
+    // sequência de palavras da própria ação dentro do prompt.
+    function normalizeForMatch(s) {
+      return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
+    }
+    // Nomes próprios são iguais em português e em inglês: tiram-se da ação antes
+    // de comparar, senão «Teresa Guilhermina I de Portugal» acusava falso positivo.
+    let _charNamesNorm = null;
+    function charNamesNorm() {
+      if (!_charNamesNorm) {
+        _charNamesNorm = Object.values(charById).map(c => normalizeForMatch(c.name)).filter(n => n.split(" ").length > 1).sort((a, b) => b.length - a.length);
+      }
+      return _charNamesNorm;
+    }
+    function promptNeedsEnglish(scene) {
+      // As falas citadas são português legítimo (o OMNI FLASH precisa delas
+      // exatas), por isso saem da comparação antes de testar.
+      const raw = `${scene.imagePrompt || scene.prompt || ""} ${scene.animationPrompt || ""}`.replace(/"[^"]*"/g, " ").replace(/«[^»]*»/g, " ");
+      const prompt = normalizeForMatch(raw);
+      if (!prompt) return true;
+      let action = normalizeForMatch(scene.action || "");
+      for (const name of charNamesNorm()) action = action.split(name).join(" ");
+      const words = action.replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
+      if (words.length < 4) return false;
+      for (let i = 0; i + 4 <= words.length; i++) {
+        if (prompt.indexOf(words.slice(i, i + 4).join(" ")) !== -1) return true;
+      }
+      return false;
+    }
+    // Prompt de imagem — Nano Banana Pro (Gemini 3 Pro Image). Este modelo segue
+    // melhor linguagem natural contínua do que listas de etiquetas, por isso o
+    // prompt é um parágrafo corrido em inglês: assunto, ação, local e adereços,
+    // composição, luz, estilo e o que vem das imagens de referência.
     function buildPrompt(scene) {
-      const visuals = (scene.characters || []).map(id => charById[id]?.visual).filter(Boolean).join(" ");
-      const continuity = scene.reframeOf ? `VISUAL CONTINUITY: same location, lighting, costumes and character positions as take ${scene.reframeOf}. Only camera framing changes. ` : "";
-      const mel = scene.alertMel ? "MANDATORY GRAPHIC OVERLAY: a yellow/honey-colored sensationalist lower-third with dripping honey effect at the bottom of the frame with exact text ALERTA MEL. Do not rename it. Do not make it a physical object. Characters do not look at it unless explicitly requested. " : "";
-      return `${continuity}2D satirical animation, thick black outlines, vibrant colors, professional TV cartoon, Looney Tunes slapstick energy, 16:9, high detail. Shot: ${scene.shot}. Camera movement: ${scene.camera}. Location: ${sanitize(scene.location)}. Characters: ${visuals || "environment detail only, no people"}. Action: ${sanitize(scene.action)}. ${mel}Negative: no real people, no logos, no extra text, no changed costumes, no new props, no dialogue bubbles.`;
+      const cast = (scene.characters || []).map(id => charById[id]).filter(c => c && c.visual && !/voice-over only/i.test(c.visual));
+      const castText = cast.length
+        ? cast.map(c => `${c.name} (${c.visual.trim().replace(/\.\s*$/, "")})`).join("; ")
+        : "no characters in frame, environment only";
+      const speakers = [...new Set(sceneLines(scene).map(l => charById[l.char]?.name || l.char))].join(" and ");
+      const continuity = scene.reframeOf
+        ? `This is a reframe of shot ${scene.reframeOf}: same set, same light direction, same wardrobe and the same character positions — only the framing changes. `
+        : "";
+      const mel = scene.alertMel
+        ? "Add a mandatory sensationalist lower-third graphic overlay in yellow and honey tones with dripping honey, carrying exactly the text ALERTA MEL; it is a broadcast graphic, not a physical object, and the characters do not look at it. "
+        : "";
+      return `${continuity}A single frame of a 2D satirical animated TV sitcom: clean cartoon style, thick uniform black outlines, flat cel shading with one hard shadow step, saturated characters against a slightly desaturated background, 16:9 broadcast framing. ` +
+        `Scene: ${locationEn(scene.location)}. ` +
+        `Shot: ${scene.shot || "MEDIUM SHOT"}, ${scene.camera || "STATIC"}, eye level, 24-70mm studio feel. ` +
+        `Action: ${actionForPrompt(scene)} ` +
+        `Characters in frame: ${castText}. Keep their faces, hairstyles, wardrobe and crown exactly as in the attached character reference sheets; do not restyle, age or redesign them. ` +
+        (speakers ? `They are mid-conversation with ${speakers}: mouths at speaking position and eyelines towards each other. ` : "") +
+        `Composition: readable staging, clear foreground and background separation, nothing covering the faces. ` +
+        `Lighting: warm three-point daytime-TV lighting (3200-4500K), soft key and fill, gentle rim separation, identical light direction across every reframe of this scene. ` +
+        `Use the attached background reference only for set layout, props and colour palette. ` +
+        `${mel}` +
+        `Do not include: real people, photorealistic or 3D rendering, logos, watermarks, captions or any other readable text beyond what is explicitly requested, speech balloons, new props, changed costumes, extra limbs or fingers, cropped heads or crowns.`;
     }
     // Falas de um take. Um plano pode cobrir várias falas (um master frame que
     // aguenta um diálogo inteiro). `dialogue` mantém-se como a primeira fala,
@@ -616,16 +709,10 @@
       scene.dialogue = lines.length ? { char: lines[0].char, paren: lines[0].paren || "", line: lines[0].line } : null;
       return lines;
     }
-    // Prompt de animação mínimo, para a estrutura inicial do import já ser
-    // filmável e aprovável sem IA.
+    // Prompt de animação mínimo para a estrutura inicial do import já ser
+    // filmável e aprovável sem IA. É o mesmo construtor do separador Video.
     function buildLocalAnimationPrompt(scene) {
-      const lines = sceneLines(scene);
-      const cast = (scene.characters || []).map(id => charById[id]?.name || id);
-      const spoken = lines.length
-        ? "Dialogue in European Portuguese (PT-PT), exact words: " + lines.map(l => `"${sanitize(l.line)}"`).join(" ") + " "
-        : "No dialogue in this shot. ";
-      const cam = scene.camera && scene.camera !== "STATIC" ? `Camera: ${scene.camera}, motivated only by the action. ` : "Camera locked off. ";
-      return `Animate: ${sanitize(scene.action)} ${cam}${spoken}Characters: ${cast.join(", ") || "no characters"}. Keep the established character designs, wardrobe, spatial geography and eyelines consistent with the reference. Natural lip sync and restrained body language. Ambient television-station sound. No extra dialogue, no added characters or props.`;
+      return buildVideoPrompt(scene);
     }
     // Deteta personagens mencionadas na premissa (ordem de aparição).
     const CAST_KEYWORDS = [
@@ -1849,19 +1936,36 @@
       const scenes = ep.scenes || [];
       const labelFor = (s, i) => { const m = String(s?.id || "").match(/^(\d+)([a-z])?$/i); return m ? String(m[1]).padStart(2, "0") + (m[2] || "").toUpperCase() : String(i + 1).padStart(2, "0"); };
       const ready = scenes.length >= 5 && scenes.every(s => String(s.location || "").trim() && String(s.action || "").trim() && String(s.shot || "").trim() && String(s.camera || "").trim() && String(s.imagePrompt || s.prompt || "").trim() && String(s.animationPrompt || "").trim() && Number(s.duration || 0) > 0 && Number(s.duration || 0) <= 8);
-      let html = `<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história aprovada numa sequência de planos filmáveis. A estrutura inicial não é uma decupagem final: gera a decupagem completa com IA, revê os enquadramentos, ações, diálogos e prompts, e só depois aprova.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-success" id="generateDecoupageBtn">Gerar decupagem completa com IA</button><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, a decupagem precisa de pelo menos 5 planos e cada plano deve ter localização, ação, enquadramento, câmara, prompt de imagem, prompt de animação e duração entre 1 e 8 segundos.</p>' : ""}</div>`;
+      const pendingEn = scenes.filter(promptNeedsEnglish).length;
+      let html = `<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história aprovada numa sequência de planos filmáveis. A estrutura inicial não é uma decupagem final: gera a decupagem completa com IA, revê os enquadramentos, ações, diálogos e prompts, e só depois aprova.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-success" id="generateDecoupageBtn">Gerar decupagem completa com IA</button><button class="btn" id="optimizePromptsBtn">Gerar prompts em inglês (Nano Banana Pro + Omni Flash)</button><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, a decupagem precisa de pelo menos 5 planos e cada plano deve ter localização, ação, enquadramento, câmara, prompt de imagem, prompt de animação e duração entre 1 e 8 segundos.</p>' : ""}${pendingEn ? `<p class="meta" style="margin-top:8px;">⚠️ ${pendingEn} de ${scenes.length} planos têm prompts por traduzir (ainda contêm português). Usa «Gerar prompts em inglês» para os reescrever para o Nano Banana Pro (imagem) e o OMNI FLASH (animação).</p>` : ""}</div>`;
       if (ep.importedFromArchive && scenes.length < 5) html += '<div class="audit warning"><strong>Estrutura inicial, não decupagem final.</strong><br>Os planos abaixo foram decompostos automaticamente a partir do guião: um master frame por cena e reframes apenas onde o diálogo o exige. Revê enquadramentos, ações e falas — ou usa «Gerar decupagem completa com IA» para a cobertura completa.</div>';
       else if (!scenes.length) html += '<div class="empty">Ainda não existem planos para decupar.</div>';
       scenes.forEach((s, i) => {
         const code = labelFor(s, i);
         const dls = sceneLines(s);
-        html += `<div class="box" style="margin-top:14px;"><h3 style="color:var(--canon);margin-bottom:10px;">CENA ${esc(String(s.sceneId || ("cena-" + (i+1))).replace(/^cena[\s-]*/i,"").padStart(2,"0"))} · ${s.type === "REFRAME" ? "REFRAME" : "PLANO"} ${code} <span class="meta">${esc(s.title || "")}</span></h3><div class="grid-summary"><div class="field"><label>Nome do plano</label><input data-shot-field="title" data-shot-id="${esc(s.id)}" value="${esc(s.title||"")}" /></div><div class="field"><label>Localização</label><input data-shot-field="location" data-shot-id="${esc(s.id)}" value="${esc(s.location||"")}" /></div><div class="field"><label>Enquadramento</label><input data-shot-field="shot" data-shot-id="${esc(s.id)}" value="${esc(s.shot||"")}" placeholder="Plano geral, médio, close-up..." /></div><div class="field"><label>Movimento de câmara</label><input data-shot-field="camera" data-shot-id="${esc(s.id)}" value="${esc(s.camera||"")}" placeholder="STATIC, DOLLY IN, PAN..." /></div><div class="field"><label>Duração (segundos)</label><input type="number" min="1" max="8" data-shot-field="duration" data-shot-id="${esc(s.id)}" value="${Number(s.duration||6)}" /></div></div><div class="field"><label>Ação visual e continuidade</label><textarea data-shot-field="action" data-shot-id="${esc(s.id)}">${esc(s.action||"")}</textarea></div>${dls.length ? dls.map((l, j) => `<div class="field"><label>Diálogo${dls.length > 1 ? " " + (j + 1) + "/" + dls.length : ""} · ${esc(charById[l.char]?.name || l.char)}</label><textarea data-dialogue-field="line" data-dialogue-index="${j}" data-shot-id="${esc(s.id)}">${esc(l.line||"")}</textarea><label>Intenção / expressão</label><input data-dialogue-field="paren" data-dialogue-index="${j}" data-shot-id="${esc(s.id)}" value="${esc(l.paren||"")}" /></div>`).join("") : '<p class="meta">Sem diálogo associado a este plano.</p>'}<details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de imagem</summary><textarea data-shot-field="imagePrompt" data-shot-id="${esc(s.id)}" placeholder="Prompt de imagem específico para este plano...">${esc(s.imagePrompt || s.prompt || "")}</textarea></details><details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de animação</summary><textarea data-shot-field="animationPrompt" data-shot-id="${esc(s.id)}" placeholder="Movimento, acting, timing, fala exata e som...">${esc(s.animationPrompt || "")}</textarea></details><div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}${s.reframeOf ? " · reframe do plano " + esc(s.reframeOf) : ""}</div></div>`;
+        html += `<div class="box" style="margin-top:14px;"><h3 style="color:var(--canon);margin-bottom:10px;">CENA ${esc(String(s.sceneId || ("cena-" + (i+1))).replace(/^cena[\s-]*/i,"").padStart(2,"0"))} · ${s.type === "REFRAME" ? "REFRAME" : "PLANO"} ${code} <span class="meta">${esc(s.title || "")}</span></h3><div class="grid-summary"><div class="field"><label>Nome do plano</label><input data-shot-field="title" data-shot-id="${esc(s.id)}" value="${esc(s.title||"")}" /></div><div class="field"><label>Localização</label><input data-shot-field="location" data-shot-id="${esc(s.id)}" value="${esc(s.location||"")}" /></div><div class="field"><label>Enquadramento</label><input data-shot-field="shot" data-shot-id="${esc(s.id)}" value="${esc(s.shot||"")}" placeholder="Plano geral, médio, close-up..." /></div><div class="field"><label>Movimento de câmara</label><input data-shot-field="camera" data-shot-id="${esc(s.id)}" value="${esc(s.camera||"")}" placeholder="STATIC, DOLLY IN, PAN..." /></div><div class="field"><label>Duração (segundos)</label><input type="number" min="1" max="8" data-shot-field="duration" data-shot-id="${esc(s.id)}" value="${Number(s.duration||6)}" /></div></div><div class="field"><label>Ação visual e continuidade</label><textarea data-shot-field="action" data-shot-id="${esc(s.id)}">${esc(s.action||"")}</textarea></div>${dls.length ? dls.map((l, j) => `<div class="field"><label>Diálogo${dls.length > 1 ? " " + (j + 1) + "/" + dls.length : ""} · ${esc(charById[l.char]?.name || l.char)}</label><textarea data-dialogue-field="line" data-dialogue-index="${j}" data-shot-id="${esc(s.id)}">${esc(l.line||"")}</textarea><label>Intenção / expressão</label><input data-dialogue-field="paren" data-dialogue-index="${j}" data-shot-id="${esc(s.id)}" value="${esc(l.paren||"")}" /></div>`).join("") : '<p class="meta">Sem diálogo associado a este plano.</p>'}${
+          promptNeedsEnglish(s) ? '<p class="meta" style="color:var(--warning);">⚠️ Prompt por traduzir — usa «Gerar prompts em inglês».</p>' : ""
+        }<details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de imagem — Nano Banana Pro (em inglês)</summary><textarea data-shot-field="imagePrompt" data-shot-id="${esc(s.id)}" placeholder="English image prompt for Nano Banana Pro...">${esc(s.imagePrompt || s.prompt || "")}</textarea></details><details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de animação — Omni Flash (em inglês)</summary><textarea data-shot-field="animationPrompt" data-shot-id="${esc(s.id)}" placeholder="English image-to-video prompt for Omni Flash...">${esc(s.animationPrompt || "")}</textarea></details><div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}${s.reframeOf ? " · reframe do plano " + esc(s.reframeOf) : ""}</div></div>`;
       });
       $("decoupageContent").innerHTML = html;
       $("generateDecoupageBtn")?.addEventListener("click", generateDecoupageWithAI);
+      $("optimizePromptsBtn")?.addEventListener("click", optimizePromptsWithAI);
       $("decoupageContent").querySelectorAll("[data-shot-field],[data-dialogue-field]").forEach(input => input.addEventListener("change", () => {
         const scene = ep.scenes.find(s => s.id === input.dataset.shotId); if (!scene) return;
-        if (input.dataset.shotField) { const field = input.dataset.shotField; scene[field] = field === "duration" ? Math.max(1, Math.min(8, Number(input.value)||1)) : input.value.trim(); if (["location","action","shot","camera","title"].includes(field)) scene.prompt = buildPrompt(scene); else if (field === "imagePrompt") scene.prompt = scene.imagePrompt || buildPrompt(scene); }
+        if (input.dataset.shotField) {
+          const field = input.dataset.shotField;
+          scene[field] = field === "duration" ? Math.max(1, Math.min(8, Number(input.value) || 1)) : input.value.trim();
+          // Mudar a composição invalida os prompts: reconstrói-os a partir do
+          // guião. Se a ação ainda estiver em português, o aviso de prompts por
+          // traduzir volta a aparecer. Título e duração não os tocam.
+          if (["location", "action", "shot", "camera"].includes(field)) {
+            scene.imagePrompt = buildPrompt(scene);
+            scene.prompt = scene.imagePrompt;
+            scene.animationPrompt = buildVideoPrompt(scene);
+          } else if (field === "imagePrompt") {
+            scene.prompt = scene.imagePrompt || buildPrompt(scene);
+          }
+        }
         else {
           const j = Number(input.dataset.dialogueIndex || 0);
           if (!Array.isArray(scene.dialogueLines) || !scene.dialogueLines.length) scene.dialogueLines = scene.dialogue ? [{ ...scene.dialogue }] : [];
@@ -1940,6 +2044,48 @@
         if (button) { button.disabled = false; button.textContent = "Gerar decupagem completa com IA"; }
       }
     }
+    // Reescreve em inglês os prompts (imagem + animação) dos planos que já
+    // existem — típicamente os que vieram do arquivo, com a ação em português.
+    // Só troca os prompts: ação, falas, duração e enquadramento ficam iguais.
+    async function optimizePromptsWithAI() {
+      if (location.protocol === "file:") return status("Para otimizar os prompts com IA, abre a aplicação através do servidor (http://localhost:8787).", "error");
+      const ep = currentEpisode();
+      if (!ep || !(ep.scenes || []).length) return status("Não há planos para otimizar.", "error");
+      const btn = $("optimizePromptsBtn");
+      if (btn) { btn.disabled = true; btn.textContent = "A escrever os prompts em inglês…"; }
+      try {
+        const payload = ep.scenes.map(s => ({
+          id: s.id, type: s.type, location: s.location, shot: s.shot, camera: s.camera,
+          duration: s.duration, reframeOf: s.reframeOf || null, action: s.action,
+          characters: (s.characters || []).map(id => charById[id]?.name || id),
+          dialogueLines: sceneLines(s).map(l => ({ char: charById[l.char]?.name || l.char, line: l.line }))
+        }));
+        const response = await fetch(`${backendUrl()}/prompts/optimize`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ episodeName: ep.name, scenes: payload })
+        });
+        const data = await safeJson(response);
+        if (!response.ok || data.ok === false) throw new Error(data.error || `HTTP ${response.status}`);
+        const byId = new Map((data.prompts || []).map(p => [String(p.id), p]));
+        let done = 0;
+        ep.scenes.forEach(s => {
+          const p = byId.get(String(s.id));
+          if (!p || (!p.imagePrompt && !p.animationPrompt)) return;
+          if (p.imagePrompt) { s.imagePrompt = p.imagePrompt; s.prompt = p.imagePrompt; }
+          if (p.animationPrompt) s.animationPrompt = p.animationPrompt;
+          done += 1;
+        });
+        save(); renderDecoupage(); renderPipeline(); updateVideoTab();
+        const missing = (data.missing || []).length ? ` Ficaram por otimizar: ${data.missing.join(", ")}.` : "";
+        status(`Prompts em inglês escritos para ${done} de ${ep.scenes.length} planos (${data.provider || "IA"}).${missing}`, done ? "success" : "error");
+      } catch (e) {
+        status("Não foi possível otimizar os prompts: " + e.message, "error");
+      } finally {
+        const b = $("optimizePromptsBtn");
+        if (b) { b.disabled = false; b.textContent = "Gerar prompts em inglês (Nano Banana Pro + Omni Flash)"; }
+      }
+    }
     function renderPipeline() {
       const ep = currentEpisode();
       if (!ep) return $("pipelineContent").innerHTML = '<div class="empty"><h3>Pipeline</h3><p>Gera um episódio.</p></div>';
@@ -1982,7 +2128,7 @@
           <h3>🎨 ${scene ? esc(scene.title) : "Seleciona um take"} ${scene?.approved ? '<span class="badge-ok">APROVADA</span>' : ""}</h3>
           ${scene ? `<div class="meta">Modelo: ${esc(scene.model || "sem geração")} · Variante: v${scene.variant || 0} · Refs: ${scene.referenceCount || 0}</div>` : ""}
           ${characterReferenceGuide}
-          <textarea class="prompt" id="promptInput">${scene ? esc(scene.prompt || "") : ""}</textarea>
+          <textarea class="prompt" id="promptInput">${scene ? esc(scene.imagePrompt || scene.prompt || "") : ""}</textarea>
           ${scene ? `<div class="field"><label>Ação do take</label><textarea class="prompt" id="actionInput" style="min-height:60px;">${esc(scene.action || "")}</textarea></div>
           <div class="field"><label>Fala (vazia = take visual)${sceneLines(scene).length > 1 ? ` — este plano cobre ${sceneLines(scene).length} falas; edita-as na Decupagem` : ""}</label><input id="lineInput" value="${esc(scene.dialogue?.line || "")}"></div>
           <div class="field"><label>Duração (s, 2–12)</label><input id="durInput" type="number" min="2" max="12" value="${Number(scene.duration || 6)}" style="max-width:90px;"></div>` : ""}
@@ -2026,7 +2172,7 @@
     // Toque localizado num take (Fase 4): recalcula auditoria+runtime do episódio
     // sem re-render e sem tocar nos outros takes. Revalida timecodes em cadeia.
       const pi = $("promptInput");
-      if (pi && scene) pi.addEventListener("input", () => { scene.prompt = pi.value; save(); });
+      if (pi && scene) pi.addEventListener("input", () => { scene.imagePrompt = pi.value; scene.prompt = pi.value; save(); });
       // Edição localizada do take (Fase 4): só este take muda; auditoria e
       // runtime recalculados sem re-render para não perder o foco.
       const ai = $("actionInput");
@@ -2121,6 +2267,20 @@
       if (scene.reframeOf) return `frame final: segura a composição final do reframe do take ${scene.reframeOf}`;
       return "frame final: segura o fim composto do movimento.";
     }
+    // Mesma decisão de endFrameHint(), mas em inglês: esta versão entra DENTRO do
+    // prompt de animação (o OMNI FLASH recebe-o em inglês). A nota de interface
+    // continua em português.
+    function endFrameHintEn(scene) {
+      const cam = scene.camera || "";
+      if (/WHIP PAN/.test(cam)) return "end with the camera already settled on the new subject after the pan.";
+      if (/TRACKING/.test(cam)) return "end with the characters advanced along the corridor, in the same location.";
+      if (/DOLLY IN|ZOOM IN/.test(cam)) return "end on a tighter framing of the subject, same setup and same light.";
+      if (/DOLLY OUT|ZOOM OUT/.test(cam)) return "end on a wider framing that reveals more of the set.";
+      if (scene.type === "INSERT") return "end on the detail settled after the action (a hand resting, a screen readable).";
+      if (scene.type === "REACTION") return "end holding the reaction at the peak of the expression.";
+      if (scene.reframeOf) return `end holding the final composition of the reframe of shot ${scene.reframeOf}.`;
+      return "end holding the composed end of the movement.";
+    }
     function buildVideoNote(scene, parentLocation) {
       const coverage = videoCoverageNote(scene.location);
       if (needsFinalFrame(scene)) {
@@ -2175,37 +2335,39 @@
       };
       return map[scene.type] || "";
     }
+    // Prompt de animação — Omni Flash (gemini-omni-1.1-flash). Modelo de vídeo
+    // image-to-video com áudio nativo: o still fixa a aparência e o prompt define
+    // o orçamento de movimento, a câmara, o estado final e as falas exatas.
     function buildVideoPrompt(scene) {
       const chars = scene.characters || [];
       const lock = chars.map(id => { const c = charById[id]; return c ? `${c.name}: ${c.visual}` : null; }).filter(Boolean);
-      const names = chars.map(id => charById[id]?.name || id).join(" + ") || "empty set";
+      const names = chars.map(id => charById[id]?.name || id).join(" + ") || "no characters";
       const parts = [];
-      parts.push(`[Character Lock — paste verbatim every clip]\n${lock.join("\n") || "No characters."}`);
-      parts.push(`Subject: ${names} in take ${scene.id} — ${sanitize(scene.location)}`);
-      let actLine = `Action: Single continuous shot, no cuts. ${sanitize(scene.action)}`;
+      parts.push(`IMAGE-TO-VIDEO - attach the approved still of shot ${scene.id} as the FIRST FRAME; it fixes appearance, identity, set and palette.`);
+      parts.push(`[Character lock - identical in every clip]\n${lock.join("\n") || `No characters in frame (${names}).`}`);
+      parts.push(`Shot: one continuous take of ${Number(scene.duration) || 5} seconds, 16:9, ${scene.shot || "MEDIUM SHOT"}, ${scene.camera || "STATIC"}, eye level, no cuts, no scene change.${shotFunction(scene) ? " Function of the shot: " + shotFunction(scene) + "." : ""}`);
+      let motion = `Motion budget - one readable action: ${actionForPrompt(scene)}`;
       const beat = actingBeat(scene);
-      if (beat) actLine += ` Acting beats (anticipation→action→follow-through): ${beat}.`;
-      actLine += " Physics: realistic mass and collision, grounded contact, no floating between contacts, no skipped motion.";
-      parts.push(actLine);
-      let sceneLine = `Scene: ${sanitize(scene.location)}. 2D satirical animation, thick black outlines, vibrant colors.`;
-      if (scene.alertMel) sceneLine += " Lower third graphic overlay with exact text ALERTA MEL in yellow/honey with dripping honey effect visible at bottom of frame.";
-      parts.push(sceneLine);
-      parts.push(`Camera: ${scene.shot}, ${scene.camera}, level horizon, 24-70mm studio feel. Duration: ${scene.duration}s. Aspect: 16:9.${shotFunction(scene) ? " Shot function: " + shotFunction(scene) + "." : ""}`);
-      parts.push("Lighting: Warm three-point daytime-TV lighting (3200K-4500K), soft key + fill, gentle rim separation. Identical light direction across reframes.");
+      if (beat) motion += ` Acting beats (anticipation, action, follow-through): ${beat}.`;
+      motion += " Physics: believable mass and contact, grounded feet, no floating, no skipped motion.";
+      parts.push(motion);
+      parts.push(`Setting: ${locationEn(scene.location)}. Keep the set, props, spatial geography and light direction exactly as in the first frame.`);
+      if (scene.alertMel) parts.push("Keep the ALERTA MEL lower-third graphic overlay visible with its exact text.");
+      if (needsFinalFrame(scene)) parts.push(`End state: ${endFrameHintEn(scene)}`);
       const vlines = sceneLines(scene);
       if (vlines.length) {
         const spoken = vlines.map(l => {
           const c = charById[l.char];
-          const who = c?.name || l.char;
-          const vox = c?.voice ? ` (voice: ${c.voice})` : "";
-          return `${who}${vox}: "${sanitize(l.line)}"`;
+          const vox = c?.voice ? ` [voice: ${c.voice}]` : "";
+          return `${c?.name || l.char}${vox}: "${sanitize(l.line)}"`;
         }).join(" / ");
-        parts.push(`Audio: Diegetic lip-sync dialogue — ${spoken} — synced lip movement, clear voice, no overlapping speech.`);
+        parts.push(`Spoken dialogue (European Portuguese, exact words, lip-synced, no paraphrasing): ${spoken}`);
       } else {
-        parts.push("Audio: Natural room tone, no music.");
+        parts.push("No dialogue in this shot.");
       }
-      parts.push("Negative: face shape changes, eye color shifts, hair length changes, outfit changes, jewelry inconsistency, extra fingers or limbs, motion-blur smearing, second scene, background change, camera cut, text, logos, watermarks (ALERTA MEL overlay excepted), real people.");
-      parts.push("Style: Looney Tunes slapstick energy meets CNN broadcast framing, professional TV cartoon, high detail.");
+      parts.push("Audio: natural ambience of the location, quiet room tone; no music, no narration, no added sound effects.");
+      parts.push("Protected details - do not change: faces, hairstyles, wardrobe, crown, props, set layout, framing, light direction and colour palette. Do not add or remove characters, do not add text, logos or watermarks, do not restyle the animation.");
+      parts.push("Style: 2D satirical TV cartoon, thick black outlines, flat cel shading, Looney Tunes slapstick energy staged with broadcast framing.");
       return parts.join("\n");
     }
     // Agrupa reframes aprovados com o take base: uma linha = um clip
