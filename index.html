@@ -1786,12 +1786,16 @@
           s.action || "",
           s.dialogue?.line ? (charById[s.dialogue.char]?.name || s.dialogue.char) + ": " + s.dialogue.line : ""
         ].filter(Boolean).join("\n")).join("\n\n");
-        const sourceScript = String(ep.sourceScript || "").trim() || [
+        const repoSource = ep.repoEpisodeNumber
+          ? REPO_EPISODES.find(item => Number(item.number) === Number(ep.repoEpisodeNumber))
+          : null;
+        const sourceScript = String(repoSource?.decoupageContent || ep.sourceScript || repoSource?.content || "").trim() || [
           "EPISÓDIO: " + ep.name,
           "PREMISSA: " + (ep.premise || ""),
           ep.story ? "ESTRUTURA NARRATIVA:\n" + JSON.stringify(ep.story, null, 2) : "",
           "CENAS E DIÁLOGOS ATUAIS:\n" + fromScenes
         ].filter(Boolean).join("\n\n");
+        if (repoSource) { ep.sourceScript = sourceScript; ep.sourceFicha = repoSource.content; }
         const castIds = [...new Set([
           ...(ep.story?.stars || []),
           ...detectCast((ep.name || "") + " " + (ep.premise || "")),
