@@ -2019,6 +2019,9 @@
         season:1, story:null, scenes, narration:null, tagScene:null, coldOpen:null,
         repoEpisodeNumber:Number(number), repoStatus:source.status, sourceScript:source.content, sourceFicha:source.content,
         sourceKind:source.kind, importedFromArchive:true, fromDecoupage:decoupageScenes.length > 0,
+        // Guardar a assinatura da decupagem usada: se o arquivo mudar, a app
+        // avisa que há uma versão mais recente para recarregar.
+        decoupageSignature: decoupageScenes.length ? decoupageSignature(source.decoupageContent) : null,
         // A decupagem do arquivo está aprovada por definição: não se pede ao
         // utilizador para a aprovar outra vez. Editar um campo volta a bloqueá-la.
         decoupageApproved: decoupageScenes.length > 0
@@ -2169,6 +2172,32 @@
       save(); renderScript();
       status("Guião aprovado. Podes gerar imagens.", "success");
     }
+    // Assinatura do texto da decupagem: serve para saber se o arquivo já tem uma
+    // versão mais recente do que a que foi importada para a produção local.
+    function decoupageSignature(text) {
+      const s = String(text || "").replace(/\s+/g, " ").trim();
+      let h = 0;
+      for (let i = 0; i < s.length; i += 1) h = (h * 31 + s.charCodeAt(i)) % 2147483647;
+      return s.length + "-" + h;
+    }
+    // O arquivo tem uma decupagem diferente da que está em produção? Sem este
+    // aviso, uma decupagem nova (ex.: planos divididos) ficava invisível para
+    // quem já tinha o episódio importado.
+    function archiveDecoupageDrift(ep) {
+      if (!ep || !ep.repoEpisodeNumber) return false;
+      const source = REPO_EPISODES.find(item => Number(item.number) === Number(ep.repoEpisodeNumber));
+      const text = String(source && source.decoupageContent || "").trim();
+      if (!text) return false;
+      if (ep.decoupageSignature) return ep.decoupageSignature !== decoupageSignature(text);
+      return true;
+    }
+    function archiveDriftBanner(ep) {
+      if (!archiveDecoupageDrift(ep)) return "";
+      return `<div class="audit warning"><strong>O arquivo tem uma decupagem mais recente deste episódio.</strong><br>Os planos que estão aqui foram importados antes dessa alteração (por exemplo, sem a divisão em frames e com takes acima de 8 segundos).<br><button class="btn btn-warning" id="reloadFromArchiveBtn" style="margin-top:10px;max-width:260px;">Recarregar do arquivo</button></div>`;
+    }
+    function wireArchiveReload(ep) {
+      $("reloadFromArchiveBtn")?.addEventListener("click", () => importRepoEpisode(Number(ep.repoEpisodeNumber)));
+    }
     function renderDecoupage() {
       const ep = currentEpisode();
       if (!ep) return $("decoupageContent").innerHTML = '<div class="empty"><h3>Decupagem</h3><p>Importa ou cria um episódio primeiro.</p></div>';
@@ -2176,7 +2205,7 @@
       const labelFor = (s, i) => { const m = String(s?.id || "").match(/^(\d+)([a-z])?$/i); return m ? String(m[1]).padStart(2, "0") + (m[2] || "").toUpperCase() : String(i + 1).padStart(2, "0"); };
       const ready = scenes.length >= 5 && scenes.every(s => String(s.location || "").trim() && String(s.action || "").trim() && String(s.shot || "").trim() && String(s.camera || "").trim() && String(s.imagePrompt || s.prompt || "").trim() && String(s.animationPrompt || "").trim() && Number(s.duration || 0) > 0 && Number(s.duration || 0) <= 8);
       const pendingEn = scenes.filter(promptNeedsEnglish).length;
-      let html = `<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história aprovada numa sequência de planos filmáveis. A estrutura inicial não é uma decupagem final: gera a decupagem completa com IA, revê os enquadramentos, ações, diálogos e prompts, e só depois aprova.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-success" id="generateDecoupageBtn">Gerar decupagem completa com IA</button><button class="btn" id="optimizePromptsBtn">Gerar prompts em inglês (Nano Banana Pro + Omni Flash)</button><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, a decupagem precisa de pelo menos 5 planos e cada plano deve ter localização, ação, enquadramento, câmara, prompt de imagem, prompt de animação e duração entre 1 e 8 segundos.</p>' : ""}${pendingEn ? `<p class="meta" style="margin-top:8px;">⚠️ ${pendingEn} de ${scenes.length} planos têm prompts por traduzir (ainda contêm português). Usa «Gerar prompts em inglês» para os reescrever para o Nano Banana Pro (imagem) e o OMNI FLASH (animação).</p>` : ""}</div>`;
+      let html = `${archiveDriftBanner(ep)}<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história aprovada numa sequência de planos filmáveis. A estrutura inicial não é uma decupagem final: gera a decupagem completa com IA, revê os enquadramentos, ações, diálogos e prompts, e só depois aprova.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-success" id="generateDecoupageBtn">Gerar decupagem completa com IA</button><button class="btn" id="optimizePromptsBtn">Gerar prompts em inglês (Nano Banana Pro + Omni Flash)</button><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, a decupagem precisa de pelo menos 5 planos e cada plano deve ter localização, ação, enquadramento, câmara, prompt de imagem, prompt de animação e duração entre 1 e 8 segundos.</p>' : ""}${pendingEn ? `<p class="meta" style="margin-top:8px;">⚠️ ${pendingEn} de ${scenes.length} planos têm prompts por traduzir (ainda contêm português). Usa «Gerar prompts em inglês» para os reescrever para o Nano Banana Pro (imagem) e o OMNI FLASH (animação).</p>` : ""}</div>`;
       if (ep.importedFromArchive && scenes.length < 5) html += '<div class="audit warning"><strong>Estrutura inicial, não decupagem final.</strong><br>Os planos abaixo foram decompostos automaticamente a partir do guião: um master frame por cena e reframes apenas onde o diálogo o exige. Revê enquadramentos, ações e falas — ou usa «Gerar decupagem completa com IA» para a cobertura completa.</div>';
       else if (!scenes.length) html += '<div class="empty">Ainda não existem planos para decupar.</div>';
       scenes.forEach((s, i) => {
@@ -2187,6 +2216,7 @@
         }<details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de imagem — Nano Banana Pro (em inglês)</summary><textarea data-shot-field="imagePrompt" data-shot-id="${esc(s.id)}" placeholder="English image prompt for Nano Banana Pro...">${esc(s.imagePrompt || s.prompt || "")}</textarea></details><details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de animação — Omni Flash (movimento, em inglês)</summary><textarea data-shot-field="animationPrompt" data-shot-id="${esc(s.id)}" placeholder="English motion for Omni Flash — the app adds the first-frame note, the exact dialogue and the locks...">${esc(s.animationPrompt || "")}</textarea></details><div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}${s.reframeOf ? " · reframe do plano " + esc(s.reframeOf) : ""}${sceneLines(s).length ? " · " + sceneLines(s).length + " fala(s): no Video entram com quem as diz, em PT-PT e com o tipo de voz" : ""}</div></div>`;
       });
       $("decoupageContent").innerHTML = html;
+      wireArchiveReload(ep);
       $("generateDecoupageBtn")?.addEventListener("click", generateDecoupageWithAI);
       $("optimizePromptsBtn")?.addEventListener("click", optimizePromptsWithAI);
       $("decoupageContent").querySelectorAll("[data-shot-field],[data-dialogue-field]").forEach(input => input.addEventListener("change", () => {
@@ -2331,7 +2361,8 @@
       const ep = currentEpisode();
       if (!ep) return $("pipelineContent").innerHTML = '<div class="empty"><h3>Pipeline</h3><p>Gera um episódio.</p></div>';
       if (!ep.decoupageApproved) {
-        $("pipelineContent").innerHTML = `<div class="empty"><h3>🔒 Pipeline bloqueado</h3><p>Antes de gerar imagens, tens de rever e aprovar a decupagem do episódio <strong>${esc(ep.name)}</strong>.</p><button class="btn btn-warning" id="goDecoupageBtn" style="max-width:360px;margin-top:12px;">Abrir decupagem</button></div>`;
+        $("pipelineContent").innerHTML = `${archiveDriftBanner(ep)}<div class="empty"><h3>🔒 Pipeline bloqueado</h3><p>Antes de gerar imagens, tens de rever e aprovar a decupagem do episódio <strong>${esc(ep.name)}</strong>.</p><button class="btn btn-warning" id="goDecoupageBtn" style="max-width:360px;margin-top:12px;">Abrir decupagem</button></div>`;
+        wireArchiveReload(ep);
         $("goDecoupageBtn")?.addEventListener("click", () => switchTab("decoupage"));
         return;
       }
@@ -2348,6 +2379,7 @@
         ? `<div class="reference-guide"><div class="reference-guide-title">Personagens de referência para este plano</div><div class="reference-guide-note">Usa as referências visuais destas personagens para manter a identidade consistente. O backend do projeto tenta anexar automaticamente os ficheiros correspondentes em <code>context/characters</code> quando geras a imagem.</div>${sceneCharacters.length ? `<div class="reference-chips">${sceneCharacters.map(ch => `<span class="reference-chip" style="background:${refColors[ch.id] || "#454560"}" title="Referência visual: ${esc(ch.name)}">${esc(ch.name)}</span>`).join("")}</div>` : '<div class="reference-empty">Este plano não tem personagens. Não precisas de referências de personagens.</div>'}</div>`
         : "";
       let html = `
+        ${archiveDriftBanner(ep)}
         <div class="summary">
           <h3>📖 ${esc(ep.name)}</h3>
           <div class="grid-summary">
@@ -2398,6 +2430,7 @@
       });
       html += "</div></div></div>";
       $("pipelineContent").innerHTML = html;
+      wireArchiveReload(ep);
 
       $("pipelineContent").querySelectorAll(".ep-item").forEach(el => el.addEventListener("click", () => {
         selectEpisode(el.dataset.ep);
