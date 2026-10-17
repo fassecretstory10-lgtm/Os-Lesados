@@ -1476,7 +1476,7 @@
     async function loadRepoEpisodes() {
       if (location.protocol === "file:") return;
       try {
-        const res = await fetch(`${backendUrl()}/episodes`, { headers: { Accept: "application/json" } });
+        const res = await fetch(`${backendUrl()}/episodes?refresh=${Date.now()}`, { cache: "no-store", headers: { Accept: "application/json", "Cache-Control": "no-cache" } });
         const data = await safeJson(res);
         if (!res.ok || data.ok === false || !Array.isArray(data.episodes)) throw new Error(data.error || "Arquivo de guiões indisponível.");
         if (data.episodes.length) REPO_EPISODES = data.episodes;
@@ -1517,18 +1517,16 @@
       if (!Array.isArray(season.episodes)) season.episodes = [];
       const existing = season.episodes.find(item => Number(item.repoEpisodeNumber) === Number(number));
       if (existing) {
-        // Atualiza a fonte de verdade; a estrutura antiga não é apresentada como decupagem final.
-        existing.sourceScript = source.decoupageContent || source.content;
-        existing.sourceFicha = source.content;
-        if (!Array.isArray(existing.scenes) || existing.scenes.length < 5 ||
-            existing.scenes.some(s => !String(s.imagePrompt || "").trim() || !String(s.animationPrompt || "").trim())) {
-          existing.decoupageApproved = false;
-        }
-        state.currentSeason = season.id;
-        state.currentEpisode = existing.id;
-        state.currentScene = existing.scenes && existing.scenes[0] ? existing.scenes[0].id : null;
-        save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("script");
-        return status("Guião carregado. Na aba Decupagem, clica em «Gerar decupagem completa com IA» para criar os planos de produção.", "success");
+        const confirmed = confirm(
+          "Este episódio já existe na produção e pode ter imagens, planos ou aprovações guardadas.\n\n" +
+          "Queres substituir a versão local pela versão mais recente do arquivo? Os planos e imagens locais deste episódio serão eliminados e terão de ser recriados."
+        );
+        if (!confirmed) return;
+        season.episodes = season.episodes.filter(item => item.id !== existing.id);
+        if (state.currentEpisode === existing.id) state.currentEpisode = null;
+        save();
+        // Reimporta a partir do conteúdo atual do arquivo, em vez de apenas trocar o texto de origem.
+        return importRepoEpisode(number);
       }
       const clean = value => String(value || "").replace(/\r/g, "").trim();
       const headingMatches = [...source.content.matchAll(/^(#{2,3})\s+(.+)$/gm)];
