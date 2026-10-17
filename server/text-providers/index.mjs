@@ -54,27 +54,44 @@ export function activeTextProviders() {
  * @param {object} args - { system, user, schema?, schemaName?, validate? }
  * gemini usa schema+schemaName; openai usa validate (função).
  */
+// Um provider lento (ex.: um modelo free enorme) não pode bloquear a app: ao
+// fim de TEXT_TIMEOUT_MS desiste-se e passa-se ao provider seguinte.
+const PROVIDER_TIMEOUT_MS = Number(process.env.TEXT_TIMEOUT_MS || 120000);
+function withTimeout(promise, name) {
+  let timer;
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      timer = setTimeout(() => {
+        const e = new Error(`tempo esgotado após ${Math.round(PROVIDER_TIMEOUT_MS / 1000)}s`);
+        e.httpStatus = 504;
+        e.provider = name;
+        reject(e);
+      }, PROVIDER_TIMEOUT_MS);
+    })
+  ]).finally(() => clearTimeout(timer));
+}
 export async function generateJSON({ system, user, schema = null, schemaName = "story", validate = null }) {
   const tried = [];
   for (const name of order()) {
     try {
       if (name === "openai") {
-        const out = await openaiText.generateJSON({ system, user, validate });
+        const out = await withTimeout(openaiText.generateJSON({ system, user, validate }), name);
         return { data: out, provider: "openai-text", model: openaiText.DEFAULT_MODEL };
       }
       if (name === "anthropic") {
-        const out = await anthropicText.generateJSON({ system, user, validate });
+        const out = await withTimeout(anthropicText.generateJSON({ system, user, validate }), name);
         return { data: out, provider: "anthropic-text", model: anthropicText.DEFAULT_MODEL };
       }
       if (name === "openrouter") {
-        const out = await openrouterText.generateJSON({ system, user, validate });
+        const out = await withTimeout(openrouterText.generateJSON({ system, user, validate }), name);
         return { data: out, provider: "openrouter-text", model: openrouterText.DEFAULT_MODEL };
       }
       if (name === "cloudflare") {
-        const out = await cloudflareText.generateJSON({ system, user, validate });
+        const out = await withTimeout(cloudflareText.generateJSON({ system, user, validate }), name);
         return { data: out, provider: "cloudflare-text", model: cloudflareText.DEFAULT_MODEL };
       }
-      const out = await geminiText.generateJSON({ system, user, schemaName, schema });
+      const out = await withTimeout(geminiText.generateJSON({ system, user, schemaName, schema }), name);
       return { data: out, provider: "gemini-text", model: geminiText.DEFAULT_MODEL };
     } catch (e) {
       tried.push(`${name}: ${e.message}`);
