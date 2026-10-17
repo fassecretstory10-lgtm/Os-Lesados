@@ -54,7 +54,7 @@ function loadApp() {
   const names = Object.keys(sandbox);
   const fn = new Function(...names, `${m[1]}; return {
     importRepoEpisode, buildPrompt, buildVideoPrompt, sceneLines, promptNeedsEnglish,
-    charById, REPO_EPISODES,
+    shotLoadWarning, shotAngleWarning, charById, REPO_EPISODES,
     get state() { return state; }
   };`);
   const api = fn(...names.map((k) => sandbox[k]));
@@ -77,31 +77,40 @@ test("um episódio com decupagem no arquivo importa os planos aprovados", () => 
   assert.equal(ep.fromDecoupage, true, "o import usa a decupagem, não o guião");
   assert.deepEqual(
     ep.scenes.map((s) => s.id),
-    ["1a", "2a", "3a", "4a", "5a", "6a", "7a", "8a", "9a"],
-    "os nove planos são os da decupagem aprovada"
+    ["1a", "2a", "2b", "2c", "3a", "4a", "5a", "6a", "6b", "7a", "8a", "9a"],
+    "os planos são os da decupagem aprovada, com a receção e o título divididos"
   );
 
   const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
   // Establishing de exterior sem personagens, com zoom in.
   assert.deepEqual(by["1a"].characters, []);
   assert.equal(by["1a"].camera, "SLOW ZOOM IN");
-  // Receção: Teresa e a rececionista, nada mais.
+  // Receção: Teresa e a rececionista, nada mais — em nenhum dos três planos.
   assert.deepEqual(by["2a"].characters, ["teresa", "rececionista"]);
+  assert.deepEqual(by["2b"].characters, ["teresa", "rececionista"]);
+  assert.deepEqual(by["2c"].characters, ["teresa", "rececionista"]);
   assert.equal(by["2a"].location, "Hall TVI (receção)");
+  assert.equal(by["2b"].location, "Hall TVI (receção)");
+  assert.equal(by["2b"].reframeOf, "2a");
   // Gabinete: master + continuações do mesmo master angle.
   assert.equal(by["4a"].reframeOf, null);
   assert.equal(by["5a"].reframeOf, "4a");
   // Zoom in final sobre Teresa.
   assert.equal(by["9a"].camera, "SLOW ZOOM IN");
 
-  // As falas aprovadas chegam intactas, com o português exato.
-  const line2a = api.sceneLines(by["2a"]).map((l) => l.line);
-  assert.deepEqual(line2a, [
+  // As falas aprovadas chegam intactas, com o português exato, e a divisão não
+  // as repete: cada fala pertence a um só plano.
+  const linesOf = (id) => api.sceneLines(by[id]).map((l) => l.line);
+  assert.deepEqual(linesOf("2a"), [
     "Desculpe, tem marcação?",
     "Tenho assuntos a tratar com o Capitão Gancho.",
+  ]);
+  assert.deepEqual(linesOf("2b"), [
     "Sem marcação não pode passar.",
     "Sabe quem eu sou? Ou já apagaram a memória desta casa?",
   ]);
+  // O salto dos torniquetes é ação, não fala.
+  assert.equal(linesOf("2c").length, 0);
 });
 
 test("os prompts só mencionam quem está visível no plano", () => {
@@ -134,12 +143,44 @@ test("o bloco positivo do prompt é inglês e mostra o início do plano", () => 
     assert.doesNotMatch(scene.imagePrompt, /torniquete|receção|salta|gabinete|corredor/);
   }
 
-  // O resultado da ação vai para o prompt de animação, não para o still.
-  assert.doesNotMatch(by["2a"].imagePrompt, /jump over the turnstile/);
-  assert.match(by["2a"].animationPrompt, /jump over the turnstile/);
+  // O resultado da ação vai para o prompt de animação, não para o still: o still
+  // de um plano de ação mostra o momento do salto, não o que vem depois.
+  assert.doesNotMatch(by["2a"].imagePrompt, /airborne|mid-jump|jump/);
+  assert.match(by["2c"].imagePrompt, /airborne mid-jump/);
+  assert.doesNotMatch(by["2c"].imagePrompt, /continues on her way|left behind/);
+  assert.match(by["2c"].animationPrompt, /clears the turnstile/);
+  assert.match(by["2c"].animationPrompt, /left behind/);
   // As falas entram no prompt de vídeo exatamente como no guião, em PT-PT.
   assert.match(api.buildVideoPrompt(by["2a"]), /Spoken dialogue \(European Portuguese PT-PT, exact words, lip-synced/);
-  assert.match(api.buildVideoPrompt(by["2a"]), /"Sabe quem eu sou\? Ou já apagaram a memória desta casa\?"/);
+  assert.match(api.buildVideoPrompt(by["2a"]), /"Tenho assuntos a tratar com o Capitão Gancho\."/);
+});
+
+test("um take aguenta duas falas e 8 s, e ângulos seguidos não se repetem", () => {
+  const { api } = loadApp();
+  const ep = importEpisode(api, 1);
+  const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
+
+  // A receção era um só plano de 12–16 s com quatro falas: passou a três planos,
+  // cada um com o seu enquadramento.
+  assert.notEqual(by["2b"].shot, by["2a"].shot, "o plano médio muda o enquadramento face ao master");
+  assert.notEqual(by["2c"].shot, by["2b"].shot, "o plano de ação muda o enquadramento face ao anterior");
+  // O salto é uma ação legível num plano próprio, com eixo lateral.
+  assert.match(by["2c"].animationPrompt, /lateral wide angle/);
+  // Nenhum take passa de duas falas nem de 8 s.
+  for (const s of ep.scenes) {
+    assert.ok(api.sceneLines(s).length <= 2, `plano ${s.id} leva no máximo duas falas`);
+    assert.ok(Number(s.duration) <= 8, `plano ${s.id} cabe nos 8 s do take`);
+  }
+  // O aviso dispara num take carregado e fica calado nos que foram divididos.
+  const loaded = { ...by["2a"], dialogueLines: [{ char: "teresa", line: "a" }, { char: "teresa", line: "b" }, { char: "teresa", line: "c" }] };
+  assert.match(api.shotLoadWarning(loaded), /3 falas/);
+  assert.equal(api.shotLoadWarning(by["2b"]), "");
+  assert.match(api.shotLoadWarning({ duration: 12 }), /pode cortar/);
+  // Repetir enquadramento e câmara no plano seguinte é sempre sinalizado.
+  assert.match(api.shotAngleWarning({ sceneId: "4", shot: "WIDE SHOT", camera: "STATIC" }, { sceneId: "4", shot: "WIDE SHOT", camera: "STATIC" }), /muda o ângulo/);
+  assert.equal(api.shotAngleWarning({ sceneId: "4", shot: "MEDIUM SHOT", camera: "STATIC" }, { sceneId: "4", shot: "WIDE SHOT", camera: "STATIC" }), "");
+  // Cenas diferentes podem repetir o eixo: são setups distintos.
+  assert.equal(api.shotAngleWarning({ sceneId: "5", shot: "WIDE SHOT", camera: "STATIC" }, { sceneId: "4", shot: "WIDE SHOT", camera: "STATIC" }), "");
 });
 
 test("o prompt de vídeo diz quem fala, o tipo de voz, e separa a voz-off", () => {
@@ -150,9 +191,13 @@ test("o prompt de vídeo diz quem fala, o tipo de voz, e separa a voz-off", () =
   // Cada fala leva quem a diz, o tipo de voz dessa personagem e o texto exato.
   const v2a = api.buildVideoPrompt(by["2a"]);
   assert.match(v2a, /- Rececionista \[[^\]]+\]: "Desculpe, tem marcação\?"/);
-  assert.match(v2a, /- Teresa Guilhermina I de Portugal \[[^\]]+\]: "Tenho assuntos a tratar com o Capitão Gancho\."/);
-  const vox = v2a.match(/- Teresa Guilhermina I de Portugal \[([^\]]+)\]/);
+  assert.match(v2a, /- Teresa \[[^\]]+\]: "Tenho assuntos a tratar com o Capitão Gancho\."/);
+  const vox = v2a.match(/- Teresa \[([^\]]+)\]/);
   assert.ok(vox && /PT-PT/.test(vox[1]), "o tipo de voz aparece entre parênteses retos e diz PT-PT");
+  // No prompt de vídeo ela é só «Teresa» (o still já traz a folha de referência);
+  // o nome completo continua no elenco e no prompt de imagem.
+  assert.doesNotMatch(v2a, /Teresa Guilhermina I de Portugal/);
+  assert.match(by["2a"].imagePrompt, /Teresa Guilhermina I de Portugal/);
 
   // A voz-off não é lip-sync: bloco próprio, sem ninguém em cena a falar.
   const v9a = api.buildVideoPrompt(by["9a"]);
