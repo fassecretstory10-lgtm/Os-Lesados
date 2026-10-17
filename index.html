@@ -1029,7 +1029,11 @@
           id, title: `Take ${i + 1} (${b.kind})`, type: "MASTER SHOT",
           location: b.loc, duration: dur, shot, camera,
           characters: chars.filter(id2 => charById[id2]),
-          action: [b.visualAction || b.does, b.result].filter(Boolean).join(" "),
+          action: [
+            b.masterFrame ? `FRAME INICIAL: ${b.masterFrame}` : "",
+            `AÇÃO: ${b.visualAction || b.does}`,
+            b.result ? `RESULTADO: ${b.result}` : ""
+          ].filter(Boolean).join(" | "),
           masterFrame: b.masterFrame || "",
           imagePrompt: b.imagePrompt || "",
           animationPrompt: b.animationPrompt || "",
