@@ -1018,7 +1018,9 @@
       const storyVersion = Number(sv) || 1;
       story.beats.forEach((b, i) => {
         const chars = b.with && b.with !== b.who ? [b.who, b.with] : [b.who];
-        const [shot, camera] = SHOT_BY_KIND[b.kind] || SHOT_BY_KIND.setup;
+        const defaults = SHOT_BY_KIND[b.kind] || SHOT_BY_KIND.setup;
+        const shot = b.shot || defaults[0];
+        const camera = b.camera || defaults[1];
         const dur = Math.min(8, Math.max(4, b.dur || 6));
         const start = t; t += dur;
         const id = `n${i + 1}`;
@@ -1027,10 +1029,13 @@
           id, title: `Take ${i + 1} (${b.kind})`, type: "MASTER SHOT",
           location: b.loc, duration: dur, shot, camera,
           characters: chars.filter(id2 => charById[id2]),
-          action: `${b.does} ${b.result}`,
+          action: [b.visualAction || b.does, b.result].filter(Boolean).join(" "),
+          masterFrame: b.masterFrame || "",
+          imagePrompt: b.imagePrompt || "",
+          animationPrompt: b.animationPrompt || "",
           dialogue: b.dialogue && b.dialogue.char && charById[b.dialogue.char]
             ? { char: b.dialogue.char, paren: b.dialogue.paren, line: b.dialogue.line } : null,
-          reversal: i === story.beats.length - 1 ? null : null,
+          reversal: null,
           reframeOf: null, timecode: `${fmt(start)} - ${fmt(t)}`,
           actLabel: b.kind === "setup" ? "ATO I — SETUP"
             : b.kind === "incident" ? "INCIDENTE INCITANTE"
@@ -1041,21 +1046,21 @@
           prompt: null, alertMel: chars.includes("abelha")
         });
         const last = scenes[scenes.length - 1];
-        if (b.reframe) {
-          const rd = Math.min(8, 5); t += rd;
+        if (b.needsReframe && b.reframeReason && b.reframeAction) {
+          const rd = 4; t += rd;
           scenes.push({
-            id: `${id}r`, title: `Take ${i + 1} reframe`, type: "REFRAME",
-            location: b.loc, duration: rd, shot: "CLOSE-UP", camera: "STATIC",
-            characters: [who],
-            action: `MESMO MOMENTO. CLOSE-UP de ${charById[who].name}: a reação decide o próximo passo.`,
-            dialogue: b.reframeDialogue && b.reframeDialogue.char && charById[b.reframeDialogue.char]
-              ? { char: b.reframeDialogue.char, paren: b.reframeDialogue.paren, line: b.reframeDialogue.line }
-              : null, reversal: null, reframeOf: id,
+            id: `${id}r`, title: `Take ${i + 1} reframe · ${b.reframeReason}`, type: "REFRAME",
+            location: b.loc, duration: rd, shot: b.reframeShot || "CLOSE-UP", camera: "ESTÁTICA",
+            characters: chars.filter(id2 => charById[id2]),
+            action: b.reframeAction,
+            imagePrompt: b.reframeImagePrompt || "",
+            animationPrompt: b.reframeAnimationPrompt || "",
+            dialogue: null, reversal: null, reframeOf: id,
             timecode: `${fmt(t - rd)} - ${fmt(t)}`,
             actLabel: null,
             imageUrl: null, model: null, variant: 0, approved: false, referenceCount: 0,
             clipApproved: false, sv: storyVersion,
-            prompt: null, alertMel: who === "abelha"
+            prompt: null, alertMel: chars.includes("abelha")
           });
         }
         last.prompt = buildPrompt(last);
@@ -1176,13 +1181,21 @@
           want: String(b.want || ""), does: String(b.does || ""), obstacle: String(b.obstacle || ""),
           result: String(b.result || ""), change: String(b.change || ""), link: String(b.link || ""),
           comic: String(b.comic || ""),
+          visualAction: String(b.visualAction || b.does || ""),
+          masterFrame: String(b.masterFrame || ""),
+          shot: String(b.shot || ""),
+          camera: String(b.camera || "ESTÁTICA"),
+          imagePrompt: String(b.imagePrompt || ""),
+          animationPrompt: String(b.animationPrompt || ""),
+          needsReframe: Boolean(b.needsReframe),
+          reframeReason: String(b.reframeReason || ""),
+          reframeShot: String(b.reframeShot || ""),
+          reframeAction: String(b.reframeAction || ""),
+          reframeImagePrompt: String(b.reframeImagePrompt || ""),
+          reframeAnimationPrompt: String(b.reframeAnimationPrompt || ""),
           dialogue: b.dialogue ? { char: who, paren: "", line: stripSpeaker(b.dialogue) } : null,
-          dur: 6, reframe: false
+          dur: 6, reframe: Boolean(b.needsReframe)
         };
-      });
-      // Reframe só com função: beat sem diálogo na mesma localização do anterior.
-      beats.forEach((b, i) => {
-        if (i > 0 && !b.dialogue && b.loc === beats[i - 1].loc) b.reframe = true;
       });
       return {
         engine: "ai", title: "", premise: sanitize(premise),
