@@ -5,10 +5,11 @@
     {
       "number": 1,
       "title": "A Rainha dos Reality-Shows",
-      "status": "Decupagem completa para produção",
+      "status": "Guião revisto · decupagem revista segundo a versão aprovada",
       "path": "Temporadas/Temporada-1/episodio-01-a-rainha-dos-reality-shows.md",
       "kind": "guião",
-      "decoupageStatus": "Por concluir"
+      "decoupagePath": "docs/episodios/T1E01-a-rainha-dos-reality-shows-decupagem.md",
+      "decoupageStatus": "Completa"
     },
     {
       "number": 2,
