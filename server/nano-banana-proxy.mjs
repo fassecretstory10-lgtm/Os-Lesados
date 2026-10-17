@@ -212,7 +212,7 @@ GUIÃO DE ORIGEM (fonte de verdade; não inventar nem corrigir silenciosamente):
 ${script.slice(0, 26000)}
 --- FIM DO GUIÃO ---
 
-Cria a decupagem completa. Inclui cada beat narrativo do texto, com os diálogos intactos e prompts úteis para produção. Se o documento de origem já contiver uma decupagem, aproveita os seus planos, diálogos e prompts em vez de substituir a intenção por uma versão genérica.`;
+Cria a decupagem completa. Inclui cada beat narrativo do texto, com os diálogos intactos e prompts úteis para produção. Se o documento de origem já contiver uma decupagem, usa-a como referência, mas faz uma revisão crítica: elimina reframes redundantes e mantém apenas os que acrescentam cobertura necessária a uma fala, reação ou ação. Não cries um reframe para cada fala por sistema. Preserva a história, os diálogos e os detalhes visuais importantes; não copies mecanicamente uma contagem excessiva de planos.`;
     const result = await textRouter.generateJSON({ system, user, schema, schemaName: "decoupage" });
     const raw = result.data;
     if (!raw || !Array.isArray(raw.scenes) || raw.scenes.length < 5) {
