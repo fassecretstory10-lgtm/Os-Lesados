@@ -1518,7 +1518,7 @@
         return match ? match[1].split("\n").map(line => line.replace(/^>\s?/, "").trim()).filter(Boolean).join("\n").trim() : "";
       };
       const dialogueFrom = body => {
-        const matches = [...body.matchAll(/^\\*\\*([^*:\\n]{2,50}):\\*\\*\\s*(.+)$/gm)];
+        const matches = [...body.matchAll(/^\*\*([^*:\n]{2,50}):\*\*\s*(.+)$/gm)];
         if (!matches.length) return null;
         const m = matches[0], speaker = m[1].trim();
         const line = m[2].trim().replace(/^«|»$/g, "").replace(/^["“]|["”]$/g, "");
@@ -1535,8 +1535,11 @@
         const motion = /tracking|acompanha|dolly|push-in|zoom|pan|whip/i.test(shot) ? shot : "STATIC";
         let imagePrompt = promptBlock(body, entry.kind === "reframe" ? "Prompt de reframe" : "Prompt de imagem");
         let animationPrompt = promptBlock(body, "Prompt de animação");
-        if (!imagePrompt && entry.kind === "reframe") imagePrompt = "Reframe digital do plano-mestre, preservando identidade, roupa, luz, posições e eixo de câmara.";
+        if (!imagePrompt && entry.kind === "reframe") imagePrompt = "Reframe digital do plano-mestre " + String(entry.id.match(/^\d+/)?.[0] || "").padStart(2,"0") + ", preservando identidade, roupa, luz, posições e eixo de câmara. Composição centrada em " + entry.title + ".";
         const dialogue = dialogueFrom(body);
+        if (!animationPrompt) animationPrompt = dialogue
+          ? ("Animate this " + (entry.kind === "reframe" ? "reframe" : "master shot") + " in a restrained 2D sitcom style. " + dialogue.char + " says exactly: “" + dialogue.line + "”. Natural European Portuguese (PT-PT) delivery, clear lip sync, preserve the established camera axis, identity, costume and positions. Do not add dialogue or new actions.")
+          : ("Animate the specific action established by the approved image prompt for “" + entry.title + "”. Preserve the canonical character designs, clothing, location, lighting and camera axis. Keep the movement concise and filmable; do not invent dialogue, props, characters or extra gags.");
         const haystack = fold(entry.title + " " + entry.sceneName + " " + body);
         const chars = canonical.filter(ch => haystack.includes(ch.folded) || haystack.includes(fold(ch.id))).map(ch => ch.id);
         const actionStart = body.match(/\*\*Ação:\*\*\s*([\s\S]*?)(?=\n\*\*Prompt|\n### |$)/i);
@@ -1804,8 +1807,8 @@
       if (!ep) return $("decoupageContent").innerHTML = '<div class="empty"><h3>Decupagem</h3><p>Importa ou cria um episódio primeiro.</p></div>';
       const scenes = ep.scenes || [];
       const labelFor = (s, i) => { const m = String(s?.id || "").match(/^(\d+)([a-z])?$/i); return m ? String(m[1]).padStart(2, "0") + (m[2] || "").toUpperCase() : String(i + 1).padStart(2, "0"); };
-      const ready = scenes.length > 0 && scenes.every(s => String(s.location || "").trim() && String(s.action || "").trim() && String(s.shot || "").trim() && String(s.camera || "").trim() && Number(s.duration || 0) > 0 && Number(s.duration || 0) <= 8);
-      let html = `<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história numa sequência de cenas e planos filmáveis. Revê cada enquadramento, ação, fala e duração. A aprovação desbloqueia o Pipeline.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-success" id="generateDecoupageBtn">Gerar decupagem completa com IA</button><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, todos os planos precisam de localização, ação, enquadramento, movimento de câmara e duração entre 1 e 8 segundos.</p>' : ""}</div>`;
+      const ready = scenes.length >= 5 && scenes.every(s => String(s.location || "").trim() && String(s.action || "").trim() && String(s.shot || "").trim() && String(s.camera || "").trim() && String(s.imagePrompt || s.prompt || "").trim() && String(s.animationPrompt || "").trim() && Number(s.duration || 0) > 0 && Number(s.duration || 0) <= 8);
+      let html = `<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história numa sequência de cenas e planos filmáveis. Revê cada enquadramento, ação, fala e duração. A aprovação desbloqueia o Pipeline.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-success" id="generateDecoupageBtn">Gerar decupagem completa com IA</button><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, a decupagem precisa de pelo menos 5 planos e cada plano deve ter localização, ação, enquadramento, câmara, prompt de imagem, prompt de animação e duração entre 1 e 8 segundos.</p>' : ""}</div>`;
       if (!scenes.length) html += '<div class="empty">Ainda não existem planos para decupar.</div>';
       scenes.forEach((s, i) => {
         const code = labelFor(s, i);
@@ -1815,14 +1818,14 @@
       $("generateDecoupageBtn")?.addEventListener("click", generateDecoupageWithAI);
       $("decoupageContent").querySelectorAll("[data-shot-field],[data-dialogue-field]").forEach(input => input.addEventListener("change", () => {
         const scene = ep.scenes.find(s => s.id === input.dataset.shotId); if (!scene) return;
-        if (input.dataset.shotField) { const field = input.dataset.shotField; scene[field] = field === "duration" ? Math.max(1, Math.min(8, Number(input.value)||1)) : input.value.trim(); if (["location","action","shot","camera","title"].includes(field)) scene.prompt = buildPrompt(scene); }
+        if (input.dataset.shotField) { const field = input.dataset.shotField; scene[field] = field === "duration" ? Math.max(1, Math.min(8, Number(input.value)||1)) : input.value.trim(); if (["location","action","shot","camera","title"].includes(field)) scene.prompt = buildPrompt(scene); else if (field === "imagePrompt") scene.prompt = scene.imagePrompt || buildPrompt(scene); }
         else if (scene.dialogue) scene.dialogue[input.dataset.dialogueField] = input.value.trim();
         ep.decoupageApproved = false; ep.scenes.forEach(s => { s.approved = false; });
         save(); renderDecoupage(); updateVideoTab();
         status("Alteração guardada. A decupagem tem de voltar a ser aprovada antes da produção.", "info");
       }));
       $("approveDecoupageBtn")?.addEventListener("click", () => {
-        const valid = ep.scenes.length > 0 && ep.scenes.every(s => String(s.location||"").trim() && String(s.action||"").trim() && String(s.shot||"").trim() && String(s.camera||"").trim() && Number(s.duration||0)>0 && Number(s.duration||0)<=8);
+        const valid = ep.scenes.length >= 5 && ep.scenes.every(s => String(s.location||"").trim() && String(s.action||"").trim() && String(s.shot||"").trim() && String(s.camera||"").trim() && String(s.imagePrompt||s.prompt||"").trim() && String(s.animationPrompt||"").trim() && Number(s.duration||0)>0 && Number(s.duration||0)<=8);
         if (!valid) return status("Há planos incompletos. Preenche localização, ação, enquadramento, câmara e duração (1–8 s).", "error");
         ep.decoupageApproved = true; save(); renderDecoupage(); renderPipeline(); status("Decupagem aprovada. O Pipeline está desbloqueado.", "success");
       });
