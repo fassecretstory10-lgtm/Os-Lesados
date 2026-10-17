@@ -141,8 +141,20 @@ export function storySchema() {
             comic: { type: "string" },
             dialogue: { type: "string" },
             location: { type: "string" },
+            visualAction: { type: "string" },
+            masterFrame: { type: "string" },
+            shot: { type: "string" },
+            camera: { type: "string" },
+            imagePrompt: { type: "string" },
+            animationPrompt: { type: "string" },
+            needsReframe: { type: "boolean" },
+            reframeReason: { type: "string" },
+            reframeShot: { type: "string" },
+            reframeAction: { type: "string" },
+            reframeImagePrompt: { type: "string" },
+            reframeAnimationPrompt: { type: "string" },
           },
-          required: ["who", "want", "does", "obstacle", "result", "change", "link", "comic"],
+          required: ["who", "want", "does", "obstacle", "result", "change", "link", "comic", "visualAction", "masterFrame", "shot", "camera", "imagePrompt", "animationPrompt", "needsReframe", "reframeReason", "reframeShot", "reframeAction", "reframeImagePrompt", "reframeAnimationPrompt"],
         },
       },
       climax: { type: "string" },
@@ -259,5 +271,11 @@ ESTRUTURA E ELENCO:
 - Números de audiência: só com métrica explícita (rating/share) ou formulação claramente ficcional; nunca misturar conceitos.
 - Decisões importantes (sobretudo do Capitão) em linguagem clara com consequência compreensível; conciso não é críptico. Capitão decide e veta recursos; Patribunal processa e sentencia — não confundir.
 - Ações filmáveis: o que se vê e ouve (expressões, gestos, objetos, reações), nunca instruções abstratas ("narrativa desmontada").
+- O guião já tem de nascer preparado para storyboard. Em CADA beat, escreve visualAction como ação física concreta, masterFrame como descrição da composição inicial (personagens, posições, cenário, objetos e eixo visual), shot como enquadramento e camera como movimento ou "estática".
+- imagePrompt tem de ser autónomo e específico para gerar o frame inicial, com composição, personagens presentes, posição no espaço, expressões, objetos, cenário e estilo 2D consistente. animationPrompt descreve apenas o que se move, acting, timing, continuidade e diálogo exato.
+- Não descrevas um plano como "a personagem reage" sem dizer o que faz fisicamente e o que vemos. Não uses um movimento de câmara só para ornamentar.
+- needsReframe só é true quando o master frame não consegue mostrar com clareza uma ação, uma reação cómica importante, um insert necessário ou uma fala que exija mudança de ponto de vista. Se false, reframeReason/reframeShot/reframeAction/reframeImagePrompt/reframeAnimationPrompt ficam strings vazias.
+- Se needsReframe=true, justifica a necessidade em reframeReason e descreve um único reframe preciso nos restantes campos. Não criar close-ups por cada fala; não repetir a mesma ação noutro enquadramento. Mantém eixo, eyelines, posições, roupa e objetos coerentes.
+- O diálogo deve estar ligado à ação que o provoca. Preserva tratamento por "você/consigo", nunca "tu". Não alterar acontecimentos já aprovados nem introduzir personagens, adereços ou gags que não foram pedidos.
 - Tag final opcional em tag {where, setup, payoff, dialogue} — integrada e contada na duração.`;
 }
