@@ -1544,7 +1544,7 @@
         const chars = canonical.filter(ch => haystack.includes(ch.folded) || haystack.includes(fold(ch.id))).map(ch => ch.id);
         const actionStart = body.match(/\*\*Ação:\*\*\s*([\s\S]*?)(?=\n\*\*Prompt|\n### |$)/i);
         const action = actionStart ? actionStart[1].replace(/\n+/g, " ").trim()
-          : (animationPrompt || (entry.kind === "reframe" ? "Reenquadramento do plano-mestre para cobrir a fala ou reação indicada." : "Estabelecer a composição, a ação principal e a continuidade descritas no prompt de produção.")).slice(0,1800);
+          : (animationPrompt || imagePrompt || (entry.kind === "reframe" ? "Reenquadramento do plano-mestre para cobrir a fala ou reação indicada." : "Estabelecer a composição, a ação principal e a continuidade descritas no prompt de produção.")).slice(0,1800);
         const masterId = entry.kind === "reframe" ? entry.id.match(/^\d+/)?.[0] : null;
         return {
           id: entry.id, sceneId: "cena-" + entry.sceneId, title: entry.title,
@@ -1566,11 +1566,23 @@
       if (!Array.isArray(season.episodes)) season.episodes = [];
       const existing = season.episodes.find(item => Number(item.repoEpisodeNumber) === Number(number));
       if (existing) {
+        // Repara importações antigas que converteram cada secção da ficha num único plano genérico.
+        const parsed = source.decoupageContent ? parseDecoupageMarkdown(source.decoupageContent) : [];
+        const needsDecoupageRepair = !Array.isArray(existing.scenes) || existing.scenes.length < 5 ||
+          existing.scenes.some(s => !String(s.imagePrompt || "").trim() || !String(s.animationPrompt || "").trim());
+        if (parsed.length >= 5 && needsDecoupageRepair) {
+          existing.scenes = parsed;
+          existing.sourceScript = source.decoupageContent || source.content;
+          existing.sourceFicha = source.content;
+          existing.decoupageApproved = false;
+          existing.scenes.forEach(s => { s.sv = existing.storyVersion || 1; s.prompt = s.imagePrompt || buildPrompt(s); });
+          status("Importação antiga corrigida: a decupagem detalhada do repositório foi carregada.", "success");
+        }
         state.currentSeason = season.id;
         state.currentEpisode = existing.id;
         state.currentScene = existing.scenes && existing.scenes[0] ? existing.scenes[0].id : null;
         save(); renderScript(); renderPipeline(); updateVideoTab(); switchTab("script");
-        return status("Este episódio já está preparado no Guião. Revê a decupagem antes de desbloquear o Pipeline.", "success");
+        return status("Episódio preparado. A decupagem detalhada está disponível para revisão.", "success");
       }
       const clean = value => String(value || "").replace(/\r/g, "").trim();
       const headingMatches = [...source.content.matchAll(/^(#{2,3})\s+(.+)$/gm)];
@@ -1812,7 +1824,7 @@
       if (!scenes.length) html += '<div class="empty">Ainda não existem planos para decupar.</div>';
       scenes.forEach((s, i) => {
         const code = labelFor(s, i);
-        html += `<div class="box" style="margin-top:14px;"><h3 style="color:var(--canon);margin-bottom:10px;">CENA ${esc(String(s.sceneId || ("cena-" + (i+1))).replace(/^cena-/i,"").padStart(2,"0"))} · ${s.type === "REFRAME" ? "REFRAME" : "PLANO"} ${code} <span class="meta">${esc(s.title || "")}</span></h3><div class="grid-summary"><div class="field"><label>Nome do plano</label><input data-shot-field="title" data-shot-id="${esc(s.id)}" value="${esc(s.title||"")}" /></div><div class="field"><label>Localização</label><input data-shot-field="location" data-shot-id="${esc(s.id)}" value="${esc(s.location||"")}" /></div><div class="field"><label>Enquadramento</label><input data-shot-field="shot" data-shot-id="${esc(s.id)}" value="${esc(s.shot||"")}" placeholder="Plano geral, médio, close-up..." /></div><div class="field"><label>Movimento de câmara</label><input data-shot-field="camera" data-shot-id="${esc(s.id)}" value="${esc(s.camera||"")}" placeholder="STATIC, DOLLY IN, PAN..." /></div><div class="field"><label>Duração (segundos)</label><input type="number" min="1" max="8" data-shot-field="duration" data-shot-id="${esc(s.id)}" value="${Number(s.duration||6)}" /></div></div><div class="field"><label>Ação visual e continuidade</label><textarea data-shot-field="action" data-shot-id="${esc(s.id)}">${esc(s.action||"")}</textarea></div>${s.dialogue ? `<div class="field"><label>Diálogo · ${esc(charById[s.dialogue.char]?.name || s.dialogue.char)}</label><textarea data-dialogue-field="line" data-shot-id="${esc(s.id)}">${esc(s.dialogue.line||"")}</textarea><label>Intenção / expressão</label><input data-dialogue-field="paren" data-shot-id="${esc(s.id)}" value="${esc(s.dialogue.paren||"")}" /></div>` : '<p class="meta">Sem diálogo associado a este plano.</p>'}<details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de imagem</summary><textarea data-shot-field="imagePrompt" data-shot-id="${esc(s.id)}" placeholder="Prompt de imagem específico para este plano...">${esc(s.imagePrompt || s.prompt || "")}</textarea></details><details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de animação</summary><textarea data-shot-field="animationPrompt" data-shot-id="${esc(s.id)}" placeholder="Movimento, acting, timing, fala exata e som...">${esc(s.animationPrompt || "")}</textarea></details><div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}${s.reframeOf ? " · reframe do plano " + esc(s.reframeOf) : ""}</div></div>`;
+        html += `<div class="box" style="margin-top:14px;"><h3 style="color:var(--canon);margin-bottom:10px;">CENA ${esc(String(s.sceneId || ("cena-" + (i+1))).replace(/^cena[\s-]*/i,"").padStart(2,"0"))} · ${s.type === "REFRAME" ? "REFRAME" : "PLANO"} ${code} <span class="meta">${esc(s.title || "")}</span></h3><div class="grid-summary"><div class="field"><label>Nome do plano</label><input data-shot-field="title" data-shot-id="${esc(s.id)}" value="${esc(s.title||"")}" /></div><div class="field"><label>Localização</label><input data-shot-field="location" data-shot-id="${esc(s.id)}" value="${esc(s.location||"")}" /></div><div class="field"><label>Enquadramento</label><input data-shot-field="shot" data-shot-id="${esc(s.id)}" value="${esc(s.shot||"")}" placeholder="Plano geral, médio, close-up..." /></div><div class="field"><label>Movimento de câmara</label><input data-shot-field="camera" data-shot-id="${esc(s.id)}" value="${esc(s.camera||"")}" placeholder="STATIC, DOLLY IN, PAN..." /></div><div class="field"><label>Duração (segundos)</label><input type="number" min="1" max="8" data-shot-field="duration" data-shot-id="${esc(s.id)}" value="${Number(s.duration||6)}" /></div></div><div class="field"><label>Ação visual e continuidade</label><textarea data-shot-field="action" data-shot-id="${esc(s.id)}">${esc(s.action||"")}</textarea></div>${s.dialogue ? `<div class="field"><label>Diálogo · ${esc(charById[s.dialogue.char]?.name || s.dialogue.char)}</label><textarea data-dialogue-field="line" data-shot-id="${esc(s.id)}">${esc(s.dialogue.line||"")}</textarea><label>Intenção / expressão</label><input data-dialogue-field="paren" data-shot-id="${esc(s.id)}" value="${esc(s.dialogue.paren||"")}" /></div>` : '<p class="meta">Sem diálogo associado a este plano.</p>'}<details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de imagem</summary><textarea data-shot-field="imagePrompt" data-shot-id="${esc(s.id)}" placeholder="Prompt de imagem específico para este plano...">${esc(s.imagePrompt || s.prompt || "")}</textarea></details><details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de animação</summary><textarea data-shot-field="animationPrompt" data-shot-id="${esc(s.id)}" placeholder="Movimento, acting, timing, fala exata e som...">${esc(s.animationPrompt || "")}</textarea></details><div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}${s.reframeOf ? " · reframe do plano " + esc(s.reframeOf) : ""}</div></div>`;
       });
       $("decoupageContent").innerHTML = html;
       $("generateDecoupageBtn")?.addEventListener("click", generateDecoupageWithAI);
