@@ -141,6 +141,119 @@ app.post("/api/test", async (req, res) => {
   }
 });
 
+// Decupagem audiovisual a partir do guião aprovado. Não gera takes genéricos a partir de uma contagem fixa.
+app.post("/api/decoupage/generate", async (req, res) => {
+  try {
+    const { episodeName, sourceScript, castIds = [], targetDuration = 150 } = req.body || {};
+    const script = String(sourceScript || "").trim();
+    if (script.length < 300) {
+      return res.status(400).json({ ok: false, error: "O guião de origem está vazio ou demasiado curto. Abre o guião completo antes de decupar." });
+    }
+    const textRouter = await import("./text-providers/index.mjs");
+    if (!textRouter.isConfigured()) {
+      return res.status(503).json({ ok: false, error: "A geração da decupagem por IA está indisponível: não há provider de texto configurado no .env." });
+    }
+    const { default: fs } = await import("node:fs");
+    const bible = JSON.parse(fs.readFileSync(path.join(ROOT, "context", "canon", "personagens.json"), "utf8"));
+    const allowed = new Set((Array.isArray(castIds) ? castIds : []).map(String));
+    const characters = (bible.characters || []).filter(c => !allowed.size || allowed.has(c.id));
+    const castText = characters.map(c => `- ID: ${c.id}; nome: ${c.name}; papel: ${c.role}; humor: ${c.humor}; limites: ${(c.limits || []).join("; ")}`).join("\n");
+    const schema = {
+      type: "object",
+      properties: {
+        summary: { type: "string" },
+        scenes: {
+          type: "array", minItems: 5, maxItems: 30,
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "string" },
+              sceneId: { type: "string" },
+              title: { type: "string" },
+              type: { type: "string", enum: ["MASTER FRAME", "REFRAME", "ACTION SHOT", "INSERT"] },
+              location: { type: "string" },
+              duration: { type: "integer", minimum: 1, maximum: 8 },
+              shot: { type: "string" },
+              camera: { type: "string" },
+              characters: { type: "array", items: { type: "string" } },
+              action: { type: "string" },
+              dialogueChar: { type: "string" },
+              dialogueLine: { type: "string" },
+              dialogueIntent: { type: "string" },
+              reframeOf: { type: "string" },
+              imagePrompt: { type: "string" },
+              animationPrompt: { type: "string" }
+            },
+            required: ["id","sceneId","title","type","location","duration","shot","camera","characters","action","dialogueChar","dialogueLine","dialogueIntent","reframeOf","imagePrompt","animationPrompt"]
+          }
+        }
+      },
+      required: ["summary","scenes"]
+    };
+    const system = `És realizador/a e supervisor/a de storyboard de OS LESADOS, sitcom animada satírica portuguesa. A tua tarefa é transformar um GUIÃO DE ORIGEM numa decupagem filmável para animação 2D, não resumir a história nem preencher campos com frases vagas.
+ELENCO CANÓNICO DISPONÍVEL:
+${castText}
+REGRAS OBRIGATÓRIAS:
+- Responde em português europeu (PT-PT), incluindo falas e instruções. Mantém nomes e diálogos do guião exatamente como estão; nunca inventes nem reescrevas falas aprovadas.
+- Preserva a ordem causal, todas as cenas importantes, ações, entradas, saídas, gags, revelações e o final do guião. Não mudes a história.
+- Divide em cenas identificadas por sceneId e planos individualizados. Cada plano deve ter ação específica, enquadramento e prompt de animação concreto. Não devolvas três blocos genéricos para uma história completa.
+- Usa um MASTER FRAME para estabelecer cada espaço e posições. Depois cria reframes apenas para cobrir falas, reações ou ações que realmente precisem de enquadramento próprio. Não inventes reframes decorativos.
+- Se houver diálogo, dá cobertura filmável: quem fala, reação de quem ouve quando narrativamente necessária, eixo de câmara e eyelines consistentes. Não repitas a mesma fala em vários planos.
+- Mantém planos curtos (1–8 segundos), com duração coerente com ação e diálogo. A soma deve aproximar-se da duração-alvo sem acelerar falas impossivelmente.
+- imagePrompt deve ser um prompt de imagem autónomo, específico à composição e ao cenário; animationPrompt deve descrever movimento, acting, timing, diálogo exato e som. Nunca escrevas apenas “imagem por gerar”.
+- Em reframes, reframeOf deve apontar para o id do respetivo master; characters contém IDs canónicos quando conhecidos. Para extras sem ID canónico, dialogueChar pode ser o nome do papel.
+- Não adiciones narradores, personagens, falas, figurinos, objetos ou piadas que não existam no guião.
+- Usa um número de planos adequado à complexidade e duração; não há contagem fixa. Uma sequência de diálogo pode reutilizar o master e ter closes seletivos; uma ação física que exige composição própria pode justificar um plano adicional.
+- A primeira cena deve começar exatamente onde o guião começa e o último plano deve respeitar exatamente o final escrito.`;
+    const user = `EPISÓDIO: ${String(episodeName || "Sem título").slice(0,160)}
+DURAÇÃO-ALVO: aproximadamente ${Math.max(30, Math.min(300, Number(targetDuration) || 150))} segundos.
+GUIÃO DE ORIGEM (fonte de verdade; não inventar nem corrigir silenciosamente):
+--- INÍCIO DO GUIÃO ---
+${script.slice(0, 26000)}
+--- FIM DO GUIÃO ---
+
+Cria a decupagem completa. Inclui cada beat narrativo do texto, com os diálogos intactos e prompts úteis para produção. Se o documento de origem já contiver uma decupagem, aproveita os seus planos, diálogos e prompts em vez de substituir a intenção por uma versão genérica.`;
+    const result = await textRouter.generateJSON({ system, user, schema, schemaName: "decoupage" });
+    const raw = result.data;
+    if (!raw || !Array.isArray(raw.scenes) || raw.scenes.length < 5) {
+      return res.status(502).json({ ok: false, error: "A IA devolveu uma decupagem incompleta (menos de 5 planos). Tenta novamente." });
+    }
+    const validIds = new Set(characters.map(c => c.id));
+    const scenes = raw.scenes.map((s, i) => {
+      const id = String(s.id || `p${i+1}`);
+      const dialogue = String(s.dialogueLine || "").trim()
+        ? { char: String(s.dialogueChar || "").trim(), line: String(s.dialogueLine).trim(), paren: String(s.dialogueIntent || "").trim() }
+        : null;
+      return {
+        id,
+        sceneId: String(s.sceneId || `cena-${i+1}`),
+        title: String(s.title || `Plano ${i+1}`).trim(),
+        type: ["MASTER FRAME","REFRAME","ACTION SHOT","INSERT"].includes(s.type) ? s.type : "MASTER FRAME",
+        location: String(s.location || "").trim(),
+        duration: Math.max(1, Math.min(8, Math.round(Number(s.duration) || 5))),
+        shot: String(s.shot || "").trim(),
+        camera: String(s.camera || "").trim(),
+        characters: (Array.isArray(s.characters) ? s.characters : []).map(String).filter(id2 => validIds.has(id2)),
+        action: String(s.action || "").trim(),
+        dialogue,
+        reframeOf: String(s.reframeOf || "").trim() || null,
+        imagePrompt: String(s.imagePrompt || "").trim(),
+        animationPrompt: String(s.animationPrompt || "").trim(),
+        imageUrl: null, model: null, variant: 0, approved: false, referenceCount: 0,
+        clipApproved: false, prompt: null
+      };
+    });
+    const incomplete = scenes.findIndex(s => !s.location || !s.shot || !s.camera || !s.action || !s.imagePrompt || !s.animationPrompt);
+    if (incomplete >= 0) {
+      return res.status(502).json({ ok: false, error: `A decupagem gerada tem campos de produção em falta no plano ${incomplete+1}. Tenta novamente para evitar aprovar planos vazios.` });
+    }
+    res.json({ ok: true, summary: String(raw.summary || ""), scenes, provider: result.provider, model: result.model });
+  } catch (e) {
+    console.error("[decoupage/generate]", e);
+    res.status(e?.httpStatus || 500).json({ ok: false, error: e.message || "Não foi possível gerar a decupagem." });
+  }
+});
+
 app.post("/api/generate-image", async (req, res) => {
   try {
     const { prompt, model, sceneContext = {}, references = [], provider } = req.body || {};
