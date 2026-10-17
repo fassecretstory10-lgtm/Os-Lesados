@@ -3,20 +3,22 @@
 ## Temporada 1 · Episódio 1 — A Rainha dos Reality-Shows
 ### Guião técnico e decupagem de produção
 
-**Estado:** decupagem revista segundo o guião aprovado  
+**Estado:** consolidada segundo a versão aprovada  
 **Idioma:** português europeu (PT-PT)  
 **Estilo:** sitcom de animação 2D  
-**Duração:** curta; ajustar à interpretação e montagem, sem alongar artificialmente as cenas.
+**Duração-alvo:** 60–90 segundos; durações por plano indicativas, ajustadas à interpretação e montagem.
 
 ## Regras de realização obrigatórias
 
-1. **Todos os episódios começam com um establishing shot sem personagens visíveis.** O plano apresenta o local e a atmosfera. Pode ter um ligeiro zoom in. Não incluir personagens, diálogo ou narração.
-2. Depois do establishing shot, usar um master frame para introduzir a ação e as personagens.
-3. Reutilizar os master frames e cenários existentes. Não criar novas imagens ou reframes sem necessidade narrativa.
-4. No gabinete do Capitão Gancho, usar o **master angle existente**, que permite ver todas as personagens. Para os diálogos, os únicos ângulos adicionais são o plano de Capitão Gancho sentado na cadeira e o inverso de Teresa. Não criar shot-reverse-shot automático para cada fala.
-5. Preservar geografia, posições, direção dos olhares, iluminação, mobiliário, roupa e desenho das personagens.
-6. Todas as falas são em PT-PT. Não adicionar narração da Abelha Maia; a personagem não aparece neste episódio.
-7. A duração dos planos é indicativa. Priorizar o ritmo da comédia e não multiplicar planos para preencher tempo.
+1. O episódio começa com um establishing shot do exterior da TVI sem personagens, diálogo ou voz off. Aplicar um ligeiro zoom in.
+2. Reutilizar os master frames, referências de personagens e cenários existentes. Não criar novas imagens ou reframes sem necessidade narrativa.
+3. No gabinete do Capitão Gancho, usar o master angle existente como plano principal. Os ângulos adicionais de diálogo disponíveis são o plano do Capitão sentado e o inverso de Teresa.
+4. Não criar shot/reverse-shot automático para cada fala. Um plano de reação só é necessário quando uma expressão for importante para a piada ou para a emoção.
+5. Ações físicas, em particular o salto dos torniquetes, têm de ser legíveis. Só criar um plano adicional se o master não mostrar a ação com clareza.
+6. Preservar geografia, posições, direção dos olhares, iluminação, mobiliário, roupa e desenho das personagens.
+7. Todas as falas são em PT-PT. Não adicionar narração da Abelha Maia; a personagem não aparece neste episódio.
+8. O título da nova edição é revelado verbalmente. A pasta é um adereço natural; não é necessário um grande plano nem texto legível.
+9. Priorizar ritmo rápido e pausas curtas. O momento emocional da fã é a pausa mais prolongada do episódio.
 
 ---
 
@@ -27,59 +29,48 @@
 ## PLANO 01 — Establishing shot da TVI
 
 **01A · ESTABLISHING SHOT**  
-**Duração estimada:** 3–5 s  
+**Duração estimada:** 4–5 s  
 **Câmara:** plano geral com ligeiro zoom in  
 **Personagens:** nenhuma
 
 **Prompt de imagem**
-> Wide establishing shot of the exterior entrance of a Portuguese television broadcasting headquarters, modern glass and stone facade, recognizable television-studio entrance, daytime, clean 2D sitcom animation style, cinematic but simple composition, no people, no characters, no silhouettes, no readable text, 16:9.
+> Wide establishing shot of the exterior entrance of a Portuguese television broadcasting headquarters, modern glass and stone facade, television-studio entrance, daytime, clean 2D sitcom animation style, simple cinematic composition, no people, no characters, no silhouettes, no readable text, 16:9.
 
 **Prompt de animação**
-> Hold on the empty exterior of the television headquarters. Apply a very subtle slow zoom-in to establish the location. Only minimal environmental movement, if any. No characters enter the frame. No dialogue, no voice-over, no music cue required.
+> Hold on the empty exterior of the television headquarters. Apply a very subtle slow zoom-in to establish the location. Only minimal environmental movement, if any. No characters enter the frame. No dialogue, no voice-over and no music cue required.
+
+**Transição:** corte direto para Teresa a entrar no edifício.
 
 ---
 
-# CENA 2 — INT. RECEÇÃO E ACESSOS DA TVI — DIA
+# CENA 2 — INT. ENTRADA, RECEÇÃO E ACESSOS DA TVI — DIA
 
 **Objetivo:** apresentar Teresa e mostrar, através de comédia física, que já não tem os privilégios que espera.
 
-## PLANO 02 — Teresa chega à receção
+## PLANO 02 — Teresa chega à receção e salta os torniquetes
 
-**02A · MASTER FRAME**  
-**Duração estimada:** 5–7 s  
-**Câmara:** plano geral da receção  
-**Personagens:** Teresa, rececionista
-
-**Prompt de imagem**
-> Wide master shot of a modern Portuguese television station reception lobby. Clearly show the reception desk, receptionist, electronic access turnstiles and entrance in one coherent composition. Teresa approaches with a regal, self-important posture, wearing her established character design, outfit and crown. Clean 2D sitcom animation style, readable staging, 16:9.
-
-**Prompt de animação**
-> Teresa approaches the reception desk with the confidence of someone who expects to be recognized immediately. The receptionist looks up and addresses her calmly. Keep the action simple and readable, with no unnecessary camera cuts. European Portuguese dialogue.
-
-**RECECIONISTA:** «Bom dia. Tem marcação?»
-
-**TERESA:** «Sabe quem eu sou?»
-
-**RECECIONISTA:** «Sem marcação, não posso deixá-la passar.»
-
-Teresa olha para a rececionista, incrédula, como se tivesse acabado de ouvir uma ofensa pessoal.
-
-## PLANO 03 — Teresa salta os torniquetes
-
-**03A · MASTER FRAME / IMAGEM DE AÇÃO**  
-**Duração estimada:** 4–7 s  
-**Câmara:** plano geral que mostre a ação completa  
-**Personagens:** Teresa; rececionista visível ao fundo
+**02A · MASTER FRAME DA RECEÇÃO**  
+**Duração estimada:** 12–16 s  
+**Câmara:** plano geral que inclua entrada, receção, rececionista e torniquetes  
+**Personagens:** Teresa e rececionista
 
 **Prompt de imagem**
-> Full-body wide shot in the same television station reception lobby. Teresa is captured clearly jumping over an electronic access turnstile, with the reception desk visible in the background. Preserve her established face, crown, outfit and proportions. The pose must make the physical action immediately readable. Clean 2D sitcom style, 16:9.
+> Wide master shot of a modern Portuguese television station reception lobby. Clearly show the entrance, reception desk, receptionist and electronic access turnstiles in one coherent composition. Teresa enters with a regal, self-important posture, wearing her established character design and outfit. Clean 2D sitcom animation style, readable staging, 16:9.
 
 **Prompt de animação**
-> Teresa makes a decisive, exaggerated jump over the turnstile and lands on the other side. Her crown and clothes move naturally but remain consistent. The receptionist watches in disbelief. Teresa regains her regal posture immediately after landing. One continuous action, no extra angles and no invented dialogue.
+> Teresa enters the building and approaches the reception desk as if she expects immediate recognition. The receptionist calmly asks whether she has an appointment. Teresa says she has business with Captain Hook. The receptionist tells her she cannot pass without an appointment and tries to stop her. Teresa looks at the receptionist with offended disbelief, delivers her sharp line, then makes a decisive jump over the turnstile. The receptionist watches in disbelief. Keep the sequence continuous and readable, without unnecessary cuts. European Portuguese dialogue.
 
-**TERESA:** «Isto é uma televisão ou uma repartição de finanças?»
+**RECECIONISTA:** «Desculpe, tem marcação?»
 
-Teresa continua pelo corredor como se tivesse entrado de forma perfeitamente normal.
+**TERESA:** «Tenho assuntos a tratar com o Capitão Gancho.»
+
+**RECECIONISTA:** «Sem marcação não pode passar.»
+
+**TERESA:** «Sabe quem eu sou? Ou já apagaram a memória desta casa?»
+
+**Ação:** Teresa salta os torniquetes e segue caminho. A rececionista fica para trás, sem reação.
+
+**Plano adicional opcional:** se o master não permitir perceber a preparação, o salto e a aterragem, criar um único plano geral de ação. Não acrescentar um plano só para a reação da rececionista se ela já for visível.
 
 ---
 
@@ -87,265 +78,147 @@ Teresa continua pelo corredor como se tivesse entrado de forma perfeitamente nor
 
 **Objetivo:** levar Teresa ao gabinete sem prolongar desnecessariamente a deslocação.
 
-## PLANO 04 — Teresa atravessa o corredor
+## PLANO 03 — Teresa atravessa o corredor
 
-**04A · MASTER FRAME**  
-**Duração estimada:** 3–5 s  
+**03A · MASTER FRAME DO CORREDOR**  
+**Duração estimada:** 3–4 s  
 **Câmara:** plano geral ou médio aberto; movimento discreto se necessário  
 **Personagens:** Teresa
 
 **Prompt de imagem**
-> Wide view of an interior corridor in the same Portuguese television station, doors and understated production-office details. Teresa walks confidently through the corridor, holding her head high and behaving as if she belongs at the centre of the television world. Preserve her established character design, crown and outfit. Clean 2D sitcom style, 16:9.
+> Wide view of an interior corridor in the same Portuguese television station, with doors and understated production-office details. Teresa walks confidently through the corridor, holding her head high as if she still belongs at the centre of television. Preserve her established character design and outfit. Clean 2D sitcom style, 16:9.
 
 **Prompt de animação**
-> Teresa walks purposefully down the corridor. A subtle tracking movement may follow her, but a static composition is also acceptable. She does not stop to interact with anyone. Keep the shot brief and transition naturally to the office. No dialogue or voice-over.
+> Teresa walks purposefully down the corridor. A subtle tracking movement may follow her, but a static composition is also acceptable. She does not stop or interact with anyone. Keep the shot brief and transition naturally to the office. No dialogue or voice-over.
 
 ---
 
-# CENA 4 — INT. GABINETE DE CAPITÃO GANCHO — DIA
+# CENA 4 — INT. GABINETE DO CAPITÃO GANCHO — DIA
 
-**Objetivo:** estabelecer o conflito central. Teresa quer regressar à apresentação do Secret Story; Capitão Gancho mantém o controlo sem perder a calma.
+**Objetivo:** Teresa tenta convencer o Capitão de que o Secret Story precisa de regressar às origens e de que ela é a escolha certa. Tininha entra com a pasta e revela o título da nova edição.
 
-**Continuidade obrigatória:** usar o master angle já existente do gabinete, no qual podem aparecer todas as personagens. Manter a secretária, a cadeira de Capitão Gancho, a porta, o mobiliário e a iluminação tal como estão na referência.
+**Continuidade obrigatória:** usar o master angle existente do gabinete. Manter a secretária, a cadeira do Capitão, a porta, o mobiliário e a iluminação exatamente como nas referências.
 
-## PLANO 05 — Entrada e início da reunião
+## PLANO 04 — A proposta de Teresa
 
-**05A · MASTER FRAME EXISTENTE**  
-**Duração estimada:** 8–12 s  
+**04A · MASTER FRAME EXISTENTE**  
+**Duração estimada:** 8–10 s  
 **Câmara:** master angle do gabinete  
-**Personagens:** Capitão Gancho e Teresa; composição preparada para incluir Tininha quando entrar
+**Personagens:** Capitão Gancho e Teresa
 
 **Prompt de imagem**
-> Use the existing master-angle reference image of Captain Hook's office. Preserve the exact room layout, desk, chair, door, furniture, lighting, proportions and 2D animation style. Captain Hook sits behind the desk. Teresa enters through the office door and approaches him. Keep enough of the room visible to establish the spatial relationship. Do not redesign the office.
+> Use the existing master-angle reference image of Captain Hook's office. Preserve the exact room layout, desk, chair, door, furniture, lighting, proportions and 2D animation style. Captain Hook sits behind the desk. Teresa stands opposite him with confident, self-important posture. Do not redesign the office.
 
 **Prompt de animação**
-> Teresa enters confidently and approaches the desk without waiting to be invited. Captain Hook remains seated, calm, initially focused on his documents. Let the action play in the existing master angle. No unnecessary cuts.
+> Teresa speaks with total conviction, as though her return is an obvious solution for the show. Captain Hook listens calmly and professionally without promising anything or raising his voice. Keep the exchange in the existing master angle, with restrained movement and natural dialogue timing. European Portuguese lip sync.
 
-**TERESA:** «Capitão! Finalmente, uma reunião à altura do meu regresso.»
+**TERESA:** «O programa precisa de voltar às origens. E ninguém conhece aquelas origens como eu.»
 
-**CAPITÃO GANCHO:** «Não sabia que havia um regresso marcado.»
+**CAPITÃO GANCHO:** «Vamos analisar as possibilidades.»
 
-**TERESA:** «Não precisa de estar marcado. Há coisas que são inevitáveis.»
+Teresa interpreta a resposta como uma abertura.
 
-## PLANO 06 — O lugar de Teresa
+## PLANO 05 — Entrada de Tininha e provocação
+
+**05A · CONTINUAÇÃO DO MASTER FRAME EXISTENTE**  
+**Duração estimada:** 8–10 s  
+**Câmara:** manter o master angle, incluindo a porta se a composição o permitir  
+**Personagens:** Teresa, Tininha e Capitão Gancho
+
+**Prompt de imagem**
+> Use the existing master angle of Captain Hook's office. Captain Hook remains seated behind the desk and Teresa stands opposite him. Tininha enters through the established office door carrying a folder. Preserve all character designs, room geography, lighting and furniture. Do not create a new office layout.
+
+**Prompt de animação**
+> Tininha enters carrying a folder and immediately addresses Teresa with a pointed, dry remark. Teresa turns to face her and replies with a short, cutting line. Tininha does not prolong the argument; she turns to Captain Hook and approaches the desk. Keep the entire exchange in the master angle if possible. Use a reaction angle only if Teresa's expression is essential to the joke.
+
+**TININHA:** «Olhe, ainda sabe o caminho para aqui?»
+
+**TERESA:** «Sei. Ao contrário de algumas pessoas, não preciso de GPS para chegar ao topo.»
+
+Tininha coloca a pasta sobre a secretária e dirige-se ao Capitão.
+
+## PLANO 06 — Revelação do título
 
 **06A · MASTER FRAME EXISTENTE**  
-**Duração estimada:** 12–18 s  
-**Câmara:** continuar no master angle
+**Duração estimada:** 10–12 s  
+**Câmara:** master angle do gabinete; documentos visíveis naturalmente  
+**Personagens:** Teresa, Tininha e Capitão Gancho
 
 **Prompt de animação**
-> Continue from the exact previous master angle and character positions. Teresa speaks with confident entitlement, as though her return is an obvious decision. Captain Hook listens without raising his voice or showing anger. Keep movements restrained and dialogue timing natural.
+> Continue from the exact previous master angle and character positions. Tininha presents the folder to Captain Hook and explains that she has brought title proposals for the new edition. Captain Hook replies calmly. Tininha opens the folder and reads her preferred title aloud. The documents remain a natural prop; no close-up or readable on-screen title is required. Teresa looks from the folder to Tininha, visibly perplexed. Captain Hook briefly looks towards Tininha, acknowledging that she is leading this work. Keep the reaction subtle and the scene continuous.
 
-**TERESA:** «Estou aqui para falar do meu lugar na nova grelha.»
+**TININHA:** «Capitão, trouxe as propostas para o nome da nova edição.»
 
-**CAPITÃO GANCHO:** «O seu lugar?»
+**CAPITÃO GANCHO:** «Vamos ver.»
 
-**TERESA:** «No Secret Story. Na apresentação. Ao centro de tudo.»
+**TININHA:** «Eu continuo a gostar de “Secret Story: Luta pelo Desafio Final All Stars”. É forte.»
 
-**CAPITÃO GANCHO:** «A apresentação já está a ser tratada.»
+**TERESA:** «Valha-me Deus… Isso explica muita coisa.»
 
-Teresa demora um instante a processar a resposta.
+O Capitão olha discretamente para Tininha, sem comentar nem tomar partido.
 
-**TERESA:** «Tratada por quem?»
+## PLANO 07 — Saída de Teresa
 
-**CAPITÃO GANCHO:** «Pela equipa responsável.»
-
-## PLANO 07 — O argumento definitivo
-
-**07A · PLANO DE CAPITÃO GANCHO NA CADEIRA**  
-**Duração estimada:** 4–6 s  
-**Câmara:** o ângulo existente de Capitão Gancho sentado atrás da secretária
-
-**Prompt de imagem**
-> Use the established Captain Hook seated-at-the-desk camera angle for this office. Preserve the exact chair, desk, office background, lighting, character design and screen direction. Captain Hook remains composed, looking towards Teresa. Do not create a different office design.
+**07A · MASTER FRAME EXISTENTE**  
+**Duração estimada:** 7–9 s  
+**Câmara:** manter o master angle até Teresa chegar à porta; usar o inverso de Teresa apenas se necessário para tornar a expressão legível
 
 **Prompt de animação**
-> Captain Hook calmly asks his question, with minimal head movement and a measured delivery. He never shouts. European Portuguese lip sync.
+> Continue in the established office master angle. Teresa realizes she is no longer the centre of the meeting, turns and walks towards the door. When she reaches the doorway, she slightly turns her head and delivers a theatrical but controlled threat, audible to the audience. Captain Hook remains calm and does not respond. Teresa exits. No extra dialogue, no shouting and no unnecessary camera cuts.
 
-**CAPITÃO GANCHO:** «E o que considera que a torna a escolha certa?»
+**TERESA:** «Ainda se vão arrepender…»
 
-**07B · PLANO INVERSO DE TERESA**  
-**Duração estimada:** 5–8 s  
-**Câmara:** o ângulo inverso de Teresa, a partir do lado oposto da secretária
-
-**Prompt de imagem**
-> Use the established reverse camera angle facing Teresa in Captain Hook's office. Match the office geography, camera axis, lighting and eyeline of the Captain Hook chair shot. Preserve Teresa's exact established face, crown and outfit. This is the reverse angle of the same room, not a new set.
-
-**Prompt de animação**
-> Teresa answers with complete conviction, leaning forward slightly on the key phrase. Her delivery is proud and serious rather than shouted. Keep the shot stable and the movement restrained.
-
-**TERESA:** «Sem mim, vocês não tinham história para contar.»
-
-**07C · REGRESSO AO MASTER FRAME EXISTENTE**
-
-**Duração estimada:** 4–6 s  
-**Prompt de animação**
-> Return to the existing office master angle. Captain Hook remains calm and returns his attention to the documents. Teresa interprets his composure as a challenge and tries to maintain her dignity. No additional camera angle.
-
-**CAPITÃO GANCHO:** «Temos contado algumas.»
-
-**TERESA:** «E quantas dessas histórias ficaram na memória?»
-
-**CAPITÃO GANCHO:** «A televisão não vive apenas de memórias, Teresa.»
+Teresa sai do gabinete.
 
 ---
 
-# CENA 5 — INT. GABINETE DE CAPITÃO GANCHO — CONTINUAÇÃO
+# CENA 5 — EXT. ENTRADA DA TVI — DIA
 
-**Objetivo:** a entrada de Tininha muda a dinâmica. Teresa percebe que Tininha tem influência e um lugar concreto na nova grelha.
+**Objetivo:** terminar com uma pequena vitória emocional de Teresa. A admiração genuína da fã permite-lhe acreditar que continua a ser a rainha dos reality-shows.
 
-## PLANO 08 — Tininha entra com documentos
+## PLANO 08 — A fã reconhece Teresa
 
-**08A · MASTER FRAME EXISTENTE**  
-**Duração estimada:** 5–8 s  
-**Câmara:** master angle do gabinete, sem alterar a geografia  
-**Personagens:** Capitão Gancho, Teresa e Tininha
-
-**Prompt de imagem**
-> Use the existing master angle of Captain Hook's office. Captain Hook remains seated behind the desk and Teresa stands opposite him. Tininha enters through the visible office door carrying a folder of documents. Keep all three characters and the established office geography consistent. Do not redesign the room or add furniture.
-
-**Prompt de animação**
-> Tininha enters with composed, friendly confidence and approaches the desk with her documents. Teresa turns to notice her. Captain Hook acknowledges Tininha naturally. Keep the whole action in the master angle.
-
-**TININHA:** «Capitão, trouxe os documentos da nova grelha.»
-
-**CAPITÃO GANCHO:** «Obrigado, Tininha. Deixe-os aqui.»
-
-**TERESA:** «Tininha, querida. Continuas por aqui?»
-
-**TININHA:** «Continuo. Tenho trabalhado bastante.»
-
-**TERESA:** «Imagino. Alguém tem de manter a casa a funcionar enquanto as grandes figuras estão fora.»
-
-Tininha mantém o sorriso e coloca os documentos na secretária.
-
-## PLANO 09 — A nova função de Tininha
-
-**09A · MASTER FRAME EXISTENTE**  
-**Duração estimada:** 12–18 s  
-**Câmara:** manter o master angle; não criar reframes automáticos  
-**Personagens:** as três
-
-**Prompt de animação**
-> Continue in the same master angle. Tininha places the documents on the desk and calmly explains her new role. Teresa's expression shifts subtly as she understands the significance. Captain Hook remains measured and institutional. Keep reactions small and readable.
-
-**TININHA:** «Por acaso, trouxe os números da nova grelha. Vou acompanhar o novo espaço diário como comentadora.»
-
-**TERESA:** «A tua participação?»
-
-**TININHA:** «Sim. Comentário e análise. Vou acompanhar os acontecimentos e ajudar a desenvolver os temas.»
-
-**TERESA:** «Todos os dias?»
-
-**TININHA:** «É esse o plano.»
-
-**TERESA:** «Portanto, eu venho aqui discutir o meu regresso e descubro que a Tininha tem um programa.»
-
-**TININHA:** «Ainda não é bem um programa.»
-
-**CAPITÃO GANCHO:** «É uma função aprovada.»
-
-Tininha tenta disfarçar o orgulho.
-
-**TININHA:** «Estou muito grata pela confiança.»
-
-**TERESA:** «Confiança. É uma palavra bonita.»
-
-**TININHA:** «Também é importante saber conquistá-la.»
-
-## PLANO 10 — Encerramento da reunião
-
-**10A · MASTER FRAME EXISTENTE**  
-**Duração estimada:** 10–15 s  
-**Câmara:** master angle como plano principal; usar o plano da cadeira de Capitão Gancho ou o inverso de Teresa apenas se for indispensável para a reação
-
-**Prompt de animação**
-> Continue with the established office master angle and exact character positions. Teresa tries to regain control of the conversation while Tininha remains politely confident. Captain Hook closes the folder and ends the meeting without raising his voice. Keep the comedy in the contrast between Teresa's entitlement and the institutional finality of his response.
-
-**TERESA:** «Naturalmente. E imagino que tenhas tido muitas oportunidades para a conquistar.»
-
-**CAPITÃO GANCHO:** «Teresa, temos trabalho.»
-
-Teresa levanta-se, contrariada, mas tenta não o demonstrar.
-
-**TERESA:** «Não quero atrapalhar o progresso. Sobretudo quando o progresso tem tão pouca memória.»
-
-Teresa dirige-se à porta.
-
-**CAPITÃO GANCHO:** «Teresa.»
-
-Ela vira-se, esperando uma mudança de decisão.
-
-**CAPITÃO GANCHO:** «A decisão mantém-se.»
-
-Teresa sustém o olhar por um instante e sai.
-
-**TININHA:** «Achas que ficou chateada?»
-
-**CAPITÃO GANCHO:** «Acho que ainda não percebeu.»
-
----
-
-# CENA 6 — EXT. ENTRADA DA TVI — DIA
-
-**Objetivo:** terminar com uma pequena vitória emocional de Teresa. O reconhecimento da fã permite-lhe preservar a ilusão de que continua a ser uma rainha.
-
-## PLANO 11 — Teresa sai
-
-**11A · MASTER FRAME**  
-**Duração estimada:** 4–6 s  
-**Câmara:** plano geral da entrada exterior já estabelecida; não repetir um establishing shot vazio porque a localização já foi apresentada no início  
-**Personagens:** Teresa
+**08A · MASTER FRAME EXTERIOR**  
+**Duração estimada:** 7–9 s  
+**Câmara:** plano conjunto de Teresa e da fã  
+**Personagens:** Teresa e fã
 
 **Prompt de imagem**
-> Wide shot of the previously established exterior entrance of the Portuguese television station. Teresa exits through the entrance, preserving her exact established outfit, crown and character design. Match the architecture, lighting and 2D sitcom style from the opening establishing shot. This is an active scene, so Teresa is visible.
+> Medium-wide shot outside the same television station entrance established in the opening. Teresa exits the building and a female fan recognizes her and approaches with genuine excitement. Preserve Teresa's established character design and outfit and the existing exterior environment. Both characters should be clearly visible in the same composition. Clean 2D sitcom style, 16:9.
 
 **Prompt de animação**
-> Teresa exits with her head held high, trying to hide her disappointment. She walks a few steps and adjusts her posture, determined not to look defeated. Keep the movement subtle.
-
-## PLANO 12 — O reconhecimento da fã
-
-**12A · MASTER FRAME**  
-**Duração estimada:** 8–12 s  
-**Câmara:** plano conjunto de Teresa e da fã; manter ambas legíveis no enquadramento
-
-**Prompt de imagem**
-> Medium-wide shot outside the same television station entrance. Teresa stands in the foreground and a female fan approaches her with genuine excitement. Preserve the established exterior, Teresa's exact crown and outfit, and the clean 2D sitcom animation style. Compose both characters clearly in the same frame.
-
-**Prompt de animação**
-> The fan recognizes Teresa and speaks with sincere enthusiasm. Teresa initially looks surprised, then becomes visibly moved. Her eyes glisten, she brings one hand to her chest and tries to contain her tears. The emotion should feel unexpectedly sincere, with a hint of comic exaggeration, not a broad parody.
+> Teresa exits with her head held high, trying to hide her disappointment. A fan recognizes her spontaneously, approaches and speaks with sincere enthusiasm. Teresa stops, surprised and moved. Her eyes begin to glisten and she brings one hand to her chest. Keep the emotion sincere, with subtle comic contrast rather than exaggerated parody.
 
 **FÃ:** «Você devia voltar! É a rainha dos reality-shows!»
 
-## PLANO 13 — A coroa que o tempo não tira
+## PLANO 09 — A coroa que o tempo não tira
 
-**13A · CONTINUAÇÃO DO MASTER FRAME / ZOOM IN**  
-**Duração estimada:** 8–12 s  
-**Câmara:** manter a composição e fazer um ligeiro zoom in em Teresa; não criar uma nova cena
+**09A · CONTINUAÇÃO DO MASTER FRAME / LIGEIRO ZOOM IN**  
+**Duração estimada:** 10–12 s  
+**Câmara:** continuar a mesma composição e aproximar ligeiramente a câmara de Teresa  
+**Personagens:** Teresa; manter a fã no enquadramento se a composição o permitir
 
 **Prompt de animação**
-> Continue from the same shot. Slowly push in towards Teresa as she becomes emotional. Her eyes glisten with tears and her hand remains over her chest. She tries to regain her royal posture while speaking with a trembling voice. Keep the fan present if the composition allows. No cutaway and no extra camera angle.
+> Continue directly from the previous shot. As Teresa becomes emotional, a sweet female voice-over begins. Teresa's eyes glisten with tears and her hand remains over her chest. She speaks with a trembling voice, then smiles through her tears, straightens her posture and raises her chin, regaining her regal pose. Apply a subtle slow zoom-in. Keep the moment sincere and concise. No cutaway, no additional character and no extra narration. End with a clean cut to black.
 
-**VOZ OFF (feminina, doce e emocionante):** «Há coroas que o tempo não consegue tirar…»
+**VOZ OFF FEMININA, doce e emotiva:** «Há coroas que o tempo não consegue tirar…»
 
-Teresa olha para cima, comovida, e depois volta a olhar na direção da fã.
+**TERESA, com a voz a tremer:** «Eu sabia… Eu sabia que ainda não se tinham esquecido de mim.»
 
-**TERESA (com a voz a tremer):** «Eu sabia… Eu sabia que ainda não se tinham esquecido de mim.»
-
-Teresa esboça um sorriso entre lágrimas e recupera a pose majestosa.
+Teresa sorri entre lágrimas, recompõe a postura e ergue o queixo.
 
 **CORTE PARA PRETO.**
 
 ---
 
-## NOTAS FINAIS DE PRODUÇÃO
+## Notas finais de produção
 
-- **Establishing shot inicial:** exterior da TVI, sem personagens visíveis, com ligeiro zoom in.
-- **Receção:** mostrar visualmente o salto dos torniquetes, com preparação, salto e aterragem legíveis.
-- **Gabinete:** usar o master angle existente como plano principal. Os únicos ângulos adicionais de diálogo são Capitão Gancho sentado na cadeira e o inverso de Teresa.
-- **Tininha:** a entrada, os documentos e a conversa decorrem preferencialmente no master angle. Não criar novos planos apenas para cada fala.
-- **Final:** uma única cena exterior com a fã, a frase «Você devia voltar! É a rainha dos reality-shows!», a voz off emocional e a resposta emocionada de Teresa.
+- **Establishing shot:** exterior da TVI vazio, sem personagens, diálogo ou voz off.
+- **Receção:** a entrada, a tentativa de impedir Teresa e o salto dos torniquetes devem formar uma sequência clara.
+- **Gabinete:** master angle como base. Usar apenas os ângulos existentes do Capitão sentado e o inverso de Teresa quando uma reação importante o justificar.
+- **Documentos:** a pasta é visível, mas o título não tem de ser legível; a revelação é verbal.
+- **Tratamento:** manter registo formal entre personagens, mesmo nas provocações.
+- **Final:** uma única cena exterior, com reconhecimento sincero da fã, voz off feminina doce e resposta emocionada de Teresa.
 - **Abelha Maia:** não aparece nem narra este episódio.
-- **Continuidade visual:** usar as referências existentes das personagens e dos cenários. Não inventar novos desenhos, roupas, acessórios ou disposição do gabinete.
-- **Áudio:** todas as falas em PT-PT. A voz off final é feminina, doce e emocional.
-- **Montagem:** privilegiar planos contínuos, ações claras e pausas cómicas curtas. Não gerar reframes redundantes nem prolongar artificialmente o episódio.
+- **Continuidade visual:** preservar as referências existentes de personagens, roupa, acessórios e cenários.
+- **Montagem:** falas concisas, pausas cómicas curtas e a pausa emocional principal reservada ao final. Evitar planos redundantes e duração artificial.
