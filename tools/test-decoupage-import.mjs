@@ -138,8 +138,31 @@ test("o bloco positivo do prompt é inglês e mostra o início do plano", () => 
   assert.doesNotMatch(by["2a"].imagePrompt, /jump over the turnstile/);
   assert.match(by["2a"].animationPrompt, /jump over the turnstile/);
   // As falas entram no prompt de vídeo exatamente como no guião, em PT-PT.
-  assert.match(api.buildVideoPrompt(by["2a"]), /Spoken dialogue \(European Portuguese, exact words, lip-synced/);
+  assert.match(api.buildVideoPrompt(by["2a"]), /Spoken dialogue \(European Portuguese PT-PT, exact words, lip-synced/);
   assert.match(api.buildVideoPrompt(by["2a"]), /"Sabe quem eu sou\? Ou já apagaram a memória desta casa\?"/);
+});
+
+test("o prompt de vídeo diz quem fala, o tipo de voz, e separa a voz-off", () => {
+  const { api } = loadApp();
+  const ep = importEpisode(api, 1);
+  const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
+
+  // Cada fala leva quem a diz, o tipo de voz dessa personagem e o texto exato.
+  const v2a = api.buildVideoPrompt(by["2a"]);
+  assert.match(v2a, /- Rececionista \[[^\]]+\]: "Desculpe, tem marcação\?"/);
+  assert.match(v2a, /- Teresa Guilhermina I de Portugal \[[^\]]+\]: "Tenho assuntos a tratar com o Capitão Gancho\."/);
+  const vox = v2a.match(/- Teresa Guilhermina I de Portugal \[([^\]]+)\]/);
+  assert.ok(vox && /PT-PT/.test(vox[1]), "o tipo de voz aparece entre parênteses retos e diz PT-PT");
+
+  // A voz-off não é lip-sync: bloco próprio, sem ninguém em cena a falar.
+  const v9a = api.buildVideoPrompt(by["9a"]);
+  const offIdx = v9a.indexOf("Off-screen voice-over (European Portuguese PT-PT, exact words, NOT lip-synced");
+  assert.ok(offIdx > 0, "a voz-off tem bloco próprio e não é marcada como lip-sync");
+  assert.match(v9a.slice(offIdx), /- Voz Off \[[^\]]+\]: "/);
+  const onIdx = v9a.indexOf("Spoken dialogue");
+  if (onIdx >= 0) {
+    assert.ok(onIdx < offIdx && !v9a.slice(onIdx, offIdx).includes("Voz Off"), "a voz-off não entra no bloco do lip-sync");
+  }
 });
 
 test("o índice publica a decupagem aprovada do episódio 1", () => {
