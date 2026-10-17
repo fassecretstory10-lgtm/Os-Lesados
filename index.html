@@ -1803,15 +1803,16 @@
       const ep = currentEpisode();
       if (!ep) return $("decoupageContent").innerHTML = '<div class="empty"><h3>Decupagem</h3><p>Importa ou cria um episódio primeiro.</p></div>';
       const scenes = ep.scenes || [];
-      const labelFor = (s, i) => { const m = String(s?.id || "").match(/^(\d+)([a-z])$/i); return m ? String(m[1]).padStart(2, "0") + m[2].toUpperCase() : "PLANO " + String(i + 1).padStart(2, "0"); };
+      const labelFor = (s, i) => { const m = String(s?.id || "").match(/^(\d+)([a-z])?$/i); return m ? String(m[1]).padStart(2, "0") + (m[2] || "").toUpperCase() : String(i + 1).padStart(2, "0"); };
       const ready = scenes.length > 0 && scenes.every(s => String(s.location || "").trim() && String(s.action || "").trim() && String(s.shot || "").trim() && String(s.camera || "").trim() && Number(s.duration || 0) > 0 && Number(s.duration || 0) <= 8);
-      let html = `<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história numa sequência de cenas e planos filmáveis. Revê cada enquadramento, ação, fala e duração. A aprovação desbloqueia o Pipeline.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, todos os planos precisam de localização, ação, enquadramento, movimento de câmara e duração entre 1 e 8 segundos.</p>' : ""}</div>`;
+      let html = `<div class="summary"><h3>🎬 Decupagem · ${esc(ep.name)}</h3><p>Transforma a história numa sequência de cenas e planos filmáveis. Revê cada enquadramento, ação, fala e duração. A aprovação desbloqueia o Pipeline.</p><div class="grid-summary"><div class="card-mini"><div class="label">Planos</div><div class="value">${scenes.length}</div></div><div class="card-mini"><div class="label">Duração estimada</div><div class="value">${fmt(scenes.reduce((a,s)=>a+Number(s.duration||0),0))}</div></div><div class="card-mini"><div class="label">Estado</div><div class="value">${ep.decoupageApproved ? "APROVADA" : "EM REVISÃO"}</div></div></div><div class="buttons" style="margin-top:12px;"><button class="btn btn-success" id="generateDecoupageBtn">Gerar decupagem completa com IA</button><button class="btn btn-warning" id="approveDecoupageBtn" ${ready ? "" : "disabled"}>${ep.decoupageApproved ? "Decupagem aprovada ✓" : "Aprovar decupagem e desbloquear Pipeline"}</button><button class="btn btn-secondary" id="openSourceScriptBtn">Voltar ao guião</button></div>${!ready ? '<p class="meta" style="margin-top:8px;">Para aprovar, todos os planos precisam de localização, ação, enquadramento, movimento de câmara e duração entre 1 e 8 segundos.</p>' : ""}</div>`;
       if (!scenes.length) html += '<div class="empty">Ainda não existem planos para decupar.</div>';
       scenes.forEach((s, i) => {
         const code = labelFor(s, i);
-        html += `<div class="box" style="margin-top:14px;"><h3 style="color:var(--canon);margin-bottom:10px;">CENA ${String(i+1).padStart(2,"0")} · PLANO ${code}</h3><div class="grid-summary"><div class="field"><label>Nome do plano</label><input data-shot-field="title" data-shot-id="${esc(s.id)}" value="${esc(s.title||"")}" /></div><div class="field"><label>Localização</label><input data-shot-field="location" data-shot-id="${esc(s.id)}" value="${esc(s.location||"")}" /></div><div class="field"><label>Enquadramento</label><input data-shot-field="shot" data-shot-id="${esc(s.id)}" value="${esc(s.shot||"")}" placeholder="Plano geral, médio, close-up..." /></div><div class="field"><label>Movimento de câmara</label><input data-shot-field="camera" data-shot-id="${esc(s.id)}" value="${esc(s.camera||"")}" placeholder="STATIC, DOLLY IN, PAN..." /></div><div class="field"><label>Duração (segundos)</label><input type="number" min="1" max="8" data-shot-field="duration" data-shot-id="${esc(s.id)}" value="${Number(s.duration||6)}" /></div></div><div class="field"><label>Ação visual e continuidade</label><textarea data-shot-field="action" data-shot-id="${esc(s.id)}">${esc(s.action||"")}</textarea></div>${s.dialogue ? `<div class="field"><label>Diálogo · ${esc(charById[s.dialogue.char]?.name || s.dialogue.char)}</label><textarea data-dialogue-field="line" data-shot-id="${esc(s.id)}">${esc(s.dialogue.line||"")}</textarea><label>Intenção / expressão</label><input data-dialogue-field="paren" data-shot-id="${esc(s.id)}" value="${esc(s.dialogue.paren||"")}" /></div>` : '<p class="meta">Sem diálogo associado a este plano.</p>'}<div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}</div></div>`;
+        html += `<div class="box" style="margin-top:14px;"><h3 style="color:var(--canon);margin-bottom:10px;">CENA ${esc(String(s.sceneId || ("cena-" + (i+1))).replace(/^cena-/i,"").padStart(2,"0"))} · ${s.type === "REFRAME" ? "REFRAME" : "PLANO"} ${code} <span class="meta">${esc(s.title || "")}</span></h3><div class="grid-summary"><div class="field"><label>Nome do plano</label><input data-shot-field="title" data-shot-id="${esc(s.id)}" value="${esc(s.title||"")}" /></div><div class="field"><label>Localização</label><input data-shot-field="location" data-shot-id="${esc(s.id)}" value="${esc(s.location||"")}" /></div><div class="field"><label>Enquadramento</label><input data-shot-field="shot" data-shot-id="${esc(s.id)}" value="${esc(s.shot||"")}" placeholder="Plano geral, médio, close-up..." /></div><div class="field"><label>Movimento de câmara</label><input data-shot-field="camera" data-shot-id="${esc(s.id)}" value="${esc(s.camera||"")}" placeholder="STATIC, DOLLY IN, PAN..." /></div><div class="field"><label>Duração (segundos)</label><input type="number" min="1" max="8" data-shot-field="duration" data-shot-id="${esc(s.id)}" value="${Number(s.duration||6)}" /></div></div><div class="field"><label>Ação visual e continuidade</label><textarea data-shot-field="action" data-shot-id="${esc(s.id)}">${esc(s.action||"")}</textarea></div>${s.dialogue ? `<div class="field"><label>Diálogo · ${esc(charById[s.dialogue.char]?.name || s.dialogue.char)}</label><textarea data-dialogue-field="line" data-shot-id="${esc(s.id)}">${esc(s.dialogue.line||"")}</textarea><label>Intenção / expressão</label><input data-dialogue-field="paren" data-shot-id="${esc(s.id)}" value="${esc(s.dialogue.paren||"")}" /></div>` : '<p class="meta">Sem diálogo associado a este plano.</p>'}<details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de imagem</summary><textarea data-shot-field="imagePrompt" data-shot-id="${esc(s.id)}" placeholder="Prompt de imagem específico para este plano...">${esc(s.imagePrompt || s.prompt || "")}</textarea></details><details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de animação</summary><textarea data-shot-field="animationPrompt" data-shot-id="${esc(s.id)}" placeholder="Movimento, acting, timing, fala exata e som...">${esc(s.animationPrompt || "")}</textarea></details><div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}${s.reframeOf ? " · reframe do plano " + esc(s.reframeOf) : ""}</div></div>`;
       });
       $("decoupageContent").innerHTML = html;
+      $("generateDecoupageBtn")?.addEventListener("click", generateDecoupageWithAI);
       $("decoupageContent").querySelectorAll("[data-shot-field],[data-dialogue-field]").forEach(input => input.addEventListener("change", () => {
         const scene = ep.scenes.find(s => s.id === input.dataset.shotId); if (!scene) return;
         if (input.dataset.shotField) { const field = input.dataset.shotField; scene[field] = field === "duration" ? Math.max(1, Math.min(8, Number(input.value)||1)) : input.value.trim(); if (["location","action","shot","camera","title"].includes(field)) scene.prompt = buildPrompt(scene); }
@@ -1826,6 +1827,63 @@
         ep.decoupageApproved = true; save(); renderDecoupage(); renderPipeline(); status("Decupagem aprovada. O Pipeline está desbloqueado.", "success");
       });
       $("openSourceScriptBtn")?.addEventListener("click", () => switchTab("script"));
+    }
+    async function generateDecoupageWithAI() {
+      if (location.protocol === "file:") return status("Para gerar a decupagem com IA, abre a aplicação através do servidor (http://localhost:8787).", "error");
+      const ep = currentEpisode();
+      if (!ep) return status("Abre ou cria um episódio primeiro.", "error");
+      if (ep.decoupageApproved && !confirm("A nova decupagem vai substituir os planos aprovados. Continuar?")) return;
+      const btn = $("generateDecoupageBtn");
+      if (btn) { btn.disabled = true; btn.innerHTML = '<span class="loading"></span> A analisar o guião e a construir planos...'; }
+      try {
+        const fromScenes = (ep.scenes || []).map(s => [
+          s.location ? "LOCAL: " + s.location : "",
+          s.title ? "PLANO/BEAT: " + s.title : "",
+          s.action || "",
+          s.dialogue?.line ? (charById[s.dialogue.char]?.name || s.dialogue.char) + ": " + s.dialogue.line : ""
+        ].filter(Boolean).join("\n")).join("\n\n");
+        const sourceScript = String(ep.sourceScript || "").trim() || [
+          "EPISÓDIO: " + ep.name,
+          "PREMISSA: " + (ep.premise || ""),
+          ep.story ? "ESTRUTURA NARRATIVA:\n" + JSON.stringify(ep.story, null, 2) : "",
+          "CENAS E DIÁLOGOS ATUAIS:\n" + fromScenes
+        ].filter(Boolean).join("\n\n");
+        const castIds = [...new Set([
+          ...(ep.story?.stars || []),
+          ...detectCast((ep.name || "") + " " + (ep.premise || "")),
+          ...(ep.scenes || []).flatMap(s => s.characters || [])
+        ])].filter(id => charById[id]);
+        const duration = Number(ep.runtime?.seconds) || (ep.scenes || []).reduce((sum,s)=>sum+Number(s.duration||0),0) || 150;
+        const response = await fetch(`${backendUrl()}/decoupage/generate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ episodeName: ep.name, sourceScript, castIds, targetDuration: duration })
+        });
+        const data = await safeJson(response);
+        if (!response.ok || data.ok === false) throw new Error(data.error || `HTTP ${response.status}`);
+        if (!Array.isArray(data.scenes) || data.scenes.length < 5) throw new Error("A decupagem devolvida não tem planos suficientes.");
+        const oldAssets = new Map((ep.scenes || []).map(s => [s.id, s]));
+        ep.scenes = data.scenes.map((s, i) => {
+          s.sv = ep.storyVersion || 1;
+          s.prompt = s.imagePrompt || buildPrompt(s);
+          const old = oldAssets.get(s.id);
+          if (old?.imageUrl && old.action === s.action && old.imagePrompt === s.imagePrompt) {
+            s.imageUrl = old.imageUrl; s.model = old.model; s.variant = old.variant;
+            s.approved = old.approved; s.referenceCount = old.referenceCount;
+          }
+          return s;
+        });
+        ep.decoupageApproved = false;
+        ep.scenes.forEach(s => { s.approved = false; s.clipApproved = false; });
+        state.currentScene = ep.scenes[0]?.id || null;
+        save(); renderDecoupage(); renderPipeline(); updateVideoTab();
+        status(`Decupagem gerada: ${ep.scenes.length} planos com ações, cobertura, prompts de imagem e animação. Revê antes de aprovar.`, "success");
+      } catch (e) {
+        status("Não foi possível gerar a decupagem: " + e.message, "error");
+      } finally {
+        const button = $("generateDecoupageBtn");
+        if (button) { button.disabled = false; button.textContent = "Gerar decupagem completa com IA"; }
+      }
     }
     function renderPipeline() {
       const ep = currentEpisode();
@@ -2292,7 +2350,7 @@
       if (!scene) return status("Seleciona um take.", "error");
       if (!ep.scriptApproved && !confirm("O guião ainda não foi aprovado. Gerar imagem mesmo assim?")) return;
       if ((scene.sv || 1) !== (ep.storyVersion || 1) && !confirm(`Este take é da história v${scene.sv || 1} e o episódio vai na v${ep.storyVersion || 1}. Gerar imagem mesmo assim?`)) return;
-      const prompt = ($("promptInput")?.value || scene.prompt || "").trim();
+      const prompt = ($("promptInput")?.value || scene.imagePrompt || scene.prompt || "").trim();
       if (!prompt) return status("Prompt vazio.", "error");
       if (scene.approved && !confirm("Esta imagem está aprovada. Substituir?")) return;
       const btn = $("generateImageBtn");
