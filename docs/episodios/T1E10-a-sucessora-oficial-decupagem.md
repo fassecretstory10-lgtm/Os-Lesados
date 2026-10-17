@@ -11,7 +11,7 @@
 ## Regras de realização obrigatórias
 
 1. Reutilizar as referências aprovadas de personagens e cenários de OS LESADOS. Não redesenhar personagens nem alterar a linguagem visual.
-2. Criar master frames apenas para os espaços necessários: palco de Secret Story, régie e sala secreta de Teresa. Reutilizar o gabinete do Capitão se já existir uma referência aprovada.
+2. Criar master frames apenas para os espaços necessários: palco de Secret Story, régie, sala de reuniões da produção e sala secreta de Teresa. Reutilizar o gabinete do Capitão se já existir uma referência aprovada.
 3. Os master frames estabelecem a geografia, a composição e a posição das personagens. Os reframes devem partir desses enquadramentos e existir apenas quando reforçam a piada ou a reação.
 4. Não criar um plano novo para cada fala nem usar shot/reverse-shot automático. Priorizar planos de grupo e reações pontuais.
 5. Preservar posições, direção dos olhares, iluminação, mobiliário, roupa e desenho das personagens.
@@ -162,7 +162,48 @@ O ecrã fica preto.
 
 O Capitão continua a olhar para o monitor, sem revelar o que pensa.
 
-**03B · REFRAME — A DECISÃO DE INTERROMPER A EMISSÃO**  
+**03B · MASTER FRAME — O PÂNICO NA SALA DE REUNIÕES**  
+**Duração estimada:** 8–10 s  
+**Câmara:** plano geral de grupo, mesa de reuniões ao centro e porta visível  
+**Personagens:** produtor 1, produtora 2, produtor 3, realizador e operador
+
+**Prompt de imagem**
+> Create a new meeting room for the OS LESADOS 2D sitcom, consistent with the existing production-office visual language. Wide group composition with a meeting table, several chairs and a clearly visible door. Three production staff members are already panicking: one pacing back and forth, one holding her head, and another discreetly putting personal items into a cardboard box. Leave enough space for the director to enter. Preserve the established character design language, clean 2D linework and 16:9 composition. No readable text, no logos, no photorealism, no 3D.
+
+**Prompt de animação**
+> Cut from Captain Hook's calm office to a chaotic meeting room. One producer paces back and forth, a female producer holds her head, and another staff member starts packing personal items into a cardboard box. Deliver the dialogue as a fast, escalating group scene in European Portuguese (PT-PT). When the director asks who caused the problem, everyone points at someone else at the same time. The operator and female producer argue briefly. A producer picks up a mug and slowly heads for the door as if already leaving the job. After the director says nobody will be fired if they fix it, everyone falls silent. One producer asks the final question; the director has no answer and rushes out. Keep the action readable and economical, with no individual close-ups or extra dialogue.
+
+**PRODUTOR 1:** «Meu Deus, vamos ser todos despedidos!»
+
+**PRODUTORA 2:** «Eu tenho dois filhos!»
+
+**PRODUTOR 3:** «Eu nem sequer trabalho nos grafismos!»
+
+O realizador entra na sala.
+
+**REALIZADOR:** «Alguém sabe quem fez aquilo?!»
+
+Todos apontam uns para os outros.
+
+**OPERADOR:** «Eu avisei que não devíamos ter mudado o sistema!»
+
+**PRODUTORA 2:** «Você disse que o sistema era novo!»
+
+**OPERADOR:** «E é! Novo e já me arruinou a vida!»
+
+Um produtor pega na caneca e dirige-se lentamente à porta.
+
+**PRODUTOR 1:** «Vou começar a despedir-me das pessoas enquanto ainda posso.»
+
+**REALIZADOR:** «CALMA! Ninguém vai ser despedido se resolvermos isto!»
+
+Silêncio.
+
+**PRODUTOR 3:** «E se não resolvermos?»
+
+O realizador sai disparado.
+
+**03C · REFRAME — A DECISÃO DE INTERROMPER A EMISSÃO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** voltar à régie, plano médio do realizador e da consola; ângulo diferente do plano 02D  
 **Personagens:** realizador, operador e produtor 1
@@ -171,7 +212,7 @@ O Capitão continua a olhar para o monitor, sem revelar o que pensa.
 > Return to the exact same approved control room. Use a different, tighter angle from the previous control-room shot, framing the director and the technical console, with the black monitor visible. Preserve the room geography, lighting, characters and 2D style.
 
 **Prompt de animação**
-> The director keeps trying to regain control while the operator frantically checks the console. He shouts for the screen to be switched off again, the black monitor remains black, and he immediately decides to cut to a mini break. The team moves with panicked urgency. Do not imply that they heard Captain Hook's remark.
+> Return to the control room after the brief meeting-room cutaway. The director keeps trying to regain control while the operator frantically checks the console. He shouts for the screen to be switched off again, the black monitor remains black, and he immediately decides to cut to a mini break. The team moves with panicked urgency. Do not imply that they heard Captain Hook's remark.
 
 **REALIZADOR:** «DESLIGUEM O ECRÃ! DESLIGUEM TUDO!»
 
@@ -230,6 +271,7 @@ Teresa inclina-se para trás, satisfeita.
 - **Duração:** ajustar as pausas e o ritmo de diálogo para um total entre 60 e 90 segundos. Se necessário, encurtar reações, nunca acrescentar novas falas.
 - **Palco:** Tininha permanece no centro durante a apresentação; a legenda deve ser legível para o público.
 - **Régie:** usar um único master frame e reframes de reação. O pânico é criado pela interpretação, não por alterações ao cenário.
+- **Sala de reuniões:** manter a cena num único plano geral de grupo, com ações simultâneas e ritmo acelerado; evitar planos individuais que alonguem o episódio.
 - **Legendas:** aplicar em pós-produção se a ferramenta não conseguir reproduzir o texto exatamente.
 - **Capitão:** está sozinho e não comunica com a régie. A fala «Interessante» é apenas para o público.
 - **Mini break:** deve parecer uma decisão urgente do realizador para esconder o desastre.
