@@ -1,0 +1,59 @@
+name: Validate OS LESADOS decoupage code
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "server/nano-banana-proxy.mjs"
+      - ".github/workflows/validate-decoupage-code.yml"
+  workflow_dispatch:
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check backend JavaScript syntax
+        run: node --check server/nano-banana-proxy.mjs
+      - name: Extract and check inline application JavaScript
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class Scripts(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.in_script = False
+                  self.external = False
+                  self.parts = []
+                  self.current = []
+
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() == "script":
+                      self.in_script = True
+                      self.external = any(k.lower() == "src" for k, _ in attrs)
+                      self.current = []
+
+              def handle_data(self, data):
+                  if self.in_script and not self.external:
+                      self.current.append(data)
+
+              def handle_endtag(self, tag):
+                  if tag.lower() == "script" and self.in_script:
+                      if not self.external:
+                          self.parts.append("".join(self.current))
+                      self.in_script = False
+                      self.external = False
+
+          parser = Scripts()
+          parser.feed(Path("index.html").read_text(encoding="utf-8"))
+          Path("/tmp/os-lesados-inline.js").write_text("\n".join(parser.parts), encoding="utf-8")
+          if not parser.parts:
+              raise SystemExit("No inline JavaScript found in index.html")
+          PY
+          node --check /tmp/os-lesados-inline.js
