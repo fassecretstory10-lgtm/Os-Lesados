@@ -54,7 +54,8 @@ function loadApp() {
   const names = Object.keys(sandbox);
   const fn = new Function(...names, `${m[1]}; return {
     importRepoEpisode, buildPrompt, buildVideoPrompt, sceneLines, promptNeedsEnglish,
-    shotLoadWarning, shotAngleWarning, charById, REPO_EPISODES,
+    shotLoadWarning, shotAngleWarning, archiveDecoupageDrift, archiveDriftBanner,
+    charById, REPO_EPISODES,
     get state() { return state; }
   };`);
   const api = fn(...names.map((k) => sandbox[k]));
@@ -208,6 +209,27 @@ test("o prompt de vídeo diz quem fala, o tipo de voz, e separa a voz-off", () =
   if (onIdx >= 0) {
     assert.ok(onIdx < offIdx && !v9a.slice(onIdx, offIdx).includes("Voz Off"), "a voz-off não entra no bloco do lip-sync");
   }
+});
+
+test("a app avisa quando o arquivo já tem outra decupagem", () => {
+  const { api } = loadApp();
+  const ep = importEpisode(api, 1);
+  // O import guarda a assinatura do texto que usou: é o que permite detetar
+  // depois se o arquivo mudou.
+  assert.ok(ep.decoupageSignature, "o import guarda a assinatura da decupagem");
+  assert.equal(api.archiveDecoupageDrift(ep), false, "sem alterações no arquivo não há aviso");
+  assert.equal(api.archiveDriftBanner(ep), "", "e não aparece faixa nenhuma");
+
+  // O caso real que fez a divisão em frames não aparecer no Pipeline: episódio
+  // importado antes de a decupagem existir. Sem assinatura, o arquivo manda.
+  const antigo = { ...ep, fromDecoupage: false, decoupageSignature: null };
+  assert.equal(api.archiveDecoupageDrift(antigo), true);
+  assert.match(api.archiveDriftBanner(antigo), /Recarregar do arquivo/);
+
+  // Decupagem reescrita depois do import também é sinalizada.
+  assert.equal(api.archiveDecoupageDrift({ ...ep, decoupageSignature: "1-1" }), true);
+  // Episódio local, sem espelho no arquivo, nunca é sinalizado.
+  assert.equal(api.archiveDecoupageDrift({ ...ep, repoEpisodeNumber: null }), false);
 });
 
 test("o índice publica a decupagem aprovada do episódio 1", () => {
