@@ -158,6 +158,12 @@
     .scene { background: #151525; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer; }
     .scene:hover { border-color: var(--primary); transform: translateY(-2px); }
     .scene.selected { border-color: var(--canon); box-shadow: 0 0 14px rgba(255,215,0,.25); }
+    .scene.done { background: rgba(46,204,113,.16); border-color: var(--success); }
+    .scene.done:hover { border-color: var(--success); }
+    .scene-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .scene-mark { flex: 0 0 auto; border: 1px solid var(--success); background: transparent; color: var(--success); border-radius: 5px; padding: 3px 7px; font-size: .66em; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; cursor: pointer; }
+    .scene-mark:hover { background: rgba(46,204,113,.2); }
+    .scene-mark.on { background: var(--success); color: #000; }
     .scene-img { width: 100%; aspect-ratio: 16 / 9; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .scene-img img { width: 100%; height: 100%; object-fit: cover; }
     .scene-img .none { color: #555; font-size: .8em; }
@@ -2098,6 +2104,7 @@
       if (!state.currentScene) state.currentScene = ep.scenes[0]?.id || null;
       const scene = ep.scenes.find(s => s.id === state.currentScene) || ep.scenes[0];
       const total = ep.scenes.reduce((a,s)=>a+Number(s.duration||0),0);
+      const doneCount = ep.scenes.filter(s => s.approved).length;
       const chars = [...new Set(ep.scenes.flatMap(s=>s.characters||[]))].map(id=>charById[id]?.name).filter(Boolean).join(", ");
       const locs = [...new Set(ep.scenes.map(s=>s.location))].join(", ");
       const sceneCharacters = (scene?.characters || []).map(id => charById[id]).filter(Boolean);
@@ -2125,7 +2132,7 @@
       });
       html += `</div></div></div><div>
         <div class="gen">
-          <h3>🎨 ${scene ? esc(scene.title) : "Seleciona um take"} ${scene?.approved ? '<span class="badge-ok">APROVADA</span>' : ""}</h3>
+          <h3>🎨 ${scene ? esc(scene.title) : "Seleciona um take"} ${scene?.approved ? '<span class="badge-ok">OK ✓</span>' : ""}</h3>
           ${scene ? `<div class="meta">Modelo: ${esc(scene.model || "sem geração")} · Variante: v${scene.variant || 0} · Refs: ${scene.referenceCount || 0}</div>` : ""}
           ${characterReferenceGuide}
           <textarea class="prompt" id="promptInput">${scene ? esc(scene.imagePrompt || scene.prompt || "") : ""}</textarea>
@@ -2135,19 +2142,19 @@
           <div class="buttons">
             <button class="btn" id="generateImageBtn" ${scene ? "" : "disabled"}>Gerar imagem</button>
             <button class="btn btn-warning" id="regenerateBtn" ${scene ? "" : "disabled"}>Regenerar</button>
-            ${scene?.imageUrl ? `<button class="btn btn-success" id="approveBtn">${scene.approved ? "Aprovada" : "Aprovar"}</button>` : ""}
+            ${scene ? `<button class="btn btn-success" id="approveBtn">${scene.approved ? "✓ OK — desmarcar" : "Marcar OK (imagem tratada)"}</button>` : ""}
           </div>
           <div class="preview">${scene?.imageUrl ? `<img src="${esc(scene.imageUrl)}" alt="imagem">` : '<div class="ph">A imagem aparece aqui</div>'}</div>
         </div>
-        <h3 style="color:var(--warning);margin-bottom:12px;">📋 Takes (${ep.scenes.length})</h3>
+        <h3 style="color:var(--warning);margin-bottom:12px;">📋 Takes (${ep.scenes.length})${doneCount ? ` · <span style="color:var(--success);">${doneCount} OK ✓</span>` : ""}</h3>
         <div class="scenes">
       `;
       ep.scenes.forEach(s => {
         html += `
-          <div class="scene ${s.id === state.currentScene ? "selected" : ""}" data-scene="${esc(s.id)}">
+          <div class="scene ${s.id === state.currentScene ? "selected" : ""} ${s.approved ? "done" : ""}" data-scene="${esc(s.id)}">
             <div class="scene-img">${s.imageUrl ? `<img src="${esc(s.imageUrl)}" alt="${esc(s.title)}">` : '<div class="none">Sem imagem</div>'}</div>
             <div class="scene-info">
-              <div class="scene-title">${esc(s.title)}${s.alertMel ? '<span class="badge">MEL</span>' : ""}${s.approved ? '<span class="badge-ok">OK</span>' : ""}</div>
+              <div class="scene-head"><div class="scene-title">${esc(s.title)}${s.alertMel ? '<span class="badge">MEL</span>' : ""}</div><button class="scene-mark ${s.approved ? "on" : ""}" data-mark="${esc(s.id)}" title="${s.approved ? "Desmarcar este plano" : "Marcar este plano como feito"}">${s.approved ? "OK ✓" : "Marcar OK"}</button></div>
               <div class="scene-desc">${esc((s.action || "").slice(0, 90))}...</div>
               <div class="meta">${esc(s.model || "sem modelo")} · v${s.variant || 0}</div>
             </div>
@@ -2168,6 +2175,12 @@
         state.currentScene = el.dataset.scene;
         save();
         renderPipeline();
+      }));
+      // Marcar/desmarcar um plano como feito: a caixa da grid fica verde, para
+      // se ver de relance o que já está tratado.
+      $("pipelineContent").querySelectorAll("[data-mark]").forEach(el => el.addEventListener("click", ev => {
+        ev.stopPropagation();
+        toggleTakeOk(el.dataset.mark);
       }));
     // Toque localizado num take (Fase 4): recalcula auditoria+runtime do episódio
     // sem re-render e sem tocar nos outros takes. Revalida timecodes em cadeia.
@@ -2236,15 +2249,23 @@
       html += `<div class="meta" style="margin-top:12px;">Bíblia narrativa: ${esc(BIBLE_INFO.remote ? `${BIBLE_INFO.source} (${BIBLE_INFO.count} fichas) ✓` : "remota indisponível — dados locais embebidos (mesmo conteúdo)")}</div>`;
       $("canonContent").innerHTML = html;
     }
-    function approveImage() {
+    // Marca um take como feito (imagem tratada). É o mesmo sinal que pinta a
+    // caixa de verde na grid do Pipeline e que liberta o take para o Video.
+    function toggleTakeOk(id) {
       const ep = currentEpisode();
-      const scene = ep?.scenes.find(s => s.id === state.currentScene);
-      if (!scene?.imageUrl) return status("Sem imagem para aprovar.", "error");
-      scene.approved = true;
+      const scene = ep?.scenes.find(s => s.id === id);
+      if (!scene) return;
+      scene.approved = !scene.approved;
       save();
       renderPipeline();
       updateVideoTab();
-      status("Imagem aprovada. Vê a aba VIDEO para o prompt de animação.", "success");
+      if (!scene.approved) return status(`Plano ${scene.id} desmarcado.`, "success");
+      status(scene.imageUrl
+        ? `Plano ${scene.id} marcado como feito. Vê a aba VIDEO para o prompt de animação.`
+        : `Plano ${scene.id} marcado como feito (ainda sem imagem gerada).`, "success");
+    }
+    function approveImage() {
+      toggleTakeOk(state.currentScene);
     }
     // Técnica adaptada de src/cinematic/omniAdapter.js (V2): guião curto por
     // blocos (Subject/Action/Scene/Camera/Lighting/Audio/Negative/Style),
@@ -2386,16 +2407,19 @@
       return buildVideoNote(s, parentLocation);
     }
     function clipVideoPrompt(c) { return buildVideoPrompt(c.takes[0]); }
+    // A lista de trabalho do vídeo é aquilo que o utilizador marcou como feito
+    // no Pipeline. O still pode ter sido gerado fora da app (não haver imageUrl
+    // cá dentro não impede gerar o prompt de animação).
     function approvedScenes() {
       const ep = currentEpisode();
       if (!ep) return { ep: null, list: [] };
-      return { ep, list: ep.scenes.filter(s => s.approved && s.imageUrl) };
+      return { ep, list: ep.scenes.filter(s => s.approved) };
     }
     function renderVideo() {
       const { ep, list } = approvedScenes();
       if (!ep) return $("videoContent").innerHTML = '<div class="empty"><h3>Video</h3><p>Gera um episódio.</p></div>';
       if (!ep.decoupageApproved) return $("videoContent").innerHTML = '<div class="empty"><h3>🔒 Video bloqueado</h3><p>Aprova primeiro a decupagem e, depois, as imagens no Pipeline.</p></div>';
-      if (!list.length) return $("videoContent").innerHTML = '<div class="empty"><h3>Video</h3><p>Aprova imagens no Pipeline para gerar prompts de vídeo OMNI FLASH.</p></div>';
+      if (!list.length) return $("videoContent").innerHTML = '<div class="empty"><h3>Video</h3><p>Marca planos como feitos no Pipeline (botão «Marcar OK») para gerares os prompts de vídeo OMNI FLASH.</p></div>';
       let html = '<div class="buttons" style="margin-bottom:12px;"><button class="btn btn-sm btn-secondary" id="copyAllVideoBtn" style="max-width:240px;">Copiar todos</button></div>';
       html += "<table class=\"vtable\"><tr><th>Take</th><th>Still aprovado</th><th>Prompt imagem aprovado</th><th>Animar em vídeo (OMNI FLASH)</th><th></th></tr>";
       const clips = list.map(s => ({ takes: [s], chained: false }));
@@ -2407,7 +2431,7 @@
         const mel = takes.some(s => s.alertMel);
         const pair = takes.length > 1;
         html += `<tr><td><strong style="color:var(--canon)">▶ ${esc(ids)}</strong><br><span class="meta">${totalDur}s · 16:9${mel ? " · MEL" : ""} · ${pair ? "🎬 INITIAL+FINAL" : (needsFinalFrame(takes[0]) ? "🎬 2 FRAMES" : "🎬 1 FRAME")}</span></td>`;
-        html += `<td class="thumb">${takes.map(s => `<img src="${esc(s.imageUrl)}" alt="take ${esc(s.id)}" style="margin-bottom:6px;">`).join("")}</td>`;
+        html += `<td class="thumb">${takes.map(s => s.imageUrl ? `<img src="${esc(s.imageUrl)}" alt="take ${esc(s.id)}" style="margin-bottom:6px;">` : `<div class="meta" style="margin-bottom:6px;">${esc(s.id)} · still gerado fora da app<br>anexa-o como primeiro frame</div>`).join("")}</td>`;
         html += `<td>${takes.map(s => `<div class="vprompt" style="margin-bottom:6px;">${esc((s.prompt || "").slice(0, 400))}${(s.prompt || "").length > 400 ? "…" : ""}</div><div class="meta">${esc(s.id)} · ${esc(s.model || "sem modelo")} · v${s.variant || 0}</div>`).join("")}</td>`;
         html += `<td><div class="vnote">${esc(clipVideoNote(c, byId))}</div><div class="vprompt">${esc(clipVideoPrompt(c))}</div></td>`;
         html += `<td><button class="btn btn-sm" data-copy="${esc(clipKey(c))}">Copiar</button></td></tr>`;
@@ -2576,7 +2600,7 @@
       if ((scene.sv || 1) !== (ep.storyVersion || 1) && !confirm(`Este take é da história v${scene.sv || 1} e o episódio vai na v${ep.storyVersion || 1}. Gerar imagem mesmo assim?`)) return;
       const prompt = ($("promptInput")?.value || scene.imagePrompt || scene.prompt || "").trim();
       if (!prompt) return status("Prompt vazio.", "error");
-      if (scene.approved && !confirm("Esta imagem está aprovada. Substituir?")) return;
+      if (scene.approved && !confirm("Este plano está marcado como feito. Substituir a imagem?")) return;
       const btn = $("generateImageBtn");
       btn.disabled = true;
       btn.innerHTML = '<span class="loading"></span> A gerar...';
