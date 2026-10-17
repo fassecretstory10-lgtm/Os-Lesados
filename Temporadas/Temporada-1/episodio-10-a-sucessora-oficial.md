@@ -6,7 +6,7 @@
 - **Duração-alvo:** 60–90 segundos
 - **Estado:** guião consolidado para produção
 - **Personagens:** Tininha, Teresa, Capitão Gancho, realizador, produtor e operador(es) da régie
-- **Locais:** palco de Secret Story, régie de emissão, gabinete do Capitão Gancho e sala secreta de Teresa
+- **Locais:** palco de Secret Story, régie de emissão, gabinete do Capitão Gancho, sala de reuniões da produção e sala secreta de Teresa
 
 ## Premissa
 
@@ -74,11 +74,49 @@ O Capitão observa o incidente num monitor. Está sozinho e mantém a expressão
 
 Fica a olhar para o ecrã durante mais um instante. Não sabemos se está impressionado, irritado ou simplesmente entretido.
 
-Corte para a régie. O realizador continua a tentar resolver o problema. Um operador mexe freneticamente nos controlos, enquanto outro aponta para os monitores.
+### Sala de reuniões
+
+Corte para uma sala de reuniões onde vários elementos da produção estão em pânico. Um anda de um lado para o outro; outra pessoa tem as mãos na cabeça; um terceiro começa a guardar discretamente os seus pertences numa caixa.
+
+**PRODUTOR 1:** «Meu Deus, vamos ser todos despedidos!»
+
+**PRODUTORA 2:** «Eu tenho dois filhos!»
+
+**PRODUTOR 3:** «Eu nem sequer trabalho nos grafismos!»
+
+O realizador entra na sala, desesperado.
+
+**REALIZADOR:** «Alguém sabe quem fez aquilo?!»
+
+Todos apontam uns para os outros.
+
+**OPERADOR:** «Eu avisei que não devíamos ter mudado o sistema!»
+
+**PRODUTORA 2:** «Você disse que o sistema era novo!»
+
+**OPERADOR:** «E é! Novo e já me arruinou a vida!»
+
+Um produtor pega na caneca e dirige-se lentamente à porta.
+
+**PRODUTOR 1:** «Vou começar a despedir-me das pessoas enquanto ainda posso.»
+
+Todos começam a falar ao mesmo tempo.
+
+**REALIZADOR:** «CALMA! Ninguém vai ser despedido se resolvermos isto!»
+
+Silêncio.
+
+**PRODUTOR 3:** «E se não resolvermos?»
+
+O realizador olha para ele, sem resposta, e sai disparado.
+
+### Regresso à régie
+
+O realizador continua a tentar resolver o problema. Um operador mexe freneticamente nos controlos, enquanto outro aponta para os monitores.
 
 **REALIZADOR:** «DESLIGUEM O ECRÃ! DESLIGUEM TUDO!»
 
-O ecrã fica preto.
+O ecrã permanece preto.
 
 O realizador olha para a equipa, completamente desesperado.
 
@@ -109,6 +147,7 @@ Inclina-se para trás, satisfeita.
 - A apresentação decorre no mesmo palco, com Tininha no centro e o ecrã gigante atrás dela.
 - As três legendas aparecem pela ordem exata do guião. Se a ferramenta não gerar texto corretamente, acrescentá-las na pós-produção.
 - A régie é uma sala de trabalho normal que se transforma em caos devido ao incidente; não criar um cenário de emergência separado.
+- A sala de reuniões mostra o pânico da equipa depois da reação calma do Capitão; a comédia vem das ações simultâneas e da conversa acelerada.
 - O Capitão está sozinho no gabinete quando diz «Interessante». A régie não ouve a fala nem reage a ela.
 - O mini break é uma decisão desesperada do realizador para interromper a emissão.
 - A sala secreta só aparece na cena final. Não explicar como Teresa sabotou os grafismos.
