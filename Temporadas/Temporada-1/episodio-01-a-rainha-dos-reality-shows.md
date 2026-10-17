@@ -3,155 +3,110 @@
 ## Ficha de produção
 
 - **Formato:** sitcom animada narrativa
-- **Duração:** curta; ajustar à interpretação e montagem
-- **Estado:** guião revisto; consultar a decupagem ligada no arquivo para os prompts e planos de produção
-- **Personagens:** Teresa, Capitão Gancho, Tininha, rececionista e fã
-- **Locais:** entrada da TVI, receção, corredor e gabinete do Capitão Gancho
+- **Duração-alvo:** 60–90 segundos
+- **Estado:** versão consolidada aprovada para implementação
+- **Personagens:** Teresa, Tininha, Capitão Gancho, rececionista e fã
+- **Locais:** exterior e entrada da TVI, receção, corredor e gabinete do Capitão Gancho
 
 ## Premissa
 
-Teresa regressa à TVI convencida de que o seu legado lhe garante um lugar como apresentadora do Secret Story. Na receção, descobre que já não tem os privilégios que espera. No gabinete, Capitão Gancho mantém a decisão com frieza e calma. A entrada de Tininha, com uma função aprovada na nova grelha, deixa Teresa perante a mudança da estação. À saída, uma fã reconhece-a e devolve-lhe, por instantes, a sensação de continuar a ser a rainha dos reality-shows.
+Teresa regressa à TVI convencida de que continua a ser a escolha óbvia para apresentar o Secret Story. Tenta vender o seu regresso como a solução para recuperar audiências, mas a entrada de Tininha e a revelação do título da nova edição mostram-lhe que já não é o centro das decisões. À saída, uma fã reconhece-a e devolve-lhe, por instantes, a sensação de continuar a ser a rainha dos reality-shows.
 
 ## Cena 1 — Exterior da TVI — Dia
 
-Plano inicial apenas do exterior da TVI, sem personagens, diálogo ou voz off. Ligeiro zoom in para estabelecer o local.
+A fachada da TVI está vazia. Não há personagens, diálogo ou voz off. A câmara aproxima-se ligeiramente da entrada.
 
-## Cena 2 — Receção e torniquetes — Dia
+Corte.
 
-Teresa aproxima-se da receção com postura majestosa.
+## Cena 2 — Entrada e receção — Dia
 
-**RECECIONISTA:** «Bom dia. Tem marcação?»
+Teresa entra no edifício com a postura de quem regressa a um lugar que lhe pertence. Dirige-se à receção.
 
-**TERESA:** «Sabe quem eu sou?»
+**RECECIONISTA:** «Desculpe, tem marcação?»
 
-**RECECIONISTA:** «Sem marcação, não posso deixá-la passar.»
+**TERESA:** «Tenho assuntos a tratar com o Capitão Gancho.»
 
-Teresa olha para a rececionista, incrédula, e salta por cima dos torniquetes.
+**RECECIONISTA:** «Sem marcação não pode passar.»
 
-**TERESA:** «Isto é uma televisão ou uma repartição de finanças?»
+A rececionista tenta impedir-lhe a passagem.
 
-A rececionista observa-a, surpreendida. Teresa continua pelo corredor como se nada de extraordinário tivesse acontecido.
+**TERESA:** «Sabe quem eu sou? Ou já apagaram a memória desta casa?»
+
+Teresa não espera pela resposta. Salta os torniquetes e segue caminho. A rececionista fica para trás, sem reação.
 
 ## Cena 3 — Corredor da TVI — Dia
 
-Teresa atravessa o corredor com confiança, convencida de que continua a pertencer ao centro da televisão.
+Teresa atravessa o corredor em direção ao gabinete, determinada a conseguir o que veio procurar. Sem diálogo; a passagem é breve.
 
 ## Cena 4 — Gabinete do Capitão Gancho — Dia
 
-Teresa entra no gabinete sem esperar convite. Capitão Gancho permanece sentado, calmo e concentrado nos documentos.
+O Capitão está sentado à secretária. Teresa apresenta-se com confiança.
 
-**TERESA:** «Capitão! Finalmente, uma reunião à altura do meu regresso.»
+**TERESA:** «O programa precisa de voltar às origens. E ninguém conhece aquelas origens como eu.»
 
-**CAPITÃO GANCHO:** «Não sabia que havia um regresso marcado.»
+**CAPITÃO GANCHO:** «Vamos analisar as possibilidades.»
 
-**TERESA:** «Não precisa de estar marcado. Há coisas que são inevitáveis.»
+O Capitão mantém-se frio e profissional. Teresa interpreta a resposta como uma abertura.
 
-**TERESA:** «Estou aqui para falar do meu lugar na nova grelha.»
+Tininha entra com uma pasta.
 
-**CAPITÃO GANCHO:** «O seu lugar?»
+**TININHA:** «Olhe, ainda sabe o caminho para aqui?»
 
-**TERESA:** «No Secret Story. Na apresentação. Ao centro de tudo.»
+Teresa vira-se para ela, visivelmente irritada.
 
-**CAPITÃO GANCHO:** «A apresentação já está a ser tratada.»
+**TERESA:** «Sei. Ao contrário de algumas pessoas, não preciso de GPS para chegar ao topo.»
 
-**TERESA:** «Tratada por quem?»
+Tininha não prolonga a provocação. Dirige-se ao Capitão e coloca a pasta sobre a secretária.
 
-**CAPITÃO GANCHO:** «Pela equipa responsável.»
+**TININHA:** «Capitão, trouxe as propostas para o nome da nova edição.»
 
-Capitão Gancho mantém o tom institucional e não levanta a voz.
+**CAPITÃO GANCHO:** «Vamos ver.»
 
-**CAPITÃO GANCHO:** «E o que considera que a torna a escolha certa?»
+Tininha abre a pasta e consulta os documentos.
 
-**TERESA:** «Sem mim, vocês não tinham história para contar.»
+**TININHA:** «Eu continuo a gostar de “Secret Story: Luta pelo Desafio Final All Stars”. É forte.»
 
-**CAPITÃO GANCHO:** «Temos contado algumas.»
+Teresa olha para a pasta e depois para Tininha, perplexa.
 
-**TERESA:** «E quantas dessas histórias ficaram na memória?»
+**TERESA:** «Valha-me Deus… Isso explica muita coisa.»
 
-**CAPITÃO GANCHO:** «A televisão não vive apenas de memórias, Teresa.»
+O Capitão olha discretamente para Tininha, reconhecendo que é ela quem está a conduzir aquele trabalho. Não toma partido nem comenta a provocação.
 
-## Cena 5 — A entrada de Tininha
+Teresa percebe que deixou de ser o centro da reunião. Dirige-se à porta.
 
-Tininha entra no mesmo gabinete com uma pasta de documentos. A ação decorre preferencialmente no master angle existente, sem criar ângulos desnecessários.
+Já à saída, vira ligeiramente a cabeça e lança a ameaça com dramatismo contido.
 
-**TININHA:** «Capitão, trouxe os documentos da nova grelha.»
+**TERESA:** «Ainda se vão arrepender…»
 
-**CAPITÃO GANCHO:** «Obrigado, Tininha. Deixe-os aqui.»
+Sai.
 
-**TERESA:** «Tininha, continuas por aqui?»
+## Cena 5 — Exterior da TVI — Dia
 
-**TININHA:** «Continuo. Tenho trabalhado bastante.»
-
-Tininha coloca os documentos na secretária.
-
-**TININHA:** «Por acaso, trouxe os números da nova grelha. Vou acompanhar o novo espaço diário como comentadora.»
-
-**TERESA:** «A tua participação?»
-
-**TININHA:** «Sim. Comentário e análise. Vou acompanhar os acontecimentos e ajudar a desenvolver os temas.»
-
-**TERESA:** «Todos os dias?»
-
-**TININHA:** «É esse o plano.»
-
-**TERESA:** «Portanto, eu venho aqui discutir o meu regresso e descubro que a Tininha tem um programa.»
-
-**TININHA:** «Ainda não é bem um programa.»
-
-**CAPITÃO GANCHO:** «É uma função aprovada.»
-
-**TININHA:** «Estou muito grata pela confiança.»
-
-**TERESA:** «Confiança. É uma palavra bonita.»
-
-**TININHA:** «Também é importante saber conquistá-la.»
-
-Teresa tenta recuperar o controlo da conversa, mas Capitão Gancho encerra a reunião sem alterar o tom.
-
-**TERESA:** «Naturalmente. E imagino que tenhas tido muitas oportunidades para a conquistar.»
-
-**CAPITÃO GANCHO:** «Teresa, temos trabalho.»
-
-Teresa levanta-se, contrariada, e dirige-se à porta.
-
-**TERESA:** «Não quero atrapalhar o progresso. Sobretudo quando o progresso tem tão pouca memória.»
-
-**CAPITÃO GANCHO:** «Teresa.»
-
-Teresa vira-se, à espera de uma mudança de decisão.
-
-**CAPITÃO GANCHO:** «A decisão mantém-se.»
-
-Teresa sustém o olhar por um instante e sai.
-
-**TININHA:** «Achas que ficou chateada?»
-
-**CAPITÃO GANCHO:** «Acho que ainda não percebeu.»
-
-## Cena 6 — Exterior da TVI — Dia
-
-Teresa sai de cabeça erguida, tentando esconder a desilusão. Uma fã reconhece-a e aproxima-se, genuinamente entusiasmada.
+Teresa sai do edifício. Uma fã reconhece-a espontaneamente e aproxima-se, genuinamente entusiasmada.
 
 **FÃ:** «Você devia voltar! É a rainha dos reality-shows!»
 
-Teresa fica comovida. Os olhos ficam húmidos e leva uma mão ao peito.
+Teresa fica emocionada. Os olhos enchem-se de lágrimas e leva a mão ao peito.
 
-**VOZ OFF (feminina, doce e emocionante):** «Há coroas que o tempo não consegue tirar…»
+**VOZ OFF FEMININA, doce e emotiva:** «Há coroas que o tempo não consegue tirar…»
 
 **TERESA (com a voz a tremer):** «Eu sabia… Eu sabia que ainda não se tinham esquecido de mim.»
 
-Teresa sorri entre lágrimas e recupera a pose majestosa.
+A câmara aproxima-se ligeiramente. Teresa sorri entre lágrimas, recompõe a postura e ergue o queixo, recuperando a pose de rainha.
 
 **CORTE PARA PRETO.**
 
 ## Regras de continuidade
 
-- O plano inicial do episódio mostra apenas o exterior da TVI, sem personagens.
-- Reutilizar os cenários, referências e master angles já existentes.
-- No gabinete, o master angle é o plano principal. Os únicos ângulos adicionais de diálogo são o plano de Capitão Gancho sentado e o inverso de Teresa.
+- O plano inicial mostra apenas o exterior da TVI, sem personagens, diálogo ou voz off.
+- Reutilizar os cenários, referências e master frames existentes.
+- No gabinete, o master angle é o plano principal. Os únicos ângulos adicionais de diálogo disponíveis são o plano de Capitão Gancho sentado e o inverso de Teresa.
+- Não criar shot/reverse-shot automático para cada fala. Acrescentar planos de reação apenas quando forem importantes para a piada ou para a emoção.
+- O salto dos torniquetes deve ser visualmente claro; criar um plano adicional apenas se o master não mostrar a ação com clareza.
 - Capitão Gancho é calmo, frio e político; nunca grita.
-- Tininha entra com documentos e tem uma função aprovada na nova grelha.
+- Manter o tratamento formal entre as personagens, mesmo nas provocações.
+- O título da nova edição é revelado verbalmente. A pasta e os documentos são adereços naturais; não é necessário que o título esteja legível.
 - A fã diz exatamente: «Você devia voltar! É a rainha dos reality-shows!»
-- A voz off final é feminina, doce e emocionante.
+- A voz off final é feminina, doce e emotiva.
 - A Abelha Maia não aparece nem narra este episódio.
-- Para os prompts de imagem, animação, duração e enquadramentos, consultar a decupagem de produção associada a este episódio no arquivo.
+- Todas as falas são em português europeu (PT-PT).
