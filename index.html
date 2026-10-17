@@ -1067,7 +1067,7 @@
         const rf = scenes[scenes.length - 1];
         if (rf !== last) rf.prompt = buildPrompt(rf);
       });
-      scenes.forEach(s => { resolveOfficeSide(s); s.prompt = buildPrompt(s); s.alertMel = s.characters.includes("abelha"); });
+      scenes.forEach(s => { resolveOfficeSide(s); s.prompt = s.imagePrompt || buildPrompt(s); s.alertMel = s.characters.includes("abelha"); });
       // Cobertura por função (Fase 5): agrupa takes consecutivos do mesmo cenário
       // em cenas (sceneId) e etiqueta a função de cada take. Teto: 4 takes/cena.
       let seq = 0, cur = null;
