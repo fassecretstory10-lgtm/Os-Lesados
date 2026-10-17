@@ -20,8 +20,19 @@ const PORT = Number(process.env.PORT || 8787);
 
 const app = express();
 app.set("trust proxy", 1);
+// Sem cache para o index.html e a API: o arquivo deve refletir sempre o repositório.
+// Sem isto, o browser serve a versão antiga da página (e do guião) após um pull/commit.
+app.set("etag", false);
 app.use(cors());
 app.use(express.json({ limit: "25mb" }));
+app.use((req, res, next) => {
+  if (req.path === "/" || req.path === "/index.html" || req.path.startsWith("/api/")) {
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
+  }
+  next();
+});
 
 // ---------------------------------------------------------------------------
 // Rotas
@@ -301,7 +312,7 @@ app.get("/api/episodes", async (_req, res) => {
 
 // Servir o frontend (index.html já existe na raiz — não tocar)
 app.get("/", (_req, res) => {
-  res.sendFile(path.join(ROOT, "index.html"));
+  res.sendFile(path.join(ROOT, "index.html"), { etag: false, lastModified: false });
 });
 
 // Retratos do canon (fotos das personagens, fundo branco via CSS no frontend).

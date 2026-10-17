@@ -8,6 +8,7 @@ on:
       - "Temporadas/Temporada-1/episodio-*.md"
       - "docs/episodios/*.md"
       - "scripts/sync-episode-index.mjs"
+      - "scripts/embed-archive.mjs"
       - ".github/workflows/sync-episode-index.yml"
   workflow_dispatch:
 
@@ -35,15 +36,18 @@ jobs:
       - name: Validate decoupages and sync manifest
         run: node scripts/sync-episode-index.mjs
 
-      - name: Commit manifest if changed
+      - name: Refresh embedded archive snapshot in index.html
+        run: node scripts/embed-archive.mjs
+
+      - name: Commit manifest and archive snapshot if changed
         run: |
-          if git diff --quiet -- Temporadas/Temporada-1/manifest.json; then
-            echo "Manifest already up to date."
+          if git diff --quiet -- Temporadas/Temporada-1/manifest.json index.html; then
+            echo "Manifest and archive snapshot already up to date."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Temporadas/Temporada-1/manifest.json
+          git add Temporadas/Temporada-1/manifest.json index.html
           git commit -m "chore: sync completed episode decoupages into index"
           git pull --rebase origin main
           git push
