@@ -1,0 +1,49 @@
+name: Sync completed episode decoupages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Temporadas/Temporada-1/episodio-*.md"
+      - "docs/episodios/*.md"
+      - "scripts/sync-episode-index.mjs"
+      - ".github/workflows/sync-episode-index.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: episode-index-sync-main
+  cancel-in-progress: false
+
+jobs:
+  sync-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Validate decoupages and sync manifest
+        run: node scripts/sync-episode-index.mjs
+
+      - name: Commit manifest if changed
+        run: |
+          if git diff --quiet -- Temporadas/Temporada-1/manifest.json; then
+            echo "Manifest already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Temporadas/Temporada-1/manifest.json
+          git commit -m "chore: sync completed episode decoupages into index"
+          git pull --rebase origin main
+          git push

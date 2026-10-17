@@ -157,6 +157,35 @@ app.post("/api/generate-image", async (req, res) => {
   }
 });
 
+// Arquivo editorial da Temporada 1. As fichas e decupagens são ficheiros versionados.
+app.get("/api/episodes", async (_req, res) => {
+  try {
+    const { default: fs } = await import("node:fs");
+    const manifestPath = path.join(ROOT, "Temporadas", "Temporada-1", "manifest.json");
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    const episodes = (manifest.episodes || []).map((episode) => {
+      const relative = String(episode.path || "");
+      if (!relative.startsWith("Temporadas/Temporada-1/") || !relative.endsWith(".md")) {
+        throw new Error("Caminho de episódio inválido no manifest: " + relative);
+      }
+      const content = fs.readFileSync(path.join(ROOT, relative), "utf8");
+      let decoupageContent = null;
+      const decoupagePath = String(episode.decoupagePath || "");
+      if (decoupagePath) {
+        if (!decoupagePath.startsWith("docs/episodios/") || !decoupagePath.endsWith(".md") || decoupagePath.includes("..")) {
+          throw new Error("Caminho de decupagem inválido no manifest: " + decoupagePath);
+        }
+        const absoluteDecoupagePath = path.join(ROOT, decoupagePath);
+        if (fs.existsSync(absoluteDecoupagePath)) decoupageContent = fs.readFileSync(absoluteDecoupagePath, "utf8");
+      }
+      return { ...episode, content, decoupageContent };
+    });
+    res.json({ ok: true, season: manifest.season, episodes });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: "Não foi possível carregar os guiões da Temporada 1: " + e.message });
+  }
+});
+
 // Servir o frontend (index.html já existe na raiz — não tocar)
 app.get("/", (_req, res) => {
   res.sendFile(path.join(ROOT, "index.html"));
