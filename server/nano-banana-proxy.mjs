@@ -311,7 +311,7 @@ REGRAS OBRIGATÓRIAS:
 - Só existem as personagens listadas no campo personagens do plano. Nenhuma outra pessoa pode aparecer, nem ao fundo, nem a passar.
 - Uma personagem sem folha de referência própria (papel secundário, fora do elenco principal) tem de ser descrita em poucas palavras com sexo, idade e roupa — sem isso o modelo inventa outra pessoa.
 - imagePrompt: CURTO e técnico, 2 a 3 frases, para o NANO BANANA PRO (Gemini 3 Pro Image), que gera o still. Descreve o PRIMEIRO momento do plano — o estado em que a cena começa, nunca o resultado da ação — mais o enquadramento e o que está visível. Não repitas o bloco de estilo nem a lista de proibições: são acrescentados automaticamente.
-- animationPrompt: 1 a 2 frases em inglês com UMA só ação contínua e legível (o movimento), mais a câmara e o estado final quando o plano tiver movimento. Não escrevas as falas, o ambiente sonoro nem cabeçalhos como "Motion:": a aplicação acrescenta as falas exatas em português, o áudio e o que tem de ficar igual ao still.
+- animationPrompt: 1 a 2 frases em inglês com UMA só ação contínua e legível (o movimento), mais a câmara e o estado final quando o plano tiver movimento. Não escrevas as falas, o ambiente sonoro nem cabeçalhos como "Motion:": a aplicação acrescenta as falas exatas em português, quem as diz, o tipo de voz de cada personagem, o áudio e o que tem de ficar igual ao still.
 - Num establishing de exterior sem personagens, o imagePrompt não pode ter pessoas e o animationPrompt não pode ter movimento de personagens.
 - Devolve apenas o texto do prompt: sem preâmbulos, sem títulos e sem comentários.`;
     const buildUser = (batch) => `EPISÓDIO: ${String(episodeName || "Sem título").slice(0, 160)}

@@ -685,12 +685,26 @@
     // mencionado — nem para dizer que não está.
     function castForFrame(scene) {
       const ids = (Array.isArray(scene?.characters) ? scene.characters : [])
-        .filter(id => charById[id] && !/voice-?over only/i.test(charById[id].visual || ""));
+        .filter(id => charById[id] && !isVoiceOver(id));
       return {
         ids,
         sheets: ids.filter(id => SHEET_IDS.has(id)).map(id => charById[id].name),
         unsheeted: ids.filter(id => !SHEET_IDS.has(id)).map(id => `${charById[id].name} — ${String(charById[id].visual).replace(/\.\s*$/, "")}`)
       };
+    }
+    // Voz-off: existe no guião mas não tem ninguém em cena. Não se desenha e não
+    // se marca como lip-sync.
+    function isVoiceOver(id) {
+      const c = charById[id];
+      return !!(c && /voice-?over only/i.test(c.visual || "")) || id === "vozoff";
+    }
+    // Tipo de voz para o prompt de vídeo: a direção vocal curta de cada
+    // personagem, sem a personalidade nem os bordões que ficam no elenco.
+    function voiceForPrompt(id) {
+      const c = charById[id];
+      if (!c || !c.voice) return "";
+      const short = String(c.voice).split(";")[0].replace(/[\s.]+$/, "").trim();
+      return short.length > 110 ? short.slice(0, 107).replace(/\s\S*$/, "") : short;
     }
     // Prompt de imagem — Nano Banana Pro (Gemini 3 Pro Image). Curto e técnico: um
     // só momento da ação (o início do plano, não o seu resultado), o
@@ -2126,7 +2140,7 @@
         const dls = sceneLines(s);
         html += `<div class="box" style="margin-top:14px;"><h3 style="color:var(--canon);margin-bottom:10px;">CENA ${esc(String(s.sceneId || ("cena-" + (i+1))).replace(/^cena[\s-]*/i,"").padStart(2,"0"))} · ${s.type === "REFRAME" ? "REFRAME" : "PLANO"} ${code} <span class="meta">${esc(s.title || "")}</span></h3><div class="grid-summary"><div class="field"><label>Nome do plano</label><input data-shot-field="title" data-shot-id="${esc(s.id)}" value="${esc(s.title||"")}" /></div><div class="field"><label>Localização</label><input data-shot-field="location" data-shot-id="${esc(s.id)}" value="${esc(s.location||"")}" /></div><div class="field"><label>Enquadramento</label><input data-shot-field="shot" data-shot-id="${esc(s.id)}" value="${esc(s.shot||"")}" placeholder="Plano geral, médio, close-up..." /></div><div class="field"><label>Movimento de câmara</label><input data-shot-field="camera" data-shot-id="${esc(s.id)}" value="${esc(s.camera||"")}" placeholder="STATIC, DOLLY IN, PAN..." /></div><div class="field"><label>Duração (segundos)</label><input type="number" min="1" max="8" data-shot-field="duration" data-shot-id="${esc(s.id)}" value="${Number(s.duration||6)}" /></div></div><div class="field"><label>Ação visual e continuidade</label><textarea data-shot-field="action" data-shot-id="${esc(s.id)}">${esc(s.action||"")}</textarea></div>${dls.length ? dls.map((l, j) => `<div class="field"><label>Diálogo${dls.length > 1 ? " " + (j + 1) + "/" + dls.length : ""} · ${esc(charById[l.char]?.name || l.char)}</label><textarea data-dialogue-field="line" data-dialogue-index="${j}" data-shot-id="${esc(s.id)}">${esc(l.line||"")}</textarea><label>Intenção / expressão</label><input data-dialogue-field="paren" data-dialogue-index="${j}" data-shot-id="${esc(s.id)}" value="${esc(l.paren||"")}" /></div>`).join("") : '<p class="meta">Sem diálogo associado a este plano.</p>'}${
           promptNeedsEnglish(s) ? '<p class="meta" style="color:var(--warning);">⚠️ Prompt por traduzir — usa «Gerar prompts em inglês».</p>' : ""
-        }<details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de imagem — Nano Banana Pro (em inglês)</summary><textarea data-shot-field="imagePrompt" data-shot-id="${esc(s.id)}" placeholder="English image prompt for Nano Banana Pro...">${esc(s.imagePrompt || s.prompt || "")}</textarea></details><details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de animação — Omni Flash (movimento, em inglês)</summary><textarea data-shot-field="animationPrompt" data-shot-id="${esc(s.id)}" placeholder="English motion for Omni Flash — the app adds the first-frame note, the exact dialogue and the locks...">${esc(s.animationPrompt || "")}</textarea></details><div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}${s.reframeOf ? " · reframe do plano " + esc(s.reframeOf) : ""}</div></div>`;
+        }<details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de imagem — Nano Banana Pro (em inglês)</summary><textarea data-shot-field="imagePrompt" data-shot-id="${esc(s.id)}" placeholder="English image prompt for Nano Banana Pro...">${esc(s.imagePrompt || s.prompt || "")}</textarea></details><details class="field" open><summary style="cursor:pointer;color:var(--canon);font-weight:800;margin-bottom:8px;">Prompt de animação — Omni Flash (movimento, em inglês)</summary><textarea data-shot-field="animationPrompt" data-shot-id="${esc(s.id)}" placeholder="English motion for Omni Flash — the app adds the first-frame note, the exact dialogue and the locks...">${esc(s.animationPrompt || "")}</textarea></details><div class="meta">Imagem: ${s.imageUrl ? "já gerada" : "por gerar"}${s.approved ? " · imagem aprovada" : ""}${s.reframeOf ? " · reframe do plano " + esc(s.reframeOf) : ""}${sceneLines(s).length ? " · " + sceneLines(s).length + " fala(s): no Video entram com quem as diz, em PT-PT e com o tipo de voz" : ""}</div></div>`;
       });
       $("decoupageContent").innerHTML = html;
       $("generateDecoupageBtn")?.addEventListener("click", generateDecoupageWithAI);
@@ -2544,11 +2558,20 @@
       if (lock) parts.push(`In frame: ${lock}`);
       const vlines = sceneLines(scene);
       if (vlines.length) {
-        const spoken = vlines.map(l => {
+        // Cada fala leva quem a diz, o tipo de voz dessa personagem e o texto
+        // exato em PT-PT. A voz-off é separada: não é lip-sync e não tem ninguém
+        // em cena a falar. O texto completo da voz (personalidade, bordões) fica
+        // no elenco; aqui basta a direção vocal curta.
+        const describe = l => {
           const c = charById[l.char];
-          return `${c?.name || l.char}: "${sanitize(l.line)}"`;
-        }).join(" / ");
-        parts.push(`Spoken dialogue (European Portuguese, exact words, lip-synced, no paraphrasing): ${spoken}`);
+          const who = c?.name || l.speaker || l.char || "unknown speaker";
+          const vox = voiceForPrompt(l.char);
+          return `- ${who}${vox ? ` [${vox}]` : ""}: "${sanitize(l.line)}"`;
+        };
+        const onScreen = vlines.filter(l => !isVoiceOver(l.char));
+        const offScreen = vlines.filter(l => isVoiceOver(l.char));
+        if (onScreen.length) parts.push("Spoken dialogue (European Portuguese PT-PT, exact words, lip-synced to the visible speaker, no paraphrasing):\n" + onScreen.map(describe).join("\n"));
+        if (offScreen.length) parts.push("Off-screen voice-over (European Portuguese PT-PT, exact words, NOT lip-synced, no one on screen speaking):\n" + offScreen.map(describe).join("\n"));
       } else {
         parts.push("No dialogue in this shot.");
       }
