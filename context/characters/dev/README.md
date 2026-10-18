@@ -6,4 +6,4 @@ estiver resolvido, a personagem sai desta pasta para o canon completo
 
 - `perpetua.md` — sem retrato, voz provisória.
 - `patribunal.md` — com retrato, voz provisória.
-- `tininha.md` — sem retrato, voz provisória.
+- `tininha.md` — com retrato, voz provisória.
