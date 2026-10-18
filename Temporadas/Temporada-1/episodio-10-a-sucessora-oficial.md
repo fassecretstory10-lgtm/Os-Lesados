@@ -126,17 +126,21 @@ A emissão corta abruptamente para um separador de mini break, com música alegr
 
 ## Cena 4 — Sala secreta de Teresa — Noite
 
-Teresa está sentada diante de um monitor que mostra Tininha furiosa no palco, nos instantes anteriores ao mini break.
+Teresa está sentada diante dos ecrãs que mostram Tininha furiosa no palco, nos instantes anteriores ao mini break. Esta cena é animada a partir de duas imagens fixas: a imagem inicial mostra Teresa a olhar para os ecrãs e a imagem final é o plano aproximado do rosto durante a revelação. A câmara aproxima-se de forma contínua entre as duas, sem criar imagens, planos ou composições adicionais.
 
-Teresa observa a imagem em silêncio. Os olhos começam lentamente a ficar vermelhos. Um sorriso maléfico forma-se no rosto.
+Teresa observa os ecrãs, satisfeita por ter pirateado o sistema e escrito a mensagem. Os olhos começam lentamente a ficar vermelhos. Com um sorriso matreiro, diz muito baixinho:
 
-**TERESA:** «Sucessora em avaliação…»
+**TERESA (a sussurrar):** «Ai, Tininha, Tininha… tu não sabes com quem te foste meter!»
 
-Começa a rir-se de forma diabólica e progressivamente exagerada.
+A câmara aproxima-se lentamente do rosto de Teresa. O sorriso torna-se progressivamente mais maléfico. Teresa faz uma pausa dramática e, com voz de vilã, diz:
 
-**TERESA:** «Ah! Ah! Ah! Ah!»
+**TERESA (voz de vilã):** «Eu… sim… sou a rainha dos reality shows!»
 
-Inclina-se para trás, satisfeita.
+Imediatamente após a última palavra, solta uma gargalhada maléfica, exagerada e teatral:
+
+**TERESA:** «Ahahahahahahah!»
+
+Durante a gargalhada, toda a cena treme com uma animação 2D exagerada, como se o riso de Teresa fizesse o mundo estremecer. A câmara e os elementos do cenário vibram de forma coordenada. Uma luz encarnada intensa invade a cena e pulsa com a gargalhada. Os ecrãs continuam animados, com as interfaces em movimento e os elementos a piscar de forma mais intensa.
 
 **CORTE PARA PRETO.**
 
@@ -151,5 +155,8 @@ Inclina-se para trás, satisfeita.
 - O Capitão está sozinho no gabinete quando diz «Interessante». A régie não ouve a fala nem reage a ela.
 - O mini break é uma decisão desesperada do realizador para interromper a emissão.
 - A sala secreta só aparece na cena final. Não explicar como Teresa sabotou os grafismos.
-- Não incluir voz off, Abelha Maia ou cenas depois do corte para preto.
+- A cena final é animada a partir de duas imagens fixas (imagem inicial: Teresa a olhar para os ecrãs; imagem final: plano aproximado do rosto durante a revelação), com aproximação contínua da câmara entre as duas. Não gerar imagens novas para substituir os frames aprovados.
+- As falas de Teresa, pela ordem exata: primeiro, sussurrada, «Ai, Tininha, Tininha… tu não sabes com quem te foste meter!»; depois, com voz de vilã de animação inspirada na presença teatral de Maléfica (grave, fria, arrogante, ligeiramente rouca, ameaçadora), com pausa dramática e ênfase em «sou a rainha», «Eu… sim… sou a rainha dos reality shows!»; por fim, uma gargalhada de vilã intensa, teatral, sinistra e ligeiramente descontrolada, «Ahahahahahahah!». Não acrescentar «porque», não trocar as frases e não remover as pausas.
+- Durante a gargalhada, toda a cena treme com animação 2D exagerada e uma luz encarnada intensa invade a cena e pulsa com o riso; os ecrãs continuam animados, com a disposição original e a mensagem pirateada intactas.
+- Não incluir voz off, Abelha Maia ou cenas depois do corte para preto. Não adicionar música nem narração.
 - Manter o ritmo rápido, com pausas cómicas breves e duração total de 60–90 segundos.
