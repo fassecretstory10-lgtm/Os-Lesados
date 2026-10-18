@@ -7,6 +7,7 @@
 - **Estado:** guião consolidado para produção
 - **Personagens:** Tininha, Teresa, Capitão Gancho, realizador, produtor e operador(es) da régie
 - **Locais:** palco de Secret Story, régie de emissão, gabinete do Capitão Gancho, sala de reuniões da produção e sala secreta de Teresa
+- **E.P. (establishing shots):** edifício TVI (dia), corredor até à régie, corredor da direção e edifício TVI (noite) — inserts sem personagens, entre as cenas (ver decupagem).
 - **Nota:** a história continua diretamente no Episódio 11 — «A Sucessora Oficial — Parte 2».
 
 ## Premissa

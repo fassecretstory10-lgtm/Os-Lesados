@@ -8,6 +8,7 @@
 - **Parte:** 2 de 2 — continuação direta do Episódio 10 («A Sucessora Oficial»)
 - **Personagens:** Tininha, Teresa, Capitão Gancho, realizador, produtor e operador(es) da régie
 - **Locais:** palco de Secret Story, régie de emissão, gabinete do Capitão Gancho e sala secreta de Teresa
+- **E.P. (establishing shots):** edifício TVI (dia), corredor até à régie, corredor da direção e edifício TVI (noite) — inserts sem personagens, entre as cenas (ver decupagem).
 
 ## Premissa
 

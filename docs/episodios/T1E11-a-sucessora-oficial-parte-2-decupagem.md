@@ -22,6 +22,7 @@
 9. A régie não vê a sala secreta nem sabe quem lá está; só descobre que o sinal vem de dentro da estação.
 10. O Capitão está sozinho com o produtor quando diz «Deixe-a trabalhar»; a régie não ouve essa fala.
 11. Cada take declara o seu próprio ambiente (**Local:**) e título (**Título:**). Um take que muda de espaço dentro da mesma cena é um master próprio (**Tipo:** MASTER FRAME), não um reframe do take anterior.
+12. Os establishing shots (**E.P.**) são inserts sem personagens nem falas (`**Tipo:** INSERT`), com `**Local:**` próprio, entre as cenas: edifício TVI (dia), corredor até à régie, corredor da direção e edifício TVI (noite). Não introduzem uma CENA nova nem roubam o papel de master ao primeiro plano da cena.
 
 ---
 
@@ -29,12 +30,31 @@
 
 **Objetivo:** mostrar a estreia a voltar ao ar já contaminada pela sabotagem e Tininha a perder o controlo.
 
-## PLANO 01 — A estreia continua
+## PLANO 01 — E.P. — Estabelecer o edifício TVI (dia)
 
-**01A · MASTER FRAME DO PALCO**  
+**01A · E.P. — ZOOM IN EDIFÍCIO TVI**  
+**Duração estimada:** 3–4 s  
+**Câmara:** plano geral do edifício TVI com zoom in lento  
+**Personagens:** nenhuma  
+**Tipo:** INSERT  
+**Título:** E.P. — Edifício TVI (dia)  
+**Local:** Exterior da estação (edifício TVI)
+
+**Prompt de imagem**
+> Wide establishing shot of the exterior of the TVI television headquarters in the approved OS LESADOS 2D sitcom style: modern glass and stone facade, television-studio entrance, daytime, clean simple composition, no people, no characters, no silhouettes, no readable text, 16:9.
+
+**Prompt de animação**
+> Slow continuous zoom-in on the empty TVI building to establish the location, then hold. Only minimal environmental movement. No characters enter the frame, no dialogue, no voice-over and no music. Clean 2D sitcom animation.
+
+**Transição:** corte para o interior.
+
+## PLANO 02 — A estreia continua
+
+**02A · MASTER FRAME DO PALCO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano geral frontal do palco, Tininha ao centro e ecrã gigante atrás  
 **Personagens:** Tininha  
+**Tipo:** MASTER FRAME  
 **Título:** Tininha regressa ao palco depois do mini break  
 **Local:** Palco de Secret Story
 
@@ -48,7 +68,7 @@
 
 O ecrã gigante volta a mostrar a legenda pirata: «A SUCESSORA DA TERESA GUILHERMINA I DE PORTUGAL».
 
-**01B · REFRAME — O PÚBLICO CANTA**  
+**02B · REFRAME — O PÚBLICO CANTA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio de Tininha, com o ecrã gigante parcialmente visível  
 **Personagens:** Tininha  
@@ -75,12 +95,31 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **Objetivo:** a equipa descobre que o sinal pirata vem de dentro da estação e que a sabotagem é, na verdade, uma campanha.
 
-## PLANO 02 — A origem do sinal
+## PLANO 03 — E.P. — Corredor até à régie
 
-**02A · MASTER FRAME DA RÉGIE**  
+**03A · E.P. — CORREDOR ATÉ À RÉGIE**  
+**Duração estimada:** 2–3 s  
+**Câmara:** travelling lateral pelo corredor técnico até à porta da régie  
+**Personagens:** nenhuma  
+**Tipo:** INSERT  
+**Título:** E.P. — Corredor técnico até à régie  
+**Local:** Corredor de Bastidores
+
+**Prompt de imagem**
+> Empty technical corridor of the television station in the approved OS LESADOS 2D sitcom style, plain doors, cables and a lit ceiling, leading towards the control room. No people, no characters, no readable text, no logos. Consistent with the established station interiors. 16:9.
+
+**Prompt de animação**
+> Lateral tracking along the empty corridor towards the control-room door, then hold. No characters, no dialogue, no voice-over, no music. Clean 2D sitcom animation.
+
+**Transição:** corte para a régie.
+
+## PLANO 04 — A origem do sinal
+
+**04A · MASTER FRAME DA RÉGIE**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano geral da régie, com a parede de monitores e a consola à frente  
 **Personagens:** operador e realizador  
+**Tipo:** MASTER FRAME  
 **Título:** A régie localiza o sinal pirata  
 **Local:** Régie de emissão
 
@@ -94,7 +133,7 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **REALIZADOR:** «Dentro? De onde?»
 
-**02B · REFRAME — O SINAL VEM DE DENTRO**  
+**04B · REFRAME — O SINAL VEM DE DENTRO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano conjunto do produtor e do operador junto aos monitores  
 **Personagens:** produtor 1 e operador  
@@ -111,9 +150,9 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **OPERADOR:** «E não é só o sinal: #VoltaTeresa é o mais comentado do país.»
 
-## PLANO 03 — Isto é uma campanha
+## PLANO 05 — Isto é uma campanha
 
-**03A · REFRAME — A CAMPANHA**  
+**05A · REFRAME — A CAMPANHA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio do realizador e do produtor, com os monitores ao fundo  
 **Personagens:** realizador e produtor 1  
@@ -130,7 +169,7 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **TININHA (O.S.):** «ENTÃO VÃO BUSCAR QUEM ESTÁ LÁ!»
 
-**03B · REFRAME — A PORTA BLOQUEADA**  
+**05B · REFRAME — A PORTA BLOQUEADA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano mais fechado do operador junto à consola  
 **Personagens:** operador e realizador  
@@ -155,12 +194,31 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **Objetivo:** mostrar que o Capitão sabe mais do que mostra e escolhe não travar a sabotagem.
 
-## PLANO 04 — O Capitão decide
+## PLANO 06 — E.P. — Corredor da direção
 
-**04A · MASTER FRAME EXISTENTE DO GABINETE**  
+**06A · E.P. — CORREDOR DA DIREÇÃO**  
+**Duração estimada:** 2–3 s  
+**Câmara:** plano geral do corredor da direção com travelling até à porta do gabinete  
+**Personagens:** nenhuma  
+**Tipo:** INSERT  
+**Título:** E.P. — Corredor da direção até ao gabinete  
+**Local:** Corredor de Bastidores
+
+**Prompt de imagem**
+> Empty executive corridor of the television station in the approved OS LESADOS 2D sitcom style, a closed office door at the end, subdued lighting, no people, no characters, no readable text, no logos. Consistent with the established station interiors. 16:9.
+
+**Prompt de animação**
+> Slow forward move along the empty corridor towards the closed office door, then hold. No characters, no dialogue, no voice-over, no music. Clean 2D sitcom animation.
+
+**Transição:** corte para o gabinete.
+
+## PLANO 07 — O Capitão decide
+
+**07A · MASTER FRAME EXISTENTE DO GABINETE**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio-aberto do gabinete, com o Capitão ao centro e o produtor à porta  
 **Personagens:** Capitão Gancho e produtor 1  
+**Tipo:** MASTER FRAME  
 **Título:** O produtor informa o Capitão  
 **Local:** Gabinete do Capitão Gancho
 
@@ -174,7 +232,7 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **CAPITÃO GANCHO (sem se virar):** «Qual sala?»
 
-**04B · REFRAME — NÃO ENTRE NINGUÉM**  
+**07B · REFRAME — NÃO ENTRE NINGUÉM**  
 **Duração estimada:** 4–5 s  
 **Câmara:** plano médio do Capitão e do produtor  
 **Personagens:** Capitão Gancho e produtor 1  
@@ -191,7 +249,7 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **CAPITÃO GANCHO:** «Então não entre ninguém.»
 
-**04C · REFRAME — DEIXE-A TRABALHAR**  
+**07C · REFRAME — DEIXE-A TRABALHAR**  
 **Duração estimada:** 4–5 s  
 **Câmara:** grande plano do Capitão  
 **Personagens:** Capitão Gancho  
@@ -216,12 +274,31 @@ O produtor sai confuso. O Capitão volta a olhar para o monitor.
 
 **Objetivo:** revelar que Teresa sabe que foi descoberta e prepara o passo seguinte.
 
-## PLANO 05 — A estreia é minha
+## PLANO 08 — E.P. — Estabelecer o edifício TVI (noite)
 
-**05A · MASTER FRAME DA SALA SECRETA**  
+**08A · E.P. — ZOOM IN À JANELA DO ÚLTIMO PISO (NOITE)**  
+**Duração estimada:** 3–4 s  
+**Câmara:** plano geral do edifício TVI à noite com zoom in até à janela acesa do último piso  
+**Personagens:** nenhuma  
+**Tipo:** INSERT  
+**Título:** E.P. — Edifício TVI (noite)  
+**Local:** Exterior da estação (edifício TVI)
+
+**Prompt de imagem**
+> Wide establishing shot of the same TVI television headquarters at night in the approved OS LESADOS 2D sitcom style: dark facade, a single lit window on the top floor, night sky, no people, no characters, no readable text, 16:9.
+
+**Prompt de animação**
+> Slow continuous zoom-in on the building at night, rising towards the single lit window on the top floor, then hold. No characters, no dialogue, no voice-over, no music. Clean 2D sitcom animation.
+
+**Transição:** corte para a sala secreta.
+
+## PLANO 09 — A estreia é minha
+
+**09A · MASTER FRAME DA SALA SECRETA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio-aberto de Teresa diante dos monitores  
 **Personagens:** Teresa  
+**Tipo:** MASTER FRAME  
 **Título:** Teresa percebe que foi descoberta  
 **Local:** Sala Secreta de Teresa
 
@@ -237,7 +314,7 @@ Teresa levanta-se e olha para os monitores.
 
 **TERESA:** «Achavam que a estreia era da Tininha?»
 
-**05B · REFRAME — O TELEFONE VERMELHO**  
+**09B · REFRAME — O TELEFONE VERMELHO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** grande plano de Teresa com o telefone vermelho  
 **Personagens:** Teresa  
@@ -270,3 +347,4 @@ Teresa levanta-se e olha para os monitores.
 - **Som:** apenas ambiente natural dos espaços; sem música e sem narração.
 - **Abelha Maia:** não aparece nem narra o episódio.
 - **Continuidade visual:** reutilizar cenários, referências e master frames aprovados; evitar imagens redundantes e alterações de estilo.
+- **E.P. (establishing shots):** quatro inserts de transição — edifício TVI (dia), corredor até à régie, corredor da direção e edifício TVI (noite). Sem personagens nem falas; estabelecem o espaço e ligam as cenas.

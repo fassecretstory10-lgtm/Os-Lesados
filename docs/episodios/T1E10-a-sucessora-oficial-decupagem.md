@@ -21,6 +21,7 @@
 9. A sabotagem não é explicada. A sala secreta e a gargalhada de Teresa só surgem no final.
 10. Manter o episódio entre 60 e 90 segundos, com ritmo rápido e pausas cómicas breves.
 11. Cada take declara o seu próprio ambiente (**Local:**) e título (**Título:**). Um take que muda de espaço dentro da mesma cena é um master próprio (**Tipo:** MASTER FRAME), não um reframe do take anterior.
+12. Os establishing shots (**E.P.**) são inserts sem personagens nem falas (`**Tipo:** INSERT`), com `**Local:**` próprio, entre as cenas: edifício TVI (dia), corredor até à régie, corredor da direção e edifício TVI (noite). Não introduzem uma CENA nova nem roubam o papel de master ao primeiro plano da cena.
 
 ---
 
@@ -28,12 +29,31 @@
 
 **Objetivo:** mostrar Tininha confiante na estreia e quebrar a sua pose com uma legenda humilhante.
 
-## PLANO 01 — A estreia é interrompida
+## PLANO 01 — E.P. — Estabelecer o edifício TVI (dia)
 
-**01A · MASTER FRAME DO PALCO**  
+**01A · E.P. — ZOOM IN EDIFÍCIO TVI**  
+**Duração estimada:** 3–4 s  
+**Câmara:** plano geral do edifício TVI com zoom in lento  
+**Personagens:** nenhuma  
+**Tipo:** INSERT  
+**Título:** E.P. — Edifício TVI (dia)  
+**Local:** Exterior da estação (edifício TVI)
+
+**Prompt de imagem**
+> Wide establishing shot of the exterior of the TVI television headquarters in the approved OS LESADOS 2D sitcom style: modern glass and stone facade, television-studio entrance, daytime, clean simple composition, no people, no characters, no silhouettes, no readable text, 16:9.
+
+**Prompt de animação**
+> Slow continuous zoom-in on the empty TVI building to establish the location, then hold. Only minimal environmental movement. No characters enter the frame, no dialogue, no voice-over and no music. Clean 2D sitcom animation.
+
+**Transição:** corte para o interior.
+
+## PLANO 02 — A estreia é interrompida
+
+**02A · MASTER FRAME DO PALCO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano geral frontal do palco, Tininha ao centro e ecrã gigante atrás  
 **Personagens:** Tininha  
+**Tipo:** MASTER FRAME  
 **Título:** Tininha dá a estreia da nova edição no palco  
 **Local:** Palco de Secret Story
 
@@ -45,7 +65,7 @@
 
 **TININHA:** «Esta será uma edição como nunca viu. Uma nova casa, novos segredos e…»
 
-**01B · REFRAME — A LEGENDA INESPERADA**  
+**02B · REFRAME — A LEGENDA INESPERADA**  
 **Duração estimada:** 4–5 s  
 **Câmara:** plano médio de Tininha, com parte do ecrã ainda visível  
 **Personagens:** Tininha  
@@ -70,12 +90,31 @@
 
 **Objetivo:** transformar uma sabotagem simples num desastre televisivo e mostrar a produção a perder o controlo.
 
-## PLANO 02 — A produção tenta perceber o que aconteceu
+## PLANO 03 — E.P. — Corredor até à régie
 
-**02A · MASTER FRAME DA RÉGIE**  
+**03A · E.P. — CORREDOR ATÉ À RÉGIE**  
+**Duração estimada:** 2–3 s  
+**Câmara:** travelling lateral pelo corredor técnico até à porta da régie  
+**Personagens:** nenhuma  
+**Tipo:** INSERT  
+**Título:** E.P. — Corredor técnico até à régie  
+**Local:** Corredor de Bastidores
+
+**Prompt de imagem**
+> Empty technical corridor of the television station in the approved OS LESADOS 2D sitcom style, plain doors, cables and a lit ceiling, leading towards the control room. No people, no characters, no readable text, no logos. Consistent with the established station interiors. 16:9.
+
+**Prompt de animação**
+> Lateral tracking along the empty corridor towards the control-room door, then hold. No characters, no dialogue, no voice-over, no music. Clean 2D sitcom animation.
+
+**Transição:** corte para a régie.
+
+## PLANO 04 — A produção tenta perceber o que aconteceu
+
+**04A · MASTER FRAME DA RÉGIE**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano geral da régie, parede de monitores à frente e consola em primeiro plano  
 **Personagens:** produtor 1, realizador e operador  
+**Tipo:** MASTER FRAME  
 **Título:** A régie percebe a sabotagem no ecrã  
 **Local:** Régie de emissão
 
@@ -91,7 +130,7 @@
 
 **OPERADOR:** «Não fui eu! Eu nem estou a mexer nos grafismos!»
 
-**02B · REFRAME — A SEGUNDA LEGENDA**  
+**04B · REFRAME — A SEGUNDA LEGENDA**  
 **Duração estimada:** 4–5 s  
 **Câmara:** plano mais fechado sobre os monitores, com parte das reações da equipa visível  
 **Personagens:** produtor 1 e operador, parcialmente visíveis  
@@ -112,7 +151,7 @@ Silêncio absoluto.
 
 **PRODUTOR 1:** «Ai, estamos tramados.»
 
-**02C · REFRAME — A AMEAÇA DE TININHA**  
+**04C · REFRAME — A AMEAÇA DE TININHA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio do realizador e operador, monitores visíveis ao fundo  
 **Personagens:** realizador, operador e produtor 1  
@@ -131,7 +170,7 @@ Silêncio absoluto.
 
 **REALIZADOR:** «AGORA NÃO!»
 
-**02D · REFRAME — O GOLPE FINAL**  
+**04D · REFRAME — O GOLPE FINAL**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano de reação do realizador, incluindo monitor no enquadramento  
 **Personagens:** realizador e equipa ao fundo  
@@ -158,12 +197,31 @@ O ecrã fica preto.
 
 **Objetivo:** contrastar a calma do Capitão com o desespero da produção e terminar a emissão com um mini break.
 
-## PLANO 03 — O Capitão observa
+## PLANO 05 — E.P. — Corredor da direção
 
-**03A · MASTER FRAME EXISTENTE DO GABINETE**  
+**05A · E.P. — CORREDOR DA DIREÇÃO**  
+**Duração estimada:** 2–3 s  
+**Câmara:** plano geral do corredor da direção com travelling até à porta do gabinete  
+**Personagens:** nenhuma  
+**Tipo:** INSERT  
+**Título:** E.P. — Corredor da direção até ao gabinete  
+**Local:** Corredor de Bastidores
+
+**Prompt de imagem**
+> Empty executive corridor of the television station in the approved OS LESADOS 2D sitcom style, a closed office door at the end, subdued lighting, no people, no characters, no readable text, no logos. Consistent with the established station interiors. 16:9.
+
+**Prompt de animação**
+> Slow forward move along the empty corridor towards the closed office door, then hold. No characters, no dialogue, no voice-over, no music. Clean 2D sitcom animation.
+
+**Transição:** corte para o gabinete.
+
+## PLANO 06 — O Capitão observa
+
+**06A · MASTER FRAME EXISTENTE DO GABINETE**  
 **Duração estimada:** 4–5 s  
 **Câmara:** usar o master angle aprovado do gabinete; o Capitão está sozinho  
 **Personagens:** Capitão Gancho  
+**Tipo:** MASTER FRAME  
 **Título:** O Capitão observa, sozinho no gabinete  
 **Local:** Gabinete do Capitão Gancho
 
@@ -177,7 +235,7 @@ O ecrã fica preto.
 
 O Capitão continua a olhar para o monitor, sem revelar o que pensa.
 
-**03B · MASTER FRAME — O PÂNICO NA SALA DE REUNIÕES**  
+**06B · MASTER FRAME — O PÂNICO NA SALA DE REUNIÕES**  
 **Duração estimada:** 8–10 s  
 **Câmara:** plano geral de grupo, mesa de reuniões ao centro e porta visível  
 **Personagens:** produtor 1, produtora 2, produtor 3, realizador e operador  
@@ -221,7 +279,7 @@ Silêncio.
 
 O realizador sai disparado.
 
-**03C · REGRESSO À RÉGIE — A DECISÃO DE INTERROMPER A EMISSÃO**  
+**06C · REGRESSO À RÉGIE — A DECISÃO DE INTERROMPER A EMISSÃO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** voltar à régie, plano médio do realizador e da consola; ângulo diferente do plano 02D  
 **Personagens:** realizador, operador e produtor 1  
@@ -251,12 +309,31 @@ A emissão corta para um separador de mini break com música alegre, criando um 
 
 **Objetivo:** revelar Teresa como responsável pela sabotagem e terminar com a gargalhada de vilã.
 
-## PLANO 04 — A revelação (plano de duas imagens)
+## PLANO 07 — E.P. — Estabelecer o edifício TVI (noite)
 
-**04A · MASTER FRAME DA SALA SECRETA**  
+**07A · E.P. — ZOOM IN À JANELA DO ÚLTIMO PISO (NOITE)**  
+**Duração estimada:** 3–4 s  
+**Câmara:** plano geral do edifício TVI à noite com zoom in até à janela acesa do último piso  
+**Personagens:** nenhuma  
+**Tipo:** INSERT  
+**Título:** E.P. — Edifício TVI (noite)  
+**Local:** Exterior da estação (edifício TVI)
+
+**Prompt de imagem**
+> Wide establishing shot of the same TVI television headquarters at night in the approved OS LESADOS 2D sitcom style: dark facade, a single lit window on the top floor, night sky, no people, no characters, no readable text, 16:9.
+
+**Prompt de animação**
+> Slow continuous zoom-in on the building at night, rising towards the single lit window on the top floor, then hold. No characters, no dialogue, no voice-over, no music. Clean 2D sitcom animation.
+
+**Transição:** corte para a sala secreta.
+
+## PLANO 08 — A revelação (plano de duas imagens)
+
+**08A · MASTER FRAME DA SALA SECRETA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio-aberto de Teresa sentada diante de um monitor  
 **Personagens:** Teresa  
+**Tipo:** MASTER FRAME  
 **Título:** Teresa observa os ecrãs e sussurra  
 **Local:** Sala Secreta de Teresa
 
@@ -270,7 +347,7 @@ A emissão corta para um separador de mini break com música alegre, criando um 
 
 Teresa observa os ecrãs, satisfeita por ter pirateado o sistema. A câmara começa a aproximar-se lentamente do seu rosto.
 
-**04B · REFRAME — A REVELAÇÃO E A GARGALHADA**  
+**08B · REFRAME — A REVELAÇÃO E A GARGALHADA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** grande plano de Teresa; monitor ainda parcialmente visível  
 **Personagens:** Teresa  
@@ -312,4 +389,5 @@ Durante a gargalhada, toda a cena treme com uma animação 2D exagerada e uma lu
 - **Som:** apenas ambiente natural da sala; sem música e sem narração.
 - **Abelha Maia:** não aparece nem narra o episódio.
 - **Continuidade visual:** reutilizar cenários, referências e master frames aprovados; evitar imagens redundantes e alterações de estilo.
+- **E.P. (establishing shots):** quatro inserts de transição — edifício TVI (dia), corredor até à régie, corredor da direção e edifício TVI (noite). Sem personagens nem falas; estabelecem o espaço e ligam as cenas.
 - **Continuação:** a história continua diretamente no Episódio 11 — «A Sucessora Oficial — Parte 2», imediatamente após o corte para preto (a emissão regressa do mini break).
