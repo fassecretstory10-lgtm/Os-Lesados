@@ -215,7 +215,7 @@ test("o prompt de vídeo diz quem fala, o tipo de voz, e separa a voz-off", () =
   }
 });
 
-test("a voz de Teresa é de uma mulher de setenta anos", () => {
+test("a voz de Teresa é de uma mulher de setenta anos, com o timbre aprovado", () => {
   const { api } = loadApp();
   const ep = importEpisode(api, 1);
   const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
@@ -223,10 +223,20 @@ test("a voz de Teresa é de uma mulher de setenta anos", () => {
   const vox = api.voiceForPrompt("teresa");
   assert.match(vox, /woman in her seventies/, "a direção vocal diz a idade: mulher de setenta anos");
   assert.match(vox, /PT-PT/);
-  // A idade não pode comer o resto da direção (teatral, régia, dicção, pausas).
-  assert.match(vox, /theatrical/i);
-  assert.ok(vox.length <= 130, "a direção vocal cabe no prompt");
+  // O timbre, a projeção, o ritmo, as micro-pausas e a mudança de registo
+  // aprovados têm de chegar ao prompt, não só à ficha.
+  assert.match(vox, /mezzo-soprano/, "diz o timbre");
+  assert.match(vox, /broadcast-projected/, "diz a projeção de antena");
+  assert.match(vox, /fast and urgent/, "diz o ritmo");
+  assert.match(vox, /theatrical micro-pauses/, "diz as micro-pausas teatrais");
+  assert.match(vox, /warm-to-commanding/, "diz a mudança de registo");
+  assert.ok(vox.length <= 150, "a direção vocal cabe numa linha de prompt");
   assert.match(api.buildVideoPrompt(by["2a"]), /- Teresa \[[^\]]*woman in her seventies/);
+  // A descrição completa fica na ficha de personagem (bloco entregue ao modelo
+  // e ao utilizador); o prompt leva só a direção curta.
+  assert.match(api.charById.teresa.voice, /mezzo-soprano timbre with sharp frontal placement/);
+  assert.match(api.charById.teresa.voice, /crisp consonants/);
+  assert.doesNotMatch(vox, /crisp consonants/);
 });
 
 test("dois planos seguidos podem animar num só take, com as falas pela ordem", () => {

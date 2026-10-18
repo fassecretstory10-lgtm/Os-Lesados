@@ -340,8 +340,8 @@
     let BIBLE_INFO = { source: "dados locais (embebidos)", count: 0, remote: false };
 
     const characters = [
-      { id: "teresa", name: "Teresa Guilhermina I de Portugal", callName: "Teresa", visual: "Voluptuous middle-aged woman with blonde wavy hair, golden crown, radiant theatrical smile. She wears a red dress. Loud warm daytime-TV presence, chin high.", voice: "Projected feminine PT-PT voice of a woman in her seventies, theatrical and regal, clear diction with stage pauses; rises into wounded indignation when ignored, never shrill, never out of breath. Despises Tininha, who stole her throne and her realities — calls her 'a diretora' with venom." },
-      { id: "tininha", name: "Tininha", visual: "Poised blonde executive woman with long straight honey-blonde hair, sharp tailored power suit, statement earrings, camera-ready smile that never reaches the eyes. Controlled institutional authority.", voice: "Sweetly superior feminine PT-PT, institutional calm with a venomous edge; quotes hierarchy and rankings. Obeys the Capitão with a smile. Catchphrase: 'Ainda sei o lugar das estacas.'" },
+      { id: "teresa", name: "Teresa Guilhermina I de Portugal", callName: "Teresa", visual: "Woman in her seventies with long blonde wavy hair, golden crown, radiant theatrical smile. She wears a red dress. Loud warm daytime-TV presence, chin high.", voice: "Voice of a woman in her seventies. Bright, high-medium mezzo-soprano timbre with sharp frontal placement and powerful broadcast projection, delivered at a fast, urgent and highly dynamic pace punctuated by abrupt theatrical micro-pauses for dramatic emphasis. Expressive emotional pitch shifts — from warm playful intimacy to commanding sharp authority — in polished European Portuguese with crisp consonants and an intense, magnetic energy, both deeply personal and engineered for live television control. Despises Tininha, who stole her throne and her realities — calls her 'a diretora' with venom.", voiceShort: "Bright mezzo-soprano PT-PT voice of a woman in her seventies, broadcast-projected, fast and urgent, theatrical micro-pauses, warm-to-commanding shifts" },
+      { id: "tininha", name: "Tininha", visual: "Poised blonde woman with a honey-blonde bob, white gown with a short cape and a tall spiked silver headdress, statement camera-ready smile that never reaches the eyes. Controlled institutional authority.", voice: "Sweetly superior feminine PT-PT, institutional calm with a venomous edge; quotes hierarchy and rankings. Obeys the Capitão with a smile. Catchphrase: 'Ainda sei o lugar das estacas.'" },
       { id: "claudio", name: "Cláudio Prantos", visual: "Middle-aged man with short graying hair, gray stubble, heavy eyebrows, intense stare. Dark blue buttoned shirt. Tense calm that snaps into shout and back to serene smile.", voice: "Polished masculine presenter PT-PT that snaps into a loud theatrical shout and cuts back to serene; recovery catchphrase 'já passou'." },
       { id: "capitao", name: "Capitão Gancho", visual: "Dark combed hair, heavy eyebrows, deep-set solemn eyes, steel hook left hand. Dark suit, white shirt, dark tie. Motionless gravity.", voice: "Deep, grave, slow masculine PT-PT, few words with active pauses; never raises volume, only gets more concise. Closes scenes with silence: lays the hook on the table." },
       { id: "abelha", name: "Abelha Maia", visual: "Short brown hair, bee antennae headband, translucent wings, yellow-and-black striped body. Affectionate oracular presence.", voice: "Alert feminine PT-PT at live-report speed, journalistic urgency with an affectionate-oracular lilt." },
@@ -707,9 +707,14 @@
     }
     // Tipo de voz para o prompt de vídeo: a direção vocal curta de cada
     // personagem, sem a personalidade nem os bordões que ficam no elenco.
+    // Direção vocal que entra no prompt de vídeo. Cada personagem pode ter uma
+    // versão curta própria (voiceShort); sem ela, usa-se a primeira frase da
+    // ficha de voz, cortada ao comprimento de uma linha de prompt.
     function voiceForPrompt(id) {
       const c = charById[id];
-      if (!c || !c.voice) return "";
+      if (!c) return "";
+      if (c.voiceShort) return String(c.voiceShort).replace(/\s+/g, " ").trim();
+      if (!c.voice) return "";
       const short = String(c.voice).split(";")[0].replace(/[\s.]+$/, "").trim();
       return short.length > 130 ? short.slice(0, 127).replace(/\s\S*$/, "") : short;
     }
@@ -2479,8 +2484,8 @@
       $("approveBtn")?.addEventListener("click", approveImage);
     }
     function renderCanon() {
-      // Retratos em context/characters (servidos em /characters). Perpétua e
-      // Tininha ainda não têm foto — mostram iniciais até existir ficheiro.
+      // Retratos em context/characters (servidos em /characters). A Perpétua
+      // ainda não tem foto — mostra iniciais até existir ficheiro.
       const PHOTOS = {
         teresa: "teresa-guilhermina-i-de-portugal.jpg",
         claudio: "claudio-prantos.jpg",
@@ -2506,6 +2511,7 @@
               <div class="char-text">
                 <p><strong>Visual:</strong> ${esc(c.visual)}</p>
                 <p><strong>Voice:</strong> ${esc(c.voice || "—")}</p>
+                ${c.voiceShort ? `<p><strong>No prompt de vídeo:</strong> ${esc(c.voiceShort)}</p>` : ""}
               </div>
             </div>
           </div>
