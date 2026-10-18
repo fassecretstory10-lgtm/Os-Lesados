@@ -86,24 +86,41 @@ test("normalizeAIStory mapeia nomes→ids e valida estrutura", () => {
   assert.ok(!s.beats[0].dialogue.line.startsWith("Capitão"));
 });
 
-test("storyToScenes: timecodes sequenciais, clamp de duração, reframe só com função", () => {  const { api } = loadApp();
+test("storyToScenes: timecodes sequenciais, clamp de duração, reframe só com função", () => {
+  const { api } = loadApp();
+  const beat = (over = {}) => ({
+    kind: "setup", who: "capitao", with: "tininha", loc: "Estúdio Central", want: "w", does: "A faz X",
+    obstacle: "o", result: "r", change: "c", link: "l", comic: "k",
+    dialogue: { char: "capitao", paren: "", line: "Está decidido." }, dur: 6, ...over,
+  });
   const story = {
     stars: ["capitao", "tininha"], premise: "p",
     beats: [
-      { kind: "setup", who: "capitao", with: "tininha", loc: "Estúdio Central", want: "w", does: "A faz X", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: { char: "capitao", paren: "", line: "Está decidido." }, dur: 6 },
-      { kind: "incident", who: "tininha", with: "capitao", loc: "Estúdio Central", want: "w", does: "B faz Y", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: { char: "tininha", paren: "", line: "Claro." }, dur: 99 },
-      { kind: "resolution", who: "capitao", with: null, loc: "Estúdio Central", want: "w", does: "C fecha", obstacle: "o", result: "r", change: "c", link: "l", comic: "k", dialogue: null, dur: 1, reframe: true },
+      beat(),
+      beat({ kind: "incident", who: "tininha", with: "capitao", does: "B faz Y", dur: 99, dialogue: { char: "tininha", paren: "", line: "Claro." } }),
+      beat({ kind: "resolution", who: "capitao", with: null, does: "C fecha", dur: 1, dialogue: null, reframe: true }),
     ],
   };
   const scenes = api.storyToScenes(story);
-  assert.equal(scenes.length, 4); // 3 masters + 1 reframe
+  // Uma bandeira solta não chega: o reframe só existe com função (razão + ação).
+  assert.equal(scenes.length, 3);
   assert.ok(scenes[1].duration <= 8); // clamp
   assert.ok(scenes[2].duration >= 4);
-  const rf = scenes.find((s) => s.reframeOf);
+  // Com função, entra um plano próprio, no mesmo cenário do master.
+  const comFuncao = {
+    ...story,
+    beats: story.beats.map((b, i) => i === 2
+      ? { ...b, needsReframe: true, reframeReason: "fecho", reframeAction: "Aproximar no gancho sobre a mesa." }
+      : b),
+  };
+  const comReframe = api.storyToScenes(comFuncao);
+  assert.equal(comReframe.length, 4); // 3 masters + 1 reframe
+  const rf = comReframe.find((s) => s.reframeOf);
+  assert.ok(rf, "o reframe tem master de origem");
   assert.equal(rf.location, "Estúdio Central");
   // timecodes sem overlap: fim[i] <= início[i+1]
-  const tc = scenes.map((s) => s.timecode.split(" - ").map((t) => t.split(":").reduce((a, b) => a * 60 + Number(b), 0)));
-  for (let i = 1; i < tc.length; i++) assert.ok(tc[i][0] >= tc[i - 1][1], `overlap em ${scenes[i].id}`);
+  const tc = comReframe.map((s) => s.timecode.split(" - ").map((t) => t.split(":").reduce((a, b) => a * 60 + Number(b), 0)));
+  for (let i = 1; i < tc.length; i++) assert.ok(tc[i][0] >= tc[i - 1][1], `overlap em ${comReframe[i].id}`);
 });
 
 test("auditStory deteta repetição, ação igual e objetivo em falta", () => {

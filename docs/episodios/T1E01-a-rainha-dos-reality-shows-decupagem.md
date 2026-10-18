@@ -16,7 +16,7 @@
 4. Não criar shot/reverse-shot automático para cada fala. Um plano de reação só é necessário quando uma expressão for importante para a piada ou para a emoção.
 5. Um take aguenta duas falas e 8 segundos. Um plano com três ou mais falas, ou mais de 8 segundos, tem de ser dividido em pelo menos dois planos (ex.: 02A, 02B, 02C).
 6. Dois planos seguidos da mesma cena nunca repetem o enquadramento: quando se divide um plano, o seguinte muda de ângulo e de eixo. Ações físicas, em particular o salto dos torniquetes, têm de ser legíveis num plano de ação próprio.
-7. Preservar geografia, posições, direção dos olhares, iluminação, mobiliário, roupa e desenho das personagens.
+7. Preservar geografia, posições, direção dos olhares, iluminação, mobiliário, roupa e desenho das personagens. Os planos de ação usam os elementos que já existem no master frame (o salto usa os torniquetes de vidro já visíveis), nunca adereços novos.
 8. Todas as falas são em PT-PT. Não adicionar narração da Abelha Maia; a personagem não aparece neste episódio.
 9. O título da nova edição é revelado verbalmente. A pasta é um adereço natural; não é necessário um grande plano nem texto legível.
 10. Priorizar ritmo rápido e pausas curtas. O momento emocional da fã é a pausa mais prolongada do episódio.
@@ -56,7 +56,7 @@
 **Personagens:** Teresa e rececionista
 
 **Prompt de imagem**
-> Wide frontal master shot of a modern Portuguese television station reception lobby. Clearly show the entrance, reception desk, receptionist and electronic access turnstiles in one coherent composition. Teresa enters with a regal, self-important posture, wearing her established character design and outfit. Clean 2D sitcom animation style, readable staging, 16:9.
+> Wide frontal master shot of a modern Portuguese television station reception lobby. Clearly show the entrance, reception desk, receptionist and the glass access turnstiles in one coherent composition. Teresa enters with a regal, self-important posture, wearing her established character design and outfit. Clean 2D sitcom animation style, readable staging, 16:9.
 
 **Prompt de animação**
 > Teresa enters the building and approaches the reception desk as if she expects immediate recognition. The receptionist calmly asks whether she has an appointment. Teresa says she has business with Captain Hook. Keep the wide frontal composition throughout; no cuts and no change of angle.
@@ -88,10 +88,10 @@ A rececionista tenta impedir-lhe a passagem.
 **Personagens:** Teresa e rececionista
 
 **Prompt de imagem**
-> Wide lateral shot of the electronic access turnstiles in the same television station reception lobby, seen from the side. Teresa is already airborne mid-jump over the turnstile bar, legs clear, still composed and regal. The receptionist stands back at the desk, watching. Same characters, wardrobe, lighting and set as the previous shots. Clean 2D sitcom animation style, 16:9.
+> Wide lateral shot of the same reception lobby seen from the side, framing the glass access turnstiles that are already behind Teresa in the master shot. Teresa is already airborne mid-jump over one of those existing glass turnstiles, legs clear of the glass panels, still composed and regal. The receptionist stands back at the desk, watching. Same characters, wardrobe, lighting and set as the previous shots. Clean 2D sitcom animation style, 16:9.
 
 **Prompt de animação**
-> Teresa does not wait for an answer: she clears the turnstile in one decisive movement and continues on her way. The receptionist is left behind, watching without reacting. Keep the lateral wide angle so the jump is fully readable.
+> Teresa does not wait for an answer: she clears the glass turnstile that is already in the first frame — the same barrier she was standing next to, with the same glass panels, same position and same design — in one decisive movement, then continues on her way. The receptionist is left behind, watching without reacting. Keep the lateral wide angle and the existing turnstiles visible and unchanged throughout the jump, so the action is fully readable.
 
 **Ação:** Teresa salta os torniquetes e segue caminho. A rececionista fica para trás, sem reação.
 
@@ -248,7 +248,7 @@ Teresa sorri entre lágrimas, recompõe a postura e ergue o queixo.
 ## Notas finais de produção
 
 - **Establishing shot:** exterior da TVI vazio, sem personagens, diálogo ou voz off.
-- **Receção:** cobertura em três planos (02A master frontal, 02B plano médio do lado da rececionista, 02C plano de ação lateral). A entrada, a tentativa de impedir Teresa e o salto dos torniquetes formam uma sequência clara, sempre com mudança de ângulo entre planos.
+- **Receção:** cobertura em três planos (02A master frontal, 02B plano médio do lado da rececionista, 02C plano de ação lateral). A entrada, a tentativa de impedir Teresa e o salto dos torniquetes formam uma sequência clara, sempre com mudança de ângulo entre planos. O salto usa os **torniquetes de vidro que já existem no master** — a mesma barreira, na mesma posição e com o mesmo desenho, nunca uma barreira nova.
 - **Gabinete:** master angle como base. Usar apenas os ângulos existentes do Capitão sentado e o inverso de Teresa quando uma reação importante o justificar.
 - **Documentos:** a pasta é visível, mas o título não tem de ser legível; a revelação é verbal.
 - **Tratamento:** manter registo formal entre personagens, mesmo nas provocações.

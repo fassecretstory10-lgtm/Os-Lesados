@@ -56,6 +56,7 @@ function loadApp() {
     importRepoEpisode, buildPrompt, buildVideoPrompt, sceneLines, promptNeedsEnglish,
     shotLoadWarning, shotAngleWarning, archiveDecoupageDrift, archiveDriftBanner,
     charById, REPO_EPISODES,
+    voiceForPrompt, buildVideoClips, clipKey, clipVideoPrompt, clipVideoNote, joinsVideoTake,
     get state() { return state; }
   };`);
   const api = fn(...names.map((k) => sandbox[k]));
@@ -149,7 +150,10 @@ test("o bloco positivo do prompt é inglês e mostra o início do plano", () => 
   assert.doesNotMatch(by["2a"].imagePrompt, /airborne|mid-jump|jump/);
   assert.match(by["2c"].imagePrompt, /airborne mid-jump/);
   assert.doesNotMatch(by["2c"].imagePrompt, /continues on her way|left behind/);
-  assert.match(by["2c"].animationPrompt, /clears the turnstile/);
+  // O salto usa a barreira que JÁ existe no primeiro frame (os torniquetes de
+  // vidro atrás dela no master), nunca uma barreira inventada.
+  assert.match(by["2c"].animationPrompt, /clears the glass turnstile that is already in the first frame/);
+  assert.match(by["2c"].animationPrompt, /same barrier/);
   assert.match(by["2c"].animationPrompt, /left behind/);
   // As falas entram no prompt de vídeo exatamente como no guião, em PT-PT.
   assert.match(api.buildVideoPrompt(by["2a"]), /Spoken dialogue \(European Portuguese PT-PT, exact words, lip-synced/);
@@ -209,6 +213,69 @@ test("o prompt de vídeo diz quem fala, o tipo de voz, e separa a voz-off", () =
   if (onIdx >= 0) {
     assert.ok(onIdx < offIdx && !v9a.slice(onIdx, offIdx).includes("Voz Off"), "a voz-off não entra no bloco do lip-sync");
   }
+});
+
+test("a voz de Teresa é de uma mulher de setenta anos", () => {
+  const { api } = loadApp();
+  const ep = importEpisode(api, 1);
+  const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
+
+  const vox = api.voiceForPrompt("teresa");
+  assert.match(vox, /woman in her seventies/, "a direção vocal diz a idade: mulher de setenta anos");
+  assert.match(vox, /PT-PT/);
+  // A idade não pode comer o resto da direção (teatral, régia, dicção, pausas).
+  assert.match(vox, /theatrical/i);
+  assert.ok(vox.length <= 130, "a direção vocal cabe no prompt");
+  assert.match(api.buildVideoPrompt(by["2a"]), /- Teresa \[[^\]]*woman in her seventies/);
+});
+
+test("dois planos seguidos podem animar num só take, com as falas pela ordem", () => {
+  const { api } = loadApp();
+  const ep = importEpisode(api, 1);
+  const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
+
+  // Por omissão ninguém se junta: os planos do E1 têm enquadramentos diferentes
+  // (a câmara teria de resolver a passagem) e a soma não cabe no take.
+  const solo = api.buildVideoClips(ep.scenes);
+  assert.equal(solo.length, ep.scenes.length);
+  assert.ok(solo.every((c) => !c.chained), "sem pedido explícito, um plano = um clip");
+
+  // Só se junta o que é continuação pura (mesmo enquadramento e mesma câmara).
+  const base = { id: "a", sceneId: "s", shot: "WIDE SHOT", camera: "STATIC", duration: 4 };
+  const mesmo = { ...base, id: "b" };
+  assert.equal(api.joinsVideoTake(mesmo, base), true, "continuação pura junta-se por omissão");
+  assert.equal(api.joinsVideoTake({ ...mesmo, duration: 5 }, base), false, "acima dos 8 s do take não junta");
+  assert.equal(api.joinsVideoTake({ ...mesmo, camera: "PAN LEFT" }, base), false, "câmara diferente não junta");
+  assert.equal(api.joinsVideoTake({ ...mesmo, sceneId: "outro" }, base), false, "cenário diferente não junta");
+  assert.equal(api.joinsVideoTake({ ...mesmo, joinWithPrev: false }, base), false, "quem pediu para separar fica separado");
+
+  // O utilizador força a junção de 2a+2b (a soma cabe no teto de 12 s de um take
+  // de dois frames): passa a UM clip, animado de uma só vez.
+  const total = Number(by["2a"].duration) + Number(by["2b"].duration);
+  assert.ok(total <= 12, "2a e 2b caberiam num take de dois frames");
+  by["2b"].joinWithPrev = true;
+  const clips = api.buildVideoClips(ep.scenes);
+  const joined = clips.find((c) => c.takes.length > 1);
+  assert.ok(joined, "2a e 2b passam a um só clip");
+  assert.equal(api.clipKey(joined), "2a+2b");
+
+  const prompt = api.clipVideoPrompt(joined);
+  assert.match(prompt, /shot 2a as the FIRST FRAME/);
+  assert.match(prompt, /shot 2b as the FINAL FRAME/);
+  assert.match(prompt, new RegExp(`One continuous take, ${total}s`));
+  assert.match(prompt, /no cuts/);
+  // As quatro falas entram pela ordem dos planos, cada uma com quem a diz.
+  const i1 = prompt.indexOf('"Desculpe, tem marcação?"');
+  const i2 = prompt.indexOf('"Tenho assuntos a tratar com o Capitão Gancho."');
+  const i3 = prompt.indexOf('"Sem marcação não pode passar."');
+  const i4 = prompt.indexOf('"Sabe quem eu sou? Ou já apagaram a memória desta casa?"');
+  assert.ok(i1 > -1 && i1 < i2 && i2 < i3 && i3 < i4, "as falas entram pela ordem dos planos");
+  assert.match(api.clipVideoNote(joined), /o still do take 2a como INITIAL FRAME/);
+  assert.match(api.clipVideoNote(joined), /do take 2b como FINAL FRAME/);
+  assert.match(api.clipVideoNote(joined), /de 2a para 2b \(11s\)|de 2a para 2b \(\d+s\)/);
+  assert.match(api.clipVideoNote(joined), /refazer o enquadramento/, "a nota avisa que a câmara tem de refazer o enquadramento");
+  // Um clip de um só plano continua a usar o prompt normal.
+  assert.equal(api.clipVideoPrompt(clips.find((c) => c.takes[0].id === "2c")), api.buildVideoPrompt(by["2c"]));
 });
 
 test("a app avisa quando o arquivo já tem outra decupagem", () => {
