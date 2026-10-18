@@ -528,6 +528,10 @@
     }
     function normalize() {
       if (!Array.isArray(state.seasons)) state.seasons = [];
+      // Estado antigo ou corrompido pode trazer entradas vazias. Descartam-se
+      // aqui: uma entrada inválida a rebentar o normalize deixava a página sem
+      // botões nenhuns («não dá para carregar em nada»).
+      state.seasons = state.seasons.filter(s => s && typeof s === "object" && !Array.isArray(s));
       if (state.version !== VERSION) {
         // Migração v1 -> v2: episódios antigos ganham story:null e continuam
         // a renderizar pelo motor clássico, sem corrupção.
@@ -547,6 +551,7 @@
       }));
       state.seasons.forEach(s => {
         if (!Array.isArray(s.episodes)) s.episodes = [];
+        s.episodes = s.episodes.filter(ep => ep && typeof ep === "object" && !Array.isArray(ep));
         s.episodes.forEach(ep => {
           if (!Array.isArray(ep.scenes)) ep.scenes = [];
           ep.number = Number(ep.number || 1);
@@ -590,14 +595,18 @@
       });
     }
     function switchTab(tab) {
+      // Primeiro muda o separador (o clique tem sempre resposta visível); depois
+      // desenha. Se um ecrã falhar, o erro é mostrado e os outros separadores
+      // continuam a funcionar.
       document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
       document.querySelectorAll(".pane").forEach(p => p.classList.toggle("active", p.id === tab));
-      if (tab === "script") renderScript();
-      if (tab === "decoupage") renderDecoupage();
-      if (tab === "pipeline") renderPipeline();
-      if (tab === "canon") renderCanon();
-      if (tab === "video") renderVideo();
-      if (tab === "archive") renderArchive();
+      const screens = { script: renderScript, decoupage: renderDecoupage, pipeline: renderPipeline, canon: renderCanon, video: renderVideo, archive: renderArchive };
+      const draw = screens[tab];
+      if (!draw) return;
+      try { draw(); } catch (e) {
+        console.error(`[separador ${tab}]`, e);
+        status(`Não foi possível desenhar o separador «${tab}»: ${e.message}`, "error");
+      }
     }
     async function suggestion() {
       const pool = suggestions;
@@ -3060,19 +3069,24 @@
       status("Tudo apagado.", "success");
     }
 
+    // Arranque à prova de falhas: cada passo corre isolado. Um erro num ecrã não
+    // pode impedir os cliques nem esconder a causa.
+    const bootErrors = [];
+    function bootStep(nome, fn) {
+      try { fn(); } catch (e) {
+        console.error(`[boot] ${nome}:`, e);
+        bootErrors.push(`${nome} (${e.message})`);
+      }
+    }
     document.addEventListener("DOMContentLoaded", () => {
-      load();
-      loadRepoEpisodes();
-      renderCanon();
-      suggestion();
-      updateVideoTab();
-      renderHeaderNav();
+      // 1. Ligar o interface PRIMEIRO. Se um passo de arranque rebentar (estado
+      // antigo, storage bloqueado), os botões continuam a responder — antes, um
+      // erro aqui deixava a página morta, sem nada clicável.
       $("suggestBtn").addEventListener("click", suggestion);
       $("aiGenerateBtn").addEventListener("click", aiGenerateEpisode);
       $("testBtn").addEventListener("click", testBackend);
       $("contextBtn").addEventListener("click", checkContext);
       $("providerSelect").addEventListener("change", syncModelOptions);
-      syncModelOptions();
       $("aiStoryBtn").addEventListener("click", expandWithAI);
       $("resetBtn").addEventListener("click", resetAll);
       $("exportBtn").addEventListener("click", exportState);
@@ -3081,15 +3095,29 @@
         if (ev.target.files && ev.target.files[0]) importStateFile(ev.target.files[0]);
         ev.target.value = "";
       });
-      loadBible();
       document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => switchTab(t.dataset.tab)));
+      // 2. Estado e ecrãs. Cada passo falha em separado e diz o que falhou, em
+      // vez de derrubar o arranque todo.
+      bootStep("estado guardado", load);
+      bootStep("arquivo de episódios", loadRepoEpisodes);
+      bootStep("elenco", renderCanon);
+      bootStep("sugestão", suggestion);
+      bootStep("separador Video", updateVideoTab);
+      bootStep("navegação de episódios", renderHeaderNav);
+      bootStep("modelos", syncModelOptions);
+      loadBible();
       if (state.seasons.length && state.currentEpisode) {
-        const ep = currentEpisode();
-        if (ep) {
-          renderAudit(ep.audit);
-          renderScript();
-          renderPipeline();
-        }
+        bootStep("ecrãs do episódio atual", () => {
+          const ep = currentEpisode();
+          if (ep) {
+            renderAudit(ep.audit);
+            renderScript();
+            renderPipeline();
+          }
+        });
+      }
+      if (bootErrors.length) {
+        status(`Arranque com problemas em: ${bootErrors.join(" · ")}. O resto da aplicação continua a funcionar.`, "error");
       }
     });
   </script>

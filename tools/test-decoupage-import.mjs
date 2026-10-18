@@ -25,12 +25,12 @@ function makeEl(id) {
   };
 }
 
-function loadApp() {
+function loadApp(seed = {}) {
   const els = {};
   const html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
   const m = html.match(/<script>([\s\S]*)<\/script>/);
   assert.ok(m, "bloco <script> existe no index.html");
-  const store = {};
+  const store = Object.assign({}, seed);
   const sandbox = {
     document: {
       getElementById: (id) => els[id] || (els[id] = makeEl(id)),
@@ -56,12 +56,14 @@ function loadApp() {
     importRepoEpisode, buildPrompt, buildVideoPrompt, sceneLines, promptNeedsEnglish,
     shotLoadWarning, shotAngleWarning, archiveDecoupageDrift, archiveDriftBanner,
     charById, REPO_EPISODES,
-    voiceForPrompt, buildVideoClips, clipKey, clipVideoPrompt, clipVideoNote, joinsVideoTake,
+    voiceForPrompt, buildVideoClips, clipKey, clipVideoPrompt, clipVideoNote, joinsVideoTake, switchTab,
+    bootStep, bootErrors,
     get state() { return state; }
   };`);
   const api = fn(...names.map((k) => sandbox[k]));
-  api.__ready?.();
-  return { api, els };
+  // O arranque (DOMContentLoaded) só corre quando o teste o pede: assim há um
+  // teste que o exercita a sério, com o estado que quiser.
+  return { api, els, boot: () => sandbox.__ready?.() };
 }
 
 function importEpisode(api, number) {
@@ -286,6 +288,28 @@ test("dois planos seguidos podem animar num só take, com as falas pela ordem", 
   assert.match(api.clipVideoNote(joined), /refazer o enquadramento/, "a nota avisa que a câmara tem de refazer o enquadramento");
   // Um clip de um só plano continua a usar o prompt normal.
   assert.equal(api.clipVideoPrompt(clips.find((c) => c.takes[0].id === "2c")), api.buildVideoPrompt(by["2c"]));
+});
+
+test("estado guardado corrompido não deixa a página sem botões", () => {
+  // O arranque tem de aguentar um estado inválido: se rebentar antes de ligar os
+  // botões, a app fica muda e sem nada clicável («não dá para carregar em nada»).
+  const { api, boot } = loadApp({
+    osLesados_html: JSON.stringify({ version: 99999, seasons: [null, { id: "s1", name: "Temporada 1" }] }),
+  });
+  assert.doesNotThrow(() => boot(), "o arranque não pode rebentar com um estado inválido");
+  assert.equal(api.state.seasons.length, 1, "as entradas inválidas do estado são descartadas");
+  assert.equal(api.state.seasons[0].id, "s1", "a temporada válida sobrevive");
+  assert.deepEqual(api.state.seasons[0].episodes, [], "sem episódios, pronta a usar");
+  // E o separador continua a responder a cliques com esse estado.
+  assert.doesNotThrow(() => api.switchTab("canon"));
+
+  // A rede de segurança: um passo de arranque que rebente é registado e os
+  // seguintes correm à mesma.
+  let seguinteCorreu = false;
+  api.bootStep("passo avariado", () => { throw new Error("boom"); });
+  api.bootStep("passo seguinte", () => { seguinteCorreu = true; });
+  assert.equal(seguinteCorreu, true, "os passos seguintes correm depois de um falhar");
+  assert.match(api.bootErrors.join(" "), /passo avariado \(boom\)/, "o erro fica registado para ser mostrado");
 });
 
 test("a app avisa quando o arquivo já tem outra decupagem", () => {
