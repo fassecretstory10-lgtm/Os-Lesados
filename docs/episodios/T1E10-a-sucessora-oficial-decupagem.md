@@ -26,22 +26,22 @@
 
 # CENA 1 — INT. PALCO DE SECRET STORY — DIA
 
-**Objetivo:** apresentar Tininha confiante e quebrar a sua pose com uma legenda humilhante.
+**Objetivo:** mostrar Tininha confiante na estreia e quebrar a sua pose com uma legenda humilhante.
 
-## PLANO 01 — A apresentação é interrompida
+## PLANO 01 — A estreia é interrompida
 
 **01A · MASTER FRAME DO PALCO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano geral frontal do palco, Tininha ao centro e ecrã gigante atrás  
 **Personagens:** Tininha  
-**Título:** Tininha apresenta a nova edição no palco  
+**Título:** Tininha dá a estreia da nova edição no palco  
 **Local:** Palco de Secret Story
 
 **Prompt de imagem**
-> Use the approved OS LESADOS character reference for Tininha and the approved Secret Story studio background. Place Tininha at the centre of the stage, confidently presenting the new edition directly to the main camera. Preserve her exact character design, hairstyle, clothing, proportions, the established stage layout, lighting and 2D linework. The large LED screen behind her contains the show's existing visual identity but no newly invented logos. Clean 2D sitcom animation, wide 16:9 composition.
+> Use the approved OS LESADOS character reference for Tininha and the approved Secret Story studio background. Place Tininha at the centre of the stage, confidently hosting the premiere of the new edition directly to the main camera. Preserve her exact character design, hairstyle, clothing, proportions, the established stage layout, lighting and 2D linework. The large LED screen behind her contains the show's existing visual identity but no newly invented logos. Clean 2D sitcom animation, wide 16:9 composition.
 
 **Prompt de animação**
-> Tininha presents the new edition with a polished television-host smile and confident posture. Keep the camera in a stable wide master shot as she begins her sentence in European Portuguese. No additional characters enter and no unnecessary camera movement.
+> Tininha hosts the premiere of the new edition with a polished television-host smile and confident posture. Keep the camera in a stable wide master shot as she begins her sentence in European Portuguese. No additional characters enter and no unnecessary camera movement.
 
 **TININHA:** «Esta será uma edição como nunca viu. Uma nova casa, novos segredos e…»
 
@@ -299,7 +299,7 @@ Durante a gargalhada, toda a cena treme com uma animação 2D exagerada e uma lu
 ## Notas finais de produção
 
 - **Duração:** ajustar as pausas e o ritmo de diálogo para um total entre 60 e 90 segundos. Se necessário, encurtar reações, nunca acrescentar novas falas.
-- **Palco:** Tininha permanece no centro durante a apresentação; a legenda deve ser legível para o público.
+- **Palco:** Tininha permanece no centro durante a estreia; a legenda deve ser legível para o público.
 - **Régie:** usar um único master frame e reframes de reação. O pânico é criado pela interpretação, não por alterações ao cenário.
 - **Sala de reuniões:** manter a cena num único plano geral de grupo, com ações simultâneas e ritmo acelerado; evitar planos individuais que alonguem o episódio. O Capitão não está presente na sala de reuniões.
 - **Legendas:** aplicar em pós-produção se a ferramenta não conseguir reproduzir o texto exatamente.
@@ -312,3 +312,4 @@ Durante a gargalhada, toda a cena treme com uma animação 2D exagerada e uma lu
 - **Som:** apenas ambiente natural da sala; sem música e sem narração.
 - **Abelha Maia:** não aparece nem narra o episódio.
 - **Continuidade visual:** reutilizar cenários, referências e master frames aprovados; evitar imagens redundantes e alterações de estilo.
+- **Continuação:** a história continua diretamente no Episódio 11 — «A Sucessora Oficial — Parte 2», imediatamente após o corte para preto (a emissão regressa do mini break).

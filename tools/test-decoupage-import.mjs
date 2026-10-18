@@ -422,3 +422,65 @@ test("a cena final da Teresa anima entre as duas imagens fixas, com as falas nov
   assert.match(prompt, /no music, no narration/);
   assert.match(prompt, /European Portuguese/);
 });
+
+test("o episódio 11 continua o 10 com título, ambiente e elenco certos", () => {
+  const { api } = loadApp();
+  const ep = importEpisode(api, 11);
+  assert.ok(ep.fromDecoupage, "o episódio 11 usa a decupagem aprovada");
+  // Os IDs e a ordem dos takes são preservados.
+  assert.deepEqual(
+    ep.scenes.map((s) => s.id),
+    ["1a", "1b", "2a", "2b", "3a", "3b", "4a", "4b", "4c", "5a", "5b"],
+    "os takes do episódio 11 mantêm os IDs e a ordem"
+  );
+  const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
+
+  // Cada take declara o seu próprio ambiente (parte 2 do Ep.10).
+  assert.equal(by["1a"].location, "Estúdio Central", "palco de Secret Story");
+  assert.equal(by["2a"].location, "Sala de Controlo", "régie de emissão");
+  assert.equal(by["3b"].location, "Sala de Controlo", "a régie mantém-se na segunda metade da cena 2");
+  assert.equal(by["4a"].location, "Gabinete do Diretor", "gabinete do Capitão");
+  assert.equal(by["5a"].location, "Escritório Secreto da Guilhermina", "sala secreta de Teresa");
+  assert.equal(by["5b"].location, by["5a"].location, "o 5b fica no mesmo espaço do 5a");
+
+  // O título bate com o take: o Capitão só entra no gabinete (4a–4c).
+  assert.match(by["4a"].title, /Capitão/, "o 4a é sobre o Capitão");
+  assert.ok(by["4a"].characters.includes("capitao"), "o 4a tem o Capitão");
+  for (const id of ["1a", "2a", "3a", "3b", "5a", "5b"]) {
+    assert.doesNotMatch(by[id].title, /Capitão/i, `o título do ${id} não sugere o Capitão`);
+    assert.ok(!by[id].characters.includes("capitao"), `o ${id} não tem o Capitão`);
+  }
+
+  // Quem só se ouve (O.S.) não entra no elenco nem em frame: a Tininha fala do
+  // palco, mas não está na régie, e por isso não é desenhada.
+  assert.doesNotMatch(by["3a"].title, /Tininha/i, "o 3a é na régie, sem a Tininha em cena");
+  assert.ok(!by["3a"].characters.includes("tininha"), "a Tininha não entra no elenco do 3a");
+  const v3a = api.buildVideoPrompt(by["3a"]);
+  const offIdx = v3a.indexOf("Off-screen voice-over (European Portuguese PT-PT, exact words, NOT lip-synced");
+  assert.ok(offIdx > 0, "a fala O.S. da Tininha vai para o bloco de voz-off");
+  assert.match(v3a.slice(offIdx), /- Tininha \[[^\]]+\]: "ENTÃO VÃO BUSCAR QUEM ESTÁ LÁ!"/);
+  assert.match(v3a.slice(0, offIdx), /- REALIZADOR: "Isto já não é um erro\. É uma campanha\."/, "o realizador fica no bloco lip-sync");
+  assert.doesNotMatch(by["3a"].imagePrompt, /Tininha/, "a Tininha não é desenhada na régie");
+
+  // A última fala é o gancho para o episódio seguinte.
+  const lines = api.sceneLines(by["5b"]).map((l) => l.line);
+  assert.equal(lines[lines.length - 1], "Capitão? Sou eu. Vou aí.");
+
+  // Nenhum take passa de duas falas nem de 8 s.
+  for (const s of ep.scenes) {
+    assert.ok(api.sceneLines(s).length <= 2, `plano ${s.id} leva no máximo duas falas`);
+    assert.ok(Number(s.duration) <= 8, `plano ${s.id} cabe nos 8 s do take`);
+  }
+  // Tomadas seguidas no mesmo cenário não repetem enquadramento e câmara.
+  for (let i = 1; i < ep.scenes.length; i++) {
+    assert.equal(api.shotAngleWarning(ep.scenes[i], ep.scenes[i - 1]), "", `o ${ep.scenes[i].id} muda o ângulo face ao anterior`);
+  }
+
+  // O índice publica a decupagem completa do episódio 11.
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, "Temporadas", "Temporada-1", "manifest.json"), "utf8"));
+  const entry = (manifest.episodes || []).find((e) => e.number === 11);
+  assert.ok(entry, "o episódio 11 está no índice");
+  assert.equal(entry.decoupageStatus, "Completa");
+  assert.equal(entry.decoupagePath, "docs/episodios/T1E11-a-sucessora-oficial-parte-2-decupagem.md");
+  assert.equal(entry.title, "A Sucessora Oficial — Parte 2");
+});

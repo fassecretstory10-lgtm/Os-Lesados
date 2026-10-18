@@ -7,14 +7,15 @@
 - **Estado:** guião consolidado para produção
 - **Personagens:** Tininha, Teresa, Capitão Gancho, realizador, produtor e operador(es) da régie
 - **Locais:** palco de Secret Story, régie de emissão, gabinete do Capitão Gancho, sala de reuniões da produção e sala secreta de Teresa
+- **Nota:** a história continua diretamente no Episódio 11 — «A Sucessora Oficial — Parte 2».
 
 ## Premissa
 
-Durante a apresentação da nova edição de Secret Story, Tininha é humilhada por legendas inesperadas que aparecem no ecrã gigante. A produção entra em pânico, Tininha ameaça despedir toda a equipa e o realizador interrompe a emissão com um mini break. No final, descobrimos que Teresa está por trás da sabotagem: observa Tininha numa sala secreta, com os olhos vermelhos, e ri-se de forma maléfica.
+Durante a estreia da nova edição de Secret Story, Tininha é humilhada por legendas inesperadas que aparecem no ecrã gigante. A produção entra em pânico, Tininha ameaça despedir toda a equipa e o realizador interrompe a emissão com um mini break. No final, descobrimos que Teresa está por trás da sabotagem: observa Tininha numa sala secreta, com os olhos vermelhos, e ri-se de forma maléfica.
 
 ## Cena 1 — Palco de Secret Story — Dia
 
-Tininha apresenta a nova edição no centro do palco, confiante e sorridente. O ecrã gigante mostra a identidade visual do programa.
+Tininha dá a estreia da nova edição no centro do palco, confiante e sorridente. O ecrã gigante mostra a identidade visual do programa.
 
 **TININHA:** «Esta será uma edição como nunca viu. Uma nova casa, novos segredos e…»
 
@@ -148,7 +149,7 @@ Durante a gargalhada, toda a cena treme com uma animação 2D exagerada, como se
 
 - Todas as falas são em português europeu (PT-PT).
 - Preservar os designs, a roupa e as proporções oficiais das personagens.
-- A apresentação decorre no mesmo palco, com Tininha no centro e o ecrã gigante atrás dela.
+- A estreia decorre no mesmo palco, com Tininha no centro e o ecrã gigante atrás dela.
 - As três legendas aparecem pela ordem exata do guião. Se a ferramenta não gerar texto corretamente, acrescentá-las na pós-produção.
 - A régie é uma sala de trabalho normal que se transforma em caos devido ao incidente; não criar um cenário de emergência separado.
 - A sala de reuniões mostra o pânico da equipa depois da reação calma do Capitão; a comédia vem das ações simultâneas e da conversa acelerada.

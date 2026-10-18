@@ -77,6 +77,15 @@
       "kind": "guião",
       "decoupagePath": "docs/episodios/T1E10-a-sucessora-oficial-decupagem.md",
       "decoupageStatus": "Completa"
+    },
+    {
+      "number": 11,
+      "title": "A Sucessora Oficial — Parte 2",
+      "status": "Decupagem completa para produção",
+      "path": "Temporadas/Temporada-1/episodio-11-a-sucessora-oficial-parte-2.md",
+      "kind": "guião",
+      "decoupagePath": "docs/episodios/T1E11-a-sucessora-oficial-parte-2-decupagem.md",
+      "decoupageStatus": "Completa"
     }
   ]
 }
