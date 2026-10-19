@@ -346,26 +346,27 @@ test("o episódio 10 importa os takes com título, ambiente e elenco certos", ()
   const { api } = loadApp();
   const ep = importEpisode(api, 10);
   assert.ok(ep.fromDecoupage, "o episódio 10 usa a decupagem aprovada");
-  // Os IDs e a ordem dos takes são preservados.
+  // Os IDs e a ordem dos takes são preservados — o 3C incluído.
   assert.deepEqual(
     ep.scenes.map((s) => s.id),
-    ["1a", "2a", "2b", "3a", "4a", "4b", "4c", "4d", "5a", "6a", "6b", "6c", "7a", "8a", "8b"],
+    ["0a", "1a", "1b", "0b", "2a", "2b", "2c", "2d", "0c", "3a", "3b", "3c", "0d", "4a", "4b"],
     "os takes do episódio 10 mantêm os IDs e a ordem"
   );
   const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
 
   // Establishing shots (E.P.): inserts sem personagens nem falas, com Local
-  // próprio — estabelecem o espaço sem introduzir uma CENA nova.
+  // próprio — estabelecem o espaço sem introduzir uma CENA nova. Ficam no
+  // «plano 00», para não mexerem nos IDs dos takes já aprovados (3C e Cia.).
   assert.deepEqual(
     ep.scenes.filter((s) => s.type === "INSERT").map((s) => s.id),
-    ["1a", "3a", "5a", "7a"],
+    ["0a", "0b", "0c", "0d"],
     "os quatro E.P. entram como inserts"
   );
-  assert.equal(by["1a"].location, "Exterior da Estação", "E.P. do edifício TVI (dia)");
-  assert.equal(by["3a"].location, "Corredor de Bastidores", "E.P. do corredor até à régie");
-  assert.equal(by["5a"].location, "Corredor de Bastidores", "E.P. do corredor da direção");
-  assert.equal(by["7a"].location, "Exterior da Estação", "E.P. do edifício TVI (noite)");
-  for (const id of ["1a", "3a", "5a", "7a"]) {
+  assert.equal(by["0a"].location, "Exterior da Estação", "E.P. do edifício TVI (dia)");
+  assert.equal(by["0b"].location, "Corredor de Bastidores", "E.P. do corredor até à régie");
+  assert.equal(by["0c"].location, "Corredor de Bastidores", "E.P. do corredor da direção");
+  assert.equal(by["0d"].location, "Exterior da Estação", "E.P. do edifício TVI (noite)");
+  for (const id of ["0a", "0b", "0c", "0d"]) {
     assert.deepEqual(by[id].characters, [], `o E.P. ${id} não tem personagens`);
     assert.equal(api.sceneLines(by[id]).length, 0, `o E.P. ${id} não tem falas`);
     assert.match(by[id].imagePrompt, /establishing shot|Empty technical corridor|Empty executive corridor/i, `o E.P. ${id} é um establishing shot`);
@@ -373,41 +374,95 @@ test("o episódio 10 importa os takes com título, ambiente e elenco certos", ()
   // Os E.P. não criam cenas novas.
   assert.equal(new Set(ep.scenes.map((s) => s.sceneId)).size, 4, "continua a haver 4 cenas");
   // O E.P. não rouba o papel de master: o master de cada cena mantém-se.
-  for (const id of ["2a", "4a", "6a", "8a"]) {
+  for (const id of ["1a", "2a", "3a", "4a"]) {
     assert.equal(by[id].type, "MASTER FRAME", `${id} é o master da cena`);
     assert.equal(by[id].reframeOf, null, `${id} não é reframe do E.P.`);
   }
 
   // Cada take declara o seu próprio ambiente (não herda o do cabeçalho da cena
   // quando está noutro espaço).
-  assert.equal(by["2a"].location, "Estúdio Central", "palco de Secret Story");
-  assert.equal(by["4a"].location, "Sala de Controlo", "régie de emissão");
-  assert.equal(by["6a"].location, "Gabinete do Diretor", "gabinete do Capitão");
-  assert.equal(by["6b"].location, "Sala de Reuniões Secret Story", "sala de reuniões");
-  assert.equal(by["6c"].location, "Sala de Controlo", "regresso à régie");
-  assert.equal(by["8a"].location, "Escritório Secreto da Guilhermina", "sala secreta de Teresa");
-  assert.equal(by["8b"].location, by["8a"].location, "o 8b fica no mesmo espaço do 8a");
+  assert.equal(by["1a"].location, "Estúdio Central", "palco de Secret Story");
+  assert.equal(by["2a"].location, "Sala de Controlo", "régie de emissão");
+  assert.equal(by["3a"].location, "Gabinete do Diretor", "gabinete do Capitão");
+  assert.equal(by["3b"].location, "Sala de Reuniões Secret Story", "sala de reuniões");
+  assert.equal(by["3c"].location, "Sala de Controlo", "regresso à régie");
+  assert.equal(by["4a"].location, "Escritório Secreto da Guilhermina", "sala secreta de Teresa");
+  assert.equal(by["4b"].location, by["4a"].location, "o 4b fica no mesmo espaço do 4a");
 
   // O título de cada take corresponde ao que acontece nele: o Capitão só
-  // aparece no 6a — o título do 6b e do 6c não pode sugerir a presença dele.
-  assert.match(by["6a"].title, /Capitão/, "o 6a é sobre o Capitão");
-  assert.doesNotMatch(by["6b"].title, /Capitão/i, "o 6b é a sala de reuniões, sem o Capitão");
-  assert.doesNotMatch(by["6c"].title, /Capitão/i, "o 6c é a régie, sem o Capitão");
-  assert.match(by["6b"].title, /reuniões/i);
+  // aparece no 3a — o título do 3b e do 3c não pode sugerir a presença dele.
+  assert.match(by["3a"].title, /Capitão/, "o 3a é sobre o Capitão");
+  assert.doesNotMatch(by["3b"].title, /Capitão/i, "o 3b é a sala de reuniões, sem o Capitão");
+  assert.doesNotMatch(by["3c"].title, /Capitão/i, "o 3c é a régie, sem o Capitão");
+  assert.match(by["3b"].title, /reuniões/i);
   // E o elenco bate com o espaço: o Capitão não entra na sala de reuniões nem na régie.
-  assert.ok(by["6a"].characters.includes("capitao"), "o 6a tem o Capitão");
-  assert.ok(!by["6b"].characters.includes("capitao"), "o 6b não tem o Capitão");
-  assert.ok(!by["6c"].characters.includes("capitao"), "o 6c não tem o Capitão");
+  assert.ok(by["3a"].characters.includes("capitao"), "o 3a tem o Capitão");
+  assert.ok(!by["3b"].characters.includes("capitao"), "o 3b não tem o Capitão");
+  assert.ok(!by["3c"].characters.includes("capitao"), "o 3c não tem o Capitão");
   // Sanitização: o bloco positivo de um take sem o Capitão não o menciona.
-  assert.doesNotMatch(by["6b"].animationPrompt, /Hook|Capit[ãa]o/i);
-  assert.doesNotMatch(by["6c"].animationPrompt, /Hook|Capit[ãa]o/i);
-  assert.doesNotMatch(by["6b"].imagePrompt, /Hook|Capit[ãa]o/i);
-  assert.doesNotMatch(by["6c"].imagePrompt, /Hook|Capit[ãa]o/i);
-  // Mudar de espaço dentro da mesma cena = master próprio, não reframe do 6a.
-  assert.equal(by["6b"].type, "MASTER FRAME", "o 6b é o master da sala de reuniões");
-  assert.equal(by["6c"].type, "MASTER FRAME", "o 6c é o master do regresso à régie");
-  assert.equal(by["6b"].reframeOf, null);
-  assert.equal(by["6c"].reframeOf, null);
+  assert.doesNotMatch(by["3b"].animationPrompt, /Hook|Capit[ãa]o/i);
+  assert.doesNotMatch(by["3c"].animationPrompt, /Hook|Capit[ãa]o/i);
+  assert.doesNotMatch(by["3b"].imagePrompt, /Hook|Capit[ãa]o/i);
+  assert.doesNotMatch(by["3c"].imagePrompt, /Hook|Capit[ãa]o/i);
+  // Mudar de espaço dentro da mesma cena = master próprio, não reframe do 3a.
+  assert.equal(by["3b"].type, "MASTER FRAME", "o 3b é o master da sala de reuniões");
+  assert.equal(by["3c"].type, "MASTER FRAME", "o 3c é o master do regresso à régie");
+  assert.equal(by["3b"].reframeOf, null);
+  assert.equal(by["3c"].reframeOf, null);
+});
+
+test("o take 3C leva a televenda: falas do realizador, jingle e grafismos, sem personagens da régie no anúncio", () => {
+  const { api } = loadApp();
+  const ep = importEpisode(api, 10);
+  const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
+  const take = by["3c"];
+  assert.ok(take, "o take 3C existe com a identificação correta");
+
+  // As duas falas do realizador continuam a ser as do guião, pela ordem, e são
+  // ditas por quem está de facto na régie.
+  assert.deepEqual(api.sceneLines(take).map((l) => l.line), [
+    "DESLIGUEM O ECRÃ! DESLIGUEM TUDO!",
+    "Vamos para mini break!",
+  ]);
+  // O realizador é um papel de equipa sem ficha própria; o elenco do 3C é a
+  // equipa da régie e mais ninguém — nenhuma personagem de outro espaço entra.
+  assert.ok(take.characters.includes("produtor"), "a equipa da régie entra no elenco");
+  for (const id of ["tininha", "teresa", "capitao"]) {
+    assert.ok(!take.characters.includes(id), `o ${id} não entra no 3C (não está na régie)`);
+  }
+  assert.match(api.buildVideoPrompt(take), /In frame: Produtor de Continuidade/);
+  assert.doesNotMatch(api.buildVideoPrompt(take), /In frame: Tininha|In frame: Teresa|In frame: Capit/i);
+
+  // O jingle, os grafismos e a montagem são campos do próprio take — a televenda
+  // vive dentro do 3C sem virar fala de personagem nenhuma.
+  assert.match(take.audio, /Não se esqueça do lugar das estacas/);
+  assert.match(take.audio, /Ligue quatro, quatro, quatro/);
+  assert.match(take.screenText, /COMPRE UMA ESTACA/);
+  assert.match(take.screenText, /LIGUE JÁ 444 44 444/);
+  assert.match(take.editNote, /televenda/i);
+  assert.match(take.editNote, /régie/i);
+  assert.equal(api.sceneLines(take).length, 2, "a televenda não acrescenta falas de personagem");
+
+  // O take mantém-se em 6 s e 16:9, e o still aprovado continua a ser a régie
+  // (o anúncio não está na primeira imagem).
+  assert.equal(Number(take.duration), 6);
+  assert.match(take.imagePrompt, /control room/i);
+  assert.match(take.imagePrompt, /FIRST FRAME/);
+  assert.doesNotMatch(take.imagePrompt, /COMPRE UMA ESTACA/);
+
+  // O prompt de vídeo derivado fala do jingle, do texto no ecrã e do corte — e
+  // já não diz o contrário («sem música», «sem cortes», «sem texto»).
+  const prompt = api.buildVideoPrompt(take);
+  assert.match(prompt, /Não se esqueça do lugar das estacas/);
+  assert.match(prompt, /COMPRE UMA ESTACA/);
+  assert.match(prompt, /LIGUE JÁ 444 44 444/);
+  assert.match(prompt, /On-screen text/);
+  assert.match(prompt, /hard-cut/i);
+  assert.doesNotMatch(prompt, /no music, no narration/);
+  assert.doesNotMatch(prompt, /no cuts, no scene change/);
+  // Quem está na régie continua a ser o único a falar com lip-sync.
+  assert.match(prompt, /Spoken dialogue \(European Portuguese PT-PT, exact words, lip-synced to the visible speaker/);
+  assert.match(prompt, /- REALIZADOR: "DESLIGUEM O ECRÃ! DESLIGUEM TUDO!"/);
 });
 
 test("a cena final da Teresa anima entre as duas imagens fixas, com as falas novas", () => {
@@ -415,17 +470,17 @@ test("a cena final da Teresa anima entre as duas imagens fixas, com as falas nov
   const ep = importEpisode(api, 10);
   const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
 
-  // 8a (imagem inicial) + 8b (imagem final) animam num só clip: INITIAL + FINAL.
-  assert.equal(by["8b"].joinWithPrev, true, "o 8b junta-se ao 8a num só take");
+  // 4a (imagem inicial) + 4b (imagem final) animam num só clip: INITIAL + FINAL.
+  assert.equal(by["4b"].joinWithPrev, true, "o 4b junta-se ao 4a num só take");
   const joined = api.buildVideoClips(ep.scenes).find((c) => c.takes.length > 1);
   assert.ok(joined, "os dois takes da Teresa formam um clip de duas imagens");
-  assert.equal(api.clipKey(joined), "8a+8b");
+  assert.equal(api.clipKey(joined), "4a+4b");
   const prompt = api.clipVideoPrompt(joined);
-  assert.match(prompt, /shot 8a as the FIRST FRAME/);
-  assert.match(prompt, /shot 8b as the FINAL FRAME/);
+  assert.match(prompt, /shot 4a as the FIRST FRAME/);
+  assert.match(prompt, /shot 4b as the FINAL FRAME/);
 
   // As três falas finais da Teresa, pela ordem exata, em PT-PT.
-  const lines = ["8a", "8b"].flatMap((id) => api.sceneLines(by[id]).map((l) => l.line));
+  const lines = ["4a", "4b"].flatMap((id) => api.sceneLines(by[id]).map((l) => l.line));
   assert.deepEqual(lines, [
     "Ai, Tininha, Tininha… tu não sabes com quem te foste meter!",
     "Eu… sim… sou a rainha dos reality shows!",
@@ -433,15 +488,15 @@ test("a cena final da Teresa anima entre as duas imagens fixas, com as falas nov
   ]);
   // A fala antiga («Sucessora em avaliação…») sai da cena final.
   assert.doesNotMatch(prompt, /Sucessora em avaliação/);
-  assert.doesNotMatch(by["8a"].animationPrompt, /Sucessora em avaliação/);
-  assert.doesNotMatch(by["8b"].animationPrompt, /Sucessora em avaliação/);
+  assert.doesNotMatch(by["4a"].animationPrompt, /Sucessora em avaliação/);
+  assert.doesNotMatch(by["4b"].animationPrompt, /Sucessora em avaliação/);
 
   // A revelação exata não leva «porque» nem outra frase, e o tremor e a luz
   // encarnada durante a gargalhada ficam no prompt de animação.
-  assert.match(by["8b"].animationPrompt, /sou a rainha dos reality shows/);
-  assert.doesNotMatch(by["8b"].animationPrompt, /porque/i);
-  assert.match(by["8b"].animationPrompt, /shakes/);
-  assert.match(by["8b"].animationPrompt, /red light/);
+  assert.match(by["4b"].animationPrompt, /sou a rainha dos reality shows/);
+  assert.doesNotMatch(by["4b"].animationPrompt, /porque/i);
+  assert.match(by["4b"].animationPrompt, /shakes/);
+  assert.match(by["4b"].animationPrompt, /red light/);
   // Sem música nem narração, e sempre em PT-PT.
   assert.match(prompt, /no music, no narration/);
   assert.match(prompt, /European Portuguese/);
@@ -454,23 +509,23 @@ test("o episódio 11 continua o 10 com título, ambiente e elenco certos", () =>
   // Os IDs e a ordem dos takes são preservados.
   assert.deepEqual(
     ep.scenes.map((s) => s.id),
-    ["1a", "2a", "2b", "3a", "4a", "4b", "5a", "5b", "6a", "7a", "7b", "7c", "8a", "9a", "9b"],
+    ["0a", "1a", "1b", "0b", "2a", "2b", "3a", "3b", "0c", "4a", "4b", "4c", "0d", "5a", "5b"],
     "os takes do episódio 11 mantêm os IDs e a ordem"
   );
   const by = Object.fromEntries(ep.scenes.map((s) => [s.id, s]));
 
   // Establishing shots (E.P.): inserts sem personagens nem falas, com Local
-  // próprio — estabelecem o espaço sem introduzir uma CENA nova.
+  // próprio — estabelecem o espaço sem introduzir uma CENA nova (plano 00).
   assert.deepEqual(
     ep.scenes.filter((s) => s.type === "INSERT").map((s) => s.id),
-    ["1a", "3a", "6a", "8a"],
+    ["0a", "0b", "0c", "0d"],
     "os quatro E.P. entram como inserts"
   );
-  assert.equal(by["1a"].location, "Exterior da Estação", "E.P. do edifício TVI (dia)");
-  assert.equal(by["3a"].location, "Corredor de Bastidores", "E.P. do corredor até à régie");
-  assert.equal(by["6a"].location, "Corredor de Bastidores", "E.P. do corredor da direção");
-  assert.equal(by["8a"].location, "Exterior da Estação", "E.P. do edifício TVI (noite)");
-  for (const id of ["1a", "3a", "6a", "8a"]) {
+  assert.equal(by["0a"].location, "Exterior da Estação", "E.P. do edifício TVI (dia)");
+  assert.equal(by["0b"].location, "Corredor de Bastidores", "E.P. do corredor até à régie");
+  assert.equal(by["0c"].location, "Corredor de Bastidores", "E.P. do corredor da direção");
+  assert.equal(by["0d"].location, "Exterior da Estação", "E.P. do edifício TVI (noite)");
+  for (const id of ["0a", "0b", "0c", "0d"]) {
     assert.deepEqual(by[id].characters, [], `o E.P. ${id} não tem personagens`);
     assert.equal(api.sceneLines(by[id]).length, 0, `o E.P. ${id} não tem falas`);
     assert.match(by[id].imagePrompt, /establishing shot|Empty technical corridor|Empty executive corridor/i, `o E.P. ${id} é um establishing shot`);
@@ -478,40 +533,40 @@ test("o episódio 11 continua o 10 com título, ambiente e elenco certos", () =>
   // Os E.P. não criam cenas novas.
   assert.equal(new Set(ep.scenes.map((s) => s.sceneId)).size, 4, "continua a haver 4 cenas");
   // O E.P. não rouba o papel de master: o master de cada cena mantém-se.
-  for (const id of ["2a", "4a", "7a", "9a"]) {
+  for (const id of ["1a", "2a", "4a", "5a"]) {
     assert.equal(by[id].type, "MASTER FRAME", `${id} é o master da cena`);
     assert.equal(by[id].reframeOf, null, `${id} não é reframe do E.P.`);
   }
 
   // Cada take declara o seu próprio ambiente (parte 2 do Ep.10).
-  assert.equal(by["2a"].location, "Estúdio Central", "palco de Secret Story");
-  assert.equal(by["4a"].location, "Sala de Controlo", "régie de emissão");
-  assert.equal(by["5b"].location, "Sala de Controlo", "a régie mantém-se na segunda metade da cena 2");
-  assert.equal(by["7a"].location, "Gabinete do Diretor", "gabinete do Capitão");
-  assert.equal(by["9a"].location, "Escritório Secreto da Guilhermina", "sala secreta de Teresa");
-  assert.equal(by["9b"].location, by["9a"].location, "o 9b fica no mesmo espaço do 9a");
+  assert.equal(by["1a"].location, "Estúdio Central", "palco de Secret Story");
+  assert.equal(by["2a"].location, "Sala de Controlo", "régie de emissão");
+  assert.equal(by["3b"].location, "Sala de Controlo", "a régie mantém-se na segunda metade da cena 2");
+  assert.equal(by["4a"].location, "Gabinete do Diretor", "gabinete do Capitão");
+  assert.equal(by["5a"].location, "Escritório Secreto da Guilhermina", "sala secreta de Teresa");
+  assert.equal(by["5b"].location, by["5a"].location, "o 5b fica no mesmo espaço do 5a");
 
-  // O título bate com o take: o Capitão só entra no gabinete (7a–7c).
-  assert.match(by["7a"].title, /Capitão/, "o 7a é sobre o Capitão");
-  assert.ok(by["7a"].characters.includes("capitao"), "o 7a tem o Capitão");
-  for (const id of ["1a", "2a", "2b", "4a", "5a", "5b", "6a", "8a", "9a", "9b"]) {
+  // O título bate com o take: o Capitão só entra no gabinete (4a–4c).
+  assert.match(by["4a"].title, /Capitão/, "o 4a é sobre o Capitão");
+  assert.ok(by["4a"].characters.includes("capitao"), "o 4a tem o Capitão");
+  for (const id of ["0a", "0b", "0c", "0d", "1a", "1b", "2a", "2b", "3a", "3b", "5a", "5b"]) {
     assert.doesNotMatch(by[id].title, /Capitão/i, `o título do ${id} não sugere o Capitão`);
     assert.ok(!by[id].characters.includes("capitao"), `o ${id} não tem o Capitão`);
   }
 
   // Quem só se ouve (O.S.) não entra no elenco nem em frame: a Tininha fala do
   // palco, mas não está na régie, e por isso não é desenhada.
-  assert.doesNotMatch(by["5a"].title, /Tininha/i, "o 5a é na régie, sem a Tininha em cena");
-  assert.ok(!by["5a"].characters.includes("tininha"), "a Tininha não entra no elenco do 5a");
-  const v5a = api.buildVideoPrompt(by["5a"]);
-  const offIdx = v5a.indexOf("Off-screen voice-over (European Portuguese PT-PT, exact words, NOT lip-synced");
+  assert.doesNotMatch(by["3a"].title, /Tininha/i, "o 3a é na régie, sem a Tininha em cena");
+  assert.ok(!by["3a"].characters.includes("tininha"), "a Tininha não entra no elenco do 3a");
+  const v3a = api.buildVideoPrompt(by["3a"]);
+  const offIdx = v3a.indexOf("Off-screen voice-over (European Portuguese PT-PT, exact words, NOT lip-synced");
   assert.ok(offIdx > 0, "a fala O.S. da Tininha vai para o bloco de voz-off");
-  assert.match(v5a.slice(offIdx), /- Tininha \[[^\]]+\]: "ENTÃO VÃO BUSCAR QUEM ESTÁ LÁ!"/);
-  assert.match(v5a.slice(0, offIdx), /- REALIZADOR: "Isto já não é um erro\. É uma campanha\."/, "o realizador fica no bloco lip-sync");
-  assert.doesNotMatch(by["5a"].imagePrompt, /Tininha/, "a Tininha não é desenhada na régie");
+  assert.match(v3a.slice(offIdx), /- Tininha \[[^\]]+\]: "ENTÃO VÃO BUSCAR QUEM ESTÁ LÁ!"/);
+  assert.match(v3a.slice(0, offIdx), /- REALIZADOR: "Isto já não é um erro\. É uma campanha\."/, "o realizador fica no bloco lip-sync");
+  assert.doesNotMatch(by["3a"].imagePrompt, /Tininha/, "a Tininha não é desenhada na régie");
 
   // A última fala é o gancho para o episódio seguinte.
-  const lines = api.sceneLines(by["9b"]).map((l) => l.line);
+  const lines = api.sceneLines(by["5b"]).map((l) => l.line);
   assert.equal(lines[lines.length - 1], "Capitão? Sou eu. Vou aí.");
 
   // Nenhum take passa de duas falas nem de 8 s.

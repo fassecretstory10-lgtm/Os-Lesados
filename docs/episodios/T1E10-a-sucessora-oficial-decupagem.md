@@ -22,6 +22,7 @@
 10. Manter o episódio entre 60 e 90 segundos, com ritmo rápido e pausas cómicas breves.
 11. Cada take declara o seu próprio ambiente (**Local:**) e título (**Título:**). Um take que muda de espaço dentro da mesma cena é um master próprio (**Tipo:** MASTER FRAME), não um reframe do take anterior.
 12. Os establishing shots (**E.P.**) são inserts sem personagens nem falas (`**Tipo:** INSERT`), com `**Local:**` próprio, entre as cenas: edifício TVI (dia), corredor até à régie, corredor da direção e edifício TVI (noite). Não introduzem uma CENA nova nem roubam o papel de master ao primeiro plano da cena.
+13. O take **3C** termina com um corte em seco do mini break para uma televenda a ecrã inteiro. Durante o anúncio não aparece nenhuma personagem da régie; a televenda tem jingle cantado (`**Áudio:**`) e dois grafismos próprios (`**Texto no ecrã:**`), declarados no próprio take. Não são falas de personagem nem narração.
 
 ---
 
@@ -29,9 +30,9 @@
 
 **Objetivo:** mostrar Tininha confiante na estreia e quebrar a sua pose com uma legenda humilhante.
 
-## PLANO 01 — E.P. — Estabelecer o edifício TVI (dia)
+## PLANO 00 — E.P. — Estabelecer o edifício TVI (dia)
 
-**01A · E.P. — ZOOM IN EDIFÍCIO TVI**  
+**00A · E.P. — ZOOM IN EDIFÍCIO TVI**  
 **Duração estimada:** 3–4 s  
 **Câmara:** plano geral do edifício TVI com zoom in lento  
 **Personagens:** nenhuma  
@@ -47,9 +48,9 @@
 
 **Transição:** corte para o interior.
 
-## PLANO 02 — A estreia é interrompida
+## PLANO 01 — A estreia é interrompida
 
-**02A · MASTER FRAME DO PALCO**  
+**01A · MASTER FRAME DO PALCO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano geral frontal do palco, Tininha ao centro e ecrã gigante atrás  
 **Personagens:** Tininha  
@@ -65,7 +66,7 @@
 
 **TININHA:** «Esta será uma edição como nunca viu. Uma nova casa, novos segredos e…»
 
-**02B · REFRAME — A LEGENDA INESPERADA**  
+**01B · REFRAME — A LEGENDA INESPERADA**  
 **Duração estimada:** 4–5 s  
 **Câmara:** plano médio de Tininha, com parte do ecrã ainda visível  
 **Personagens:** Tininha  
@@ -90,9 +91,9 @@
 
 **Objetivo:** transformar uma sabotagem simples num desastre televisivo e mostrar a produção a perder o controlo.
 
-## PLANO 03 — E.P. — Corredor até à régie
+## PLANO 00 — E.P. — Corredor até à régie
 
-**03A · E.P. — CORREDOR ATÉ À RÉGIE**  
+**00B · E.P. — CORREDOR ATÉ À RÉGIE**  
 **Duração estimada:** 2–3 s  
 **Câmara:** travelling lateral pelo corredor técnico até à porta da régie  
 **Personagens:** nenhuma  
@@ -108,9 +109,9 @@
 
 **Transição:** corte para a régie.
 
-## PLANO 04 — A produção tenta perceber o que aconteceu
+## PLANO 02 — A produção tenta perceber o que aconteceu
 
-**04A · MASTER FRAME DA RÉGIE**  
+**02A · MASTER FRAME DA RÉGIE**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano geral da régie, parede de monitores à frente e consola em primeiro plano  
 **Personagens:** produtor 1, realizador e operador  
@@ -130,7 +131,7 @@
 
 **OPERADOR:** «Não fui eu! Eu nem estou a mexer nos grafismos!»
 
-**04B · REFRAME — A SEGUNDA LEGENDA**  
+**02B · REFRAME — A SEGUNDA LEGENDA**  
 **Duração estimada:** 4–5 s  
 **Câmara:** plano mais fechado sobre os monitores, com parte das reações da equipa visível  
 **Personagens:** produtor 1 e operador, parcialmente visíveis  
@@ -151,7 +152,7 @@ Silêncio absoluto.
 
 **PRODUTOR 1:** «Ai, estamos tramados.»
 
-**04C · REFRAME — A AMEAÇA DE TININHA**  
+**02C · REFRAME — A AMEAÇA DE TININHA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio do realizador e operador, monitores visíveis ao fundo  
 **Personagens:** realizador, operador e produtor 1  
@@ -170,7 +171,7 @@ Silêncio absoluto.
 
 **REALIZADOR:** «AGORA NÃO!»
 
-**04D · REFRAME — O GOLPE FINAL**  
+**02D · REFRAME — O GOLPE FINAL**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano de reação do realizador, incluindo monitor no enquadramento  
 **Personagens:** realizador e equipa ao fundo  
@@ -197,9 +198,9 @@ O ecrã fica preto.
 
 **Objetivo:** contrastar a calma do Capitão com o desespero da produção e terminar a emissão com um mini break.
 
-## PLANO 05 — E.P. — Corredor da direção
+## PLANO 00 — E.P. — Corredor da direção
 
-**05A · E.P. — CORREDOR DA DIREÇÃO**  
+**00C · E.P. — CORREDOR DA DIREÇÃO**  
 **Duração estimada:** 2–3 s  
 **Câmara:** plano geral do corredor da direção com travelling até à porta do gabinete  
 **Personagens:** nenhuma  
@@ -215,9 +216,9 @@ O ecrã fica preto.
 
 **Transição:** corte para o gabinete.
 
-## PLANO 06 — O Capitão observa
+## PLANO 03 — O Capitão observa
 
-**06A · MASTER FRAME EXISTENTE DO GABINETE**  
+**03A · MASTER FRAME EXISTENTE DO GABINETE**  
 **Duração estimada:** 4–5 s  
 **Câmara:** usar o master angle aprovado do gabinete; o Capitão está sozinho  
 **Personagens:** Capitão Gancho  
@@ -235,7 +236,7 @@ O ecrã fica preto.
 
 O Capitão continua a olhar para o monitor, sem revelar o que pensa.
 
-**06B · MASTER FRAME — O PÂNICO NA SALA DE REUNIÕES**  
+**03B · MASTER FRAME — O PÂNICO NA SALA DE REUNIÕES**  
 **Duração estimada:** 8–10 s  
 **Câmara:** plano geral de grupo, mesa de reuniões ao centro e porta visível  
 **Personagens:** produtor 1, produtora 2, produtor 3, realizador e operador  
@@ -279,19 +280,23 @@ Silêncio.
 
 O realizador sai disparado.
 
-**06C · REGRESSO À RÉGIE — A DECISÃO DE INTERROMPER A EMISSÃO**  
+**03C · REGRESSO À RÉGIE — O MINI BREAK E A TELEVENDA DA ESTACA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** voltar à régie, plano médio do realizador e da consola; ângulo diferente do plano 02D  
 **Personagens:** realizador, operador e produtor 1  
 **Tipo:** MASTER FRAME  
-**Título:** A régie decide o mini break  
-**Local:** Régie de emissão
+**Título:** A régie decide o mini break e entra a televenda da estaca  
+**Local:** Régie de emissão  
+**Montagem:** o take começa na régie e corta em seco para a televenda a ecrã inteiro; durante o anúncio não há nenhuma personagem da régie visível  
+**Áudio:** jingle cantado da televenda, em PT-PT — «Não se esqueça do lugar das estacas! Compre já! Ligue quatro, quatro, quatro!» — por cima da ambiência da régie que desaparece; sem narração  
+**Texto no ecrã:** grafismos literais em PT-PT — «COMPRE UMA ESTACA» e «LIGUE JÁ 444 44 444»  
+**Nota de produção:** ⚠ conflito de duração — as duas falas do realizador, o corte, o jingle, a revelação da estaca e os dois grafismos não cabem naturalmente em 6 s. A duração mantém-se nos 6 s por decisão de produção; a resolução (alargar o take ou separar a televenda num take próprio) fica pendente.
 
 **Prompt de imagem**
-> Return to the exact same approved control room. Use a different, tighter angle from the previous control-room shot, framing the director and the technical console, with the black monitor visible. Preserve the room geography, lighting, characters and 2D style.
+> Return to the exact same approved control room. Use a different, tighter angle from the previous control-room shot, framing the director and the technical console, with the black monitor visible. Preserve the room geography, lighting, characters and 2D style. This still is the approved FIRST FRAME: the teleshopping advert is NOT in this image.
 
 **Prompt de animação**
-> Return to the control room after the brief meeting-room cutaway. The director keeps trying to regain control while the operator frantically checks the console. He shouts for the screen to be switched off again, the black monitor remains black, and he immediately decides to cut to a mini break. The team moves with panicked urgency. Do not imply that they heard the earlier private remark from the office.
+> Return to the control room after the brief meeting-room cutaway. The director keeps trying to regain control while the operator frantically checks the console: he shouts that the screen and everything else must be switched off, the black monitor stays black, and he immediately orders a mini break. The team moves with panicked urgency; do not imply that they heard the earlier private remark from the office. The broadcast then hard-cuts to a full-screen Portuguese teleshopping advert — no control-room character is visible during the advert. Play the audio and the on-screen text declared above exactly: first the sung jingle, then the reveal of a very ordinary wooden stake presented as an extraordinary product. Keep the old, exaggerated, comic teleshopping tone of a fairground vendor's pitch, alluding to Tininha's past as a market-stall seller even though she is now rich; clean 2D linework, no photorealism.
 
 **REALIZADOR:** «DESLIGUEM O ECRÃ! DESLIGUEM TUDO!»
 
@@ -299,7 +304,9 @@ O ecrã permanece preto.
 
 **REALIZADOR:** «Vamos para mini break!»
 
-A emissão corta para um separador de mini break com música alegre, criando um contraste cómico com o caos da régie.
+A emissão corta em seco para uma televenda portuguesa a ecrã inteiro, sem nenhuma personagem da régie visível. Antes da revelação do produto, ouve-se o jingle cantado, em PT-PT: «Não se esqueça do lugar das estacas! Compre já! Ligue quatro, quatro, quatro!».
+
+A televenda revela então uma estaca de madeira comum, apresentada como um produto extraordinário, com os grafismos «COMPRE UMA ESTACA» e «LIGUE JÁ 444 44 444». O tom é de televenda antiga, exagerado e cómico, a aludir ao passado de Tininha como feirante — apesar de agora ser rica.
 
 **Transição:** corte direto para a sala secreta de Teresa.
 
@@ -309,9 +316,9 @@ A emissão corta para um separador de mini break com música alegre, criando um 
 
 **Objetivo:** revelar Teresa como responsável pela sabotagem e terminar com a gargalhada de vilã.
 
-## PLANO 07 — E.P. — Estabelecer o edifício TVI (noite)
+## PLANO 00 — E.P. — Estabelecer o edifício TVI (noite)
 
-**07A · E.P. — ZOOM IN À JANELA DO ÚLTIMO PISO (NOITE)**  
+**00D · E.P. — ZOOM IN À JANELA DO ÚLTIMO PISO (NOITE)**  
 **Duração estimada:** 3–4 s  
 **Câmara:** plano geral do edifício TVI à noite com zoom in até à janela acesa do último piso  
 **Personagens:** nenhuma  
@@ -327,9 +334,9 @@ A emissão corta para um separador de mini break com música alegre, criando um 
 
 **Transição:** corte para a sala secreta.
 
-## PLANO 08 — A revelação (plano de duas imagens)
+## PLANO 04 — A revelação (plano de duas imagens)
 
-**08A · MASTER FRAME DA SALA SECRETA**  
+**04A · MASTER FRAME DA SALA SECRETA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio-aberto de Teresa sentada diante de um monitor  
 **Personagens:** Teresa  
@@ -347,7 +354,7 @@ A emissão corta para um separador de mini break com música alegre, criando um 
 
 Teresa observa os ecrãs, satisfeita por ter pirateado o sistema. A câmara começa a aproximar-se lentamente do seu rosto.
 
-**08B · REFRAME — A REVELAÇÃO E A GARGALHADA**  
+**04B · REFRAME — A REVELAÇÃO E A GARGALHADA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** grande plano de Teresa; monitor ainda parcialmente visível  
 **Personagens:** Teresa  
@@ -381,12 +388,15 @@ Durante a gargalhada, toda a cena treme com uma animação 2D exagerada e uma lu
 - **Sala de reuniões:** manter a cena num único plano geral de grupo, com ações simultâneas e ritmo acelerado; evitar planos individuais que alonguem o episódio. O Capitão não está presente na sala de reuniões.
 - **Legendas:** aplicar em pós-produção se a ferramenta não conseguir reproduzir o texto exatamente.
 - **Capitão:** está sozinho e não comunica com a régie. A fala «Interessante» é apenas para o público. Depois do 03A, o Capitão não volta a aparecer.
-- **Mini break:** deve parecer uma decisão urgente do realizador para esconder o desastre.
+- **Mini break:** deve parecer uma decisão urgente do realizador para esconder o desastre. O mini break entra em televenda: a emissão corta em seco para o anúncio da estaca (take 3C), a ecrã inteiro, sem personagens da régie visíveis.
+- **Televenda da estaca (take 3C):** tom de televenda antiga, exagerado e cómico, com a alusão ao passado de Tininha como feirante (a catchphrase «Ainda sei o lugar das estacas» é a deixa do jingle), apesar de agora ser rica. O anúncio mostra uma estaca de madeira comum como produto extraordinário. Jingle cantado em PT-PT: «Não se esqueça do lugar das estacas! Compre já! Ligue quatro, quatro, quatro!». Grafismos: «COMPRE UMA ESTACA» e «LIGUE JÁ 444 44 444».
+- **Televenda — conflito de duração (assinalado, não resolvido):** o 3C mantém 6 s, mas as duas falas do realizador, o corte, o jingle, a revelação e os dois grafismos não cabem naturalmente nesse tempo. A duração não foi alterada automaticamente; a resolução (alargar o take ou separar a televenda num take próprio) fica pendente de decisão de produção.
+- **Televenda — montagem:** o 3C é animado a partir de um único still (a régie). Um corte em seco para um novo espaço implica um segundo frame/take na pipeline de image-to-video; até essa decisão, o corte está descrito no prompt mas o take continua a ser animado como um só clip.
 - **Teresa:** não mostrar como a sabotagem foi executada. A sala secreta e os olhos vermelhos são a revelação final.
 - **Teresa (plano de duas imagens, 04A → 04B):** o plano anima entre as duas imagens fixas — INITIAL FRAME = still de 04A (Teresa a olhar para os ecrãs), FINAL FRAME = still de 04B (grande plano do rosto na revelação). Não gerar imagens novas nem alterar a composição; a câmara aproxima-se de forma contínua e termina exatamente na composição do frame final. Manter a identidade, o rosto, o cabelo, a roupa e o desenho 2D de Teresa, o cenário, a disposição dos ecrãs e a mensagem pirateada intactos.
 - **Falas de Teresa (PT-PT, sincronização labial):** primeiro, sussurrada, com cumplicidade, malícia e satisfação pela sabotagem — «Ai, Tininha, Tininha… tu não sabes com quem te foste meter!»; depois, com voz de vilã de animação inspirada na presença teatral de Maléfica (grave, fria, arrogante, ligeiramente rouca, ameaçadora), com pausa dramática e ênfase em «sou a rainha» — «Eu… sim… sou a rainha dos reality shows!»; por fim, uma gargalhada de vilã intensa, teatral, sinistra e ligeiramente descontrolada — «Ahahahahahahah!». Não acrescentar «porque», não trocar as frases e não remover as pausas.
 - **Tremor e luz encarnada:** a partir da gargalhada, toda a cena treme com animação 2D exagerada; a câmara e os elementos do cenário vibram de forma coordenada; uma luz encarnada intensa invade a cena e pulsa com o riso. Os ecrãs continuam animados (interfaces em movimento, elementos a piscar mais intensamente) e a disposição original e a mensagem pirateada mantêm-se intactas.
-- **Som:** apenas ambiente natural da sala; sem música e sem narração.
+- **Som:** ambiente natural dos espaços, sem banda sonora e sem narração. Única exceção, diegética: o jingle cantado da televenda no take 3C, que vem do próprio anúncio.
 - **Abelha Maia:** não aparece nem narra o episódio.
 - **Continuidade visual:** reutilizar cenários, referências e master frames aprovados; evitar imagens redundantes e alterações de estilo.
 - **E.P. (establishing shots):** quatro inserts de transição — edifício TVI (dia), corredor até à régie, corredor da direção e edifício TVI (noite). Sem personagens nem falas; estabelecem o espaço e ligam as cenas.

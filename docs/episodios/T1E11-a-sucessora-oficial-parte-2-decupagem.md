@@ -30,9 +30,9 @@
 
 **Objetivo:** mostrar a estreia a voltar ao ar já contaminada pela sabotagem e Tininha a perder o controlo.
 
-## PLANO 01 — E.P. — Estabelecer o edifício TVI (dia)
+## PLANO 00 — E.P. — Estabelecer o edifício TVI (dia)
 
-**01A · E.P. — ZOOM IN EDIFÍCIO TVI**  
+**00A · E.P. — ZOOM IN EDIFÍCIO TVI**  
 **Duração estimada:** 3–4 s  
 **Câmara:** plano geral do edifício TVI com zoom in lento  
 **Personagens:** nenhuma  
@@ -48,9 +48,9 @@
 
 **Transição:** corte para o interior.
 
-## PLANO 02 — A estreia continua
+## PLANO 01 — A estreia continua
 
-**02A · MASTER FRAME DO PALCO**  
+**01A · MASTER FRAME DO PALCO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano geral frontal do palco, Tininha ao centro e ecrã gigante atrás  
 **Personagens:** Tininha  
@@ -68,7 +68,7 @@
 
 O ecrã gigante volta a mostrar a legenda pirata: «A SUCESSORA DA TERESA GUILHERMINA I DE PORTUGAL».
 
-**02B · REFRAME — O PÚBLICO CANTA**  
+**01B · REFRAME — O PÚBLICO CANTA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio de Tininha, com o ecrã gigante parcialmente visível  
 **Personagens:** Tininha  
@@ -95,9 +95,9 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **Objetivo:** a equipa descobre que o sinal pirata vem de dentro da estação e que a sabotagem é, na verdade, uma campanha.
 
-## PLANO 03 — E.P. — Corredor até à régie
+## PLANO 00 — E.P. — Corredor até à régie
 
-**03A · E.P. — CORREDOR ATÉ À RÉGIE**  
+**00B · E.P. — CORREDOR ATÉ À RÉGIE**  
 **Duração estimada:** 2–3 s  
 **Câmara:** travelling lateral pelo corredor técnico até à porta da régie  
 **Personagens:** nenhuma  
@@ -113,9 +113,9 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **Transição:** corte para a régie.
 
-## PLANO 04 — A origem do sinal
+## PLANO 02 — A origem do sinal
 
-**04A · MASTER FRAME DA RÉGIE**  
+**02A · MASTER FRAME DA RÉGIE**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano geral da régie, com a parede de monitores e a consola à frente  
 **Personagens:** operador e realizador  
@@ -133,7 +133,7 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **REALIZADOR:** «Dentro? De onde?»
 
-**04B · REFRAME — O SINAL VEM DE DENTRO**  
+**02B · REFRAME — O SINAL VEM DE DENTRO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano conjunto do produtor e do operador junto aos monitores  
 **Personagens:** produtor 1 e operador  
@@ -150,9 +150,9 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **OPERADOR:** «E não é só o sinal: #VoltaTeresa é o mais comentado do país.»
 
-## PLANO 05 — Isto é uma campanha
+## PLANO 03 — Isto é uma campanha
 
-**05A · REFRAME — A CAMPANHA**  
+**03A · REFRAME — A CAMPANHA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio do realizador e do produtor, com os monitores ao fundo  
 **Personagens:** realizador e produtor 1  
@@ -169,7 +169,7 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **TININHA (O.S.):** «ENTÃO VÃO BUSCAR QUEM ESTÁ LÁ!»
 
-**05B · REFRAME — A PORTA BLOQUEADA**  
+**03B · REFRAME — A PORTA BLOQUEADA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano mais fechado do operador junto à consola  
 **Personagens:** operador e realizador  
@@ -194,9 +194,9 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **Objetivo:** mostrar que o Capitão sabe mais do que mostra e escolhe não travar a sabotagem.
 
-## PLANO 06 — E.P. — Corredor da direção
+## PLANO 00 — E.P. — Corredor da direção
 
-**06A · E.P. — CORREDOR DA DIREÇÃO**  
+**00C · E.P. — CORREDOR DA DIREÇÃO**  
 **Duração estimada:** 2–3 s  
 **Câmara:** plano geral do corredor da direção com travelling até à porta do gabinete  
 **Personagens:** nenhuma  
@@ -212,9 +212,9 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **Transição:** corte para o gabinete.
 
-## PLANO 07 — O Capitão decide
+## PLANO 04 — O Capitão decide
 
-**07A · MASTER FRAME EXISTENTE DO GABINETE**  
+**04A · MASTER FRAME EXISTENTE DO GABINETE**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio-aberto do gabinete, com o Capitão ao centro e o produtor à porta  
 **Personagens:** Capitão Gancho e produtor 1  
@@ -232,7 +232,7 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **CAPITÃO GANCHO (sem se virar):** «Qual sala?»
 
-**07B · REFRAME — NÃO ENTRE NINGUÉM**  
+**04B · REFRAME — NÃO ENTRE NINGUÉM**  
 **Duração estimada:** 4–5 s  
 **Câmara:** plano médio do Capitão e do produtor  
 **Personagens:** Capitão Gancho e produtor 1  
@@ -249,7 +249,7 @@ Tininha fixa a régie e fala baixinho, com fúria.
 
 **CAPITÃO GANCHO:** «Então não entre ninguém.»
 
-**07C · REFRAME — DEIXE-A TRABALHAR**  
+**04C · REFRAME — DEIXE-A TRABALHAR**  
 **Duração estimada:** 4–5 s  
 **Câmara:** grande plano do Capitão  
 **Personagens:** Capitão Gancho  
@@ -274,9 +274,9 @@ O produtor sai confuso. O Capitão volta a olhar para o monitor.
 
 **Objetivo:** revelar que Teresa sabe que foi descoberta e prepara o passo seguinte.
 
-## PLANO 08 — E.P. — Estabelecer o edifício TVI (noite)
+## PLANO 00 — E.P. — Estabelecer o edifício TVI (noite)
 
-**08A · E.P. — ZOOM IN À JANELA DO ÚLTIMO PISO (NOITE)**  
+**00D · E.P. — ZOOM IN À JANELA DO ÚLTIMO PISO (NOITE)**  
 **Duração estimada:** 3–4 s  
 **Câmara:** plano geral do edifício TVI à noite com zoom in até à janela acesa do último piso  
 **Personagens:** nenhuma  
@@ -292,9 +292,9 @@ O produtor sai confuso. O Capitão volta a olhar para o monitor.
 
 **Transição:** corte para a sala secreta.
 
-## PLANO 09 — A estreia é minha
+## PLANO 05 — A estreia é minha
 
-**09A · MASTER FRAME DA SALA SECRETA**  
+**05A · MASTER FRAME DA SALA SECRETA**  
 **Duração estimada:** 5–6 s  
 **Câmara:** plano médio-aberto de Teresa diante dos monitores  
 **Personagens:** Teresa  
@@ -314,7 +314,7 @@ Teresa levanta-se e olha para os monitores.
 
 **TERESA:** «Achavam que a estreia era da Tininha?»
 
-**09B · REFRAME — O TELEFONE VERMELHO**  
+**05B · REFRAME — O TELEFONE VERMELHO**  
 **Duração estimada:** 5–6 s  
 **Câmara:** grande plano de Teresa com o telefone vermelho  
 **Personagens:** Teresa  

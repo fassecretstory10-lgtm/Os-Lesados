@@ -8,6 +8,7 @@
 - **Personagens:** Tininha, Teresa, Capitão Gancho, realizador, produtor e operador(es) da régie
 - **Locais:** palco de Secret Story, régie de emissão, gabinete do Capitão Gancho, sala de reuniões da produção e sala secreta de Teresa
 - **E.P. (establishing shots):** edifício TVI (dia), corredor até à régie, corredor da direção e edifício TVI (noite) — inserts sem personagens, entre as cenas (ver decupagem).
+- **Mini break / televenda (take 3C):** o corte da emissão entra numa televenda a ecrã inteiro da estaca, com jingle cantado e dois grafismos próprios. ⚠ O take mantém 6 s, mas o jingle, a revelação e os grafismos não cabem naturalmente nesse tempo — conflito assinalado, sem alterar a duração automaticamente.
 - **Nota:** a história continua diretamente no Episódio 11 — «A Sucessora Oficial — Parte 2».
 
 ## Premissa
@@ -124,7 +125,9 @@ O realizador olha para a equipa, completamente desesperado.
 
 **REALIZADOR:** «Vamos para mini break!»
 
-A emissão corta abruptamente para um separador de mini break, com música alegre em contraste com o caos da situação.
+A emissão corta em seco para uma televenda portuguesa a ecrã inteiro (take 3C). Durante o anúncio não aparece nenhuma personagem da régie. Antes de o produto ser revelado, ouve-se, cantado em PT-PT: «Não se esqueça do lugar das estacas! Compre já! Ligue quatro, quatro, quatro!».
+
+A televenda revela então uma estaca de madeira comum, apresentada como um produto extraordinário, com os grafismos «COMPRE UMA ESTACA» e «LIGUE JÁ 444 44 444». O tom é de televenda antiga, exagerado e cómico, a aludir ao passado da Tininha como feirante — apesar de agora ser rica.
 
 ## Cena 4 — Sala secreta de Teresa — Noite
 
@@ -155,10 +158,11 @@ Durante a gargalhada, toda a cena treme com uma animação 2D exagerada, como se
 - A régie é uma sala de trabalho normal que se transforma em caos devido ao incidente; não criar um cenário de emergência separado.
 - A sala de reuniões mostra o pânico da equipa depois da reação calma do Capitão; a comédia vem das ações simultâneas e da conversa acelerada.
 - O Capitão está sozinho no gabinete quando diz «Interessante». A régie não ouve a fala nem reage a ela.
-- O mini break é uma decisão desesperada do realizador para interromper a emissão.
+- O mini break é uma decisão desesperada do realizador para interromper a emissão. Desse mini break, a emissão corta em seco para a televenda da estaca (take 3C), a ecrã inteiro e sem nenhuma personagem da régie visível.
 - A sala secreta só aparece na cena final. Não explicar como Teresa sabotou os grafismos.
 - A cena final é animada a partir de duas imagens fixas (imagem inicial: Teresa a olhar para os ecrãs; imagem final: plano aproximado do rosto durante a revelação), com aproximação contínua da câmara entre as duas. Não gerar imagens novas para substituir os frames aprovados.
 - As falas de Teresa, pela ordem exata: primeiro, sussurrada, «Ai, Tininha, Tininha… tu não sabes com quem te foste meter!»; depois, com voz de vilã de animação inspirada na presença teatral de Maléfica (grave, fria, arrogante, ligeiramente rouca, ameaçadora), com pausa dramática e ênfase em «sou a rainha», «Eu… sim… sou a rainha dos reality shows!»; por fim, uma gargalhada de vilã intensa, teatral, sinistra e ligeiramente descontrolada, «Ahahahahahahah!». Não acrescentar «porque», não trocar as frases e não remover as pausas.
 - Durante a gargalhada, toda a cena treme com animação 2D exagerada e uma luz encarnada intensa invade a cena e pulsa com o riso; os ecrãs continuam animados, com a disposição original e a mensagem pirateada intactas.
-- Não incluir voz off, Abelha Maia ou cenas depois do corte para preto. Não adicionar música nem narração.
+- Não incluir voz off de narração, Abelha Maia ou cenas depois do corte para preto. A única música é o jingle diegético da televenda do take 3C; não adicionar narração.
+- O take 3C leva dois grafismos próprios da televenda — «COMPRE UMA ESTACA» e «LIGUE JÁ 444 44 444» — e o jingle cantado «Não se esqueça do lugar das estacas! Compre já! Ligue quatro, quatro, quatro!». São elementos diegéticos do anúncio (a televenda que entra no mini break), não narração. Se a ferramenta não gerar o texto, aplicá-lo em pós-produção.
 - Manter o ritmo rápido, com pausas cómicas breves e duração total de 60–90 segundos.
